@@ -1,0 +1,35 @@
+version
+  major 0
+  minor 1
+
+# The Recording domain defines methods for managing recordings. Recordings are
+# blobs of binary data which grow over time.
+domain Recording
+
+  # Globally unique identifier for a recording.
+  type RecordingID extends string
+
+  # Unique identifier for the software used to produce a recording.
+  type BuildID extends string
+
+  # Create a new recording.
+  command create
+    parameters
+      # Build ID of the software which produced the recording.
+      Recording.BuildID buildId
+    returns
+      # Identifier for the recording.
+      Recording.RecordingID recordingId
+
+  # Add data to a recording. The next message sent after this must be a binary
+  # message with the data described by this message. Uploaded recordings are not
+  # explicitly finished; replay sessions created for a recording will include
+  # all data which was successfully uploaded.
+  command addData
+    parameters
+      # ID of the recording data is being added to.
+      Recording.RecordingID recordingId
+      # Offset into the recording's blob of the data being sent.
+      integer offset
+      # Byte length of the data being sent.
+      integer length

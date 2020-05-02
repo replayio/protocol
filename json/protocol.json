@@ -1,0 +1,65 @@
+{
+    "version": {
+        "major": "0",
+        "minor": "1"
+    },
+    "domains": [
+        {
+            "domain": "Recording",
+            "description": "The Recording domain defines methods for managing recordings. Recordings are\nblobs of binary data which grow over time.",
+            "types": [
+                {
+                    "id": "RecordingID",
+                    "description": "Globally unique identifier for a recording.",
+                    "type": "string"
+                },
+                {
+                    "id": "BuildID",
+                    "description": "Unique identifier for the software used to produce a recording.",
+                    "type": "string"
+                }
+            ],
+            "commands": [
+                {
+                    "name": "create",
+                    "description": "Create a new recording.",
+                    "parameters": [
+                        {
+                            "name": "buildId",
+                            "description": "Build ID of the software which produced the recording.",
+                            "$ref": "Recording.BuildID"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "recordingId",
+                            "description": "Identifier for the recording.",
+                            "$ref": "Recording.RecordingID"
+                        }
+                    ]
+                },
+                {
+                    "name": "addData",
+                    "description": "Add data to a recording. The next message sent after this must be a binary\nmessage with the data described by this message. Uploaded recordings are not\nexplicitly finished; replay sessions created for a recording will include\nall data which was successfully uploaded.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "ID of the recording data is being added to.",
+                            "$ref": "Recording.RecordingID"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "Offset into the recording's blob of the data being sent.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "length",
+                            "description": "Byte length of the data being sent.",
+                            "type": "integer"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
