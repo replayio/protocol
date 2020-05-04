@@ -2,8 +2,7 @@ version
   major 0
   minor 1
 
-# The Recording domain defines methods for managing recordings. Recordings are
-# blobs of binary data which grow over time.
+# The Recording domain defines methods for managing recordings.
 domain Recording
 
   # Globally unique identifier for a recording.
@@ -15,6 +14,58 @@ domain Recording
   # A time which can be used in reference to a recording. This is the elapsed
   # time in seconds since the recording started.
   type TimeStamp extends number
+
+  # Get any available description for a recording, or an error if there is no
+  # description set.
+  command getRecordingDescription
+    parameters
+      # Recording to get the description for.
+      RecordingID recordingId
+    returns
+      # Duration of the recording.
+      TimeStamp duration
+      # Painted graphics at the end of the recording.
+      optional Graphics.ScreenShot lastScreen
+
+  # Create a session for inspecting a recording.
+  command createSession
+    parameters
+      # Recording to load into the session.
+      RecordingID recordingId
+    returns
+      # Identifier for the new session.
+      Session.SessionID sessionId
+
+  # Release a session and allow its resources to be reclaimed.
+  command releaseSession
+    parameters
+      # Session to release.
+      Session.SessionID sessionId
+
+# The Session domain defines methods for using recording sessions. In order to
+# inspect a recording, it must first be loaded into a session via
+# <code>Recording.createSession</code>.
+domain Session
+
+  # Unique identifier for a session which a recording has been loaded into.
+  type SessionID extends string
+
+# The Graphics domain defines methods for accessing a recording's graphics data.
+domain Graphics
+
+  # Graphics encoding format.
+  type MimeType extends String
+    enum
+      image/jpeg
+      image/png
+
+  # Screen shot of the graphics rendered at some point.
+  type ScreenShot extends object
+    properties
+      # Encoding used for the graphics data.
+      MimeType mimeType
+      # Raw graphics data encoded in base64.
+      string data
 
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other
@@ -65,3 +116,5 @@ domain Internal
       integer length
       # Duration of the entire recording.
       Recording.TimeStamp duration
+      # Painted graphics at the end of the recording.
+      optional Graphics.ScreenShot lastScreen

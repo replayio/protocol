@@ -6,7 +6,7 @@
     "domains": [
         {
             "domain": "Recording",
-            "description": "The Recording domain defines methods for managing recordings. Recordings are\nblobs of binary data which grow over time.",
+            "description": "The Recording domain defines methods for managing recordings.",
             "types": [
                 {
                     "id": "RecordingID",
@@ -22,6 +22,104 @@
                     "id": "TimeStamp",
                     "description": "A time which can be used in reference to a recording. This is the elapsed\ntime in seconds since the recording started.",
                     "type": "number"
+                }
+            ],
+            "commands": [
+                {
+                    "name": "getRecordingDescription",
+                    "description": "Get any available description for a recording, or an error if there is no\ndescription set.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "Recording to get the description for.",
+                            "$ref": "RecordingID"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "duration",
+                            "description": "Duration of the recording.",
+                            "$ref": "TimeStamp"
+                        },
+                        {
+                            "name": "lastScreen",
+                            "description": "Painted graphics at the end of the recording.",
+                            "optional": true,
+                            "$ref": "Graphics.ScreenShot"
+                        }
+                    ]
+                },
+                {
+                    "name": "createSession",
+                    "description": "Create a session for inspecting a recording.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "Recording to load into the session.",
+                            "$ref": "RecordingID"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "sessionId",
+                            "description": "Identifier for the new session.",
+                            "$ref": "Session.SessionID"
+                        }
+                    ]
+                },
+                {
+                    "name": "releaseSession",
+                    "description": "Release a session and allow its resources to be reclaimed.",
+                    "parameters": [
+                        {
+                            "name": "sessionId",
+                            "description": "Session to release.",
+                            "$ref": "Session.SessionID"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "domain": "Session",
+            "description": "The Session domain defines methods for using recording sessions. In order to\ninspect a recording, it must first be loaded into a session via\n<code>Recording.createSession</code>.",
+            "types": [
+                {
+                    "id": "SessionID",
+                    "description": "Unique identifier for a session which a recording has been loaded into.",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "domain": "Graphics",
+            "description": "The Graphics domain defines methods for accessing a recording's graphics data.",
+            "types": [
+                {
+                    "id": "MimeType",
+                    "description": "Graphics encoding format.",
+                    "$ref": "String",
+                    "enum": [
+                        "image/jpeg",
+                        "image/png"
+                    ]
+                },
+                {
+                    "id": "ScreenShot",
+                    "description": "Screen shot of the graphics rendered at some point.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "mimeType",
+                            "description": "Encoding used for the graphics data.",
+                            "$ref": "MimeType"
+                        },
+                        {
+                            "name": "data",
+                            "description": "Raw graphics data encoded in base64.",
+                            "type": "string"
+                        }
+                    ]
                 }
             ]
         },
@@ -102,6 +200,12 @@
                             "name": "duration",
                             "description": "Duration of the entire recording.",
                             "$ref": "Recording.TimeStamp"
+                        },
+                        {
+                            "name": "lastScreen",
+                            "description": "Painted graphics at the end of the recording.",
+                            "optional": true,
+                            "$ref": "Graphics.ScreenShot"
                         }
                     ]
                 }
