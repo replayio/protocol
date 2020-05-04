@@ -17,11 +17,36 @@
                     "id": "BuildID",
                     "description": "Unique identifier for the software used to produce a recording.",
                     "type": "string"
+                },
+                {
+                    "id": "TimeStamp",
+                    "description": "A time which can be used in reference to a recording. This is the elapsed\ntime in seconds since the recording started.",
+                    "type": "number"
                 }
-            ],
+            ]
+        },
+        {
+            "domain": "Internal",
+            "description": "The Internal domain is for use by Web Replay's own tools and other software.\nWhile use of this domain is not restricted, it won't be very helpful for other\nusers.",
             "commands": [
                 {
-                    "name": "create",
+                    "name": "log",
+                    "description": "Add text to the server side log for this connection.",
+                    "parameters": [
+                        {
+                            "name": "text",
+                            "description": "Text to log. This must not contain identifying information about the\nuser or website being visited.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "time",
+                            "description": "Timestamp from Date.now() to associate with this logged text.",
+                            "type": "integer"
+                        }
+                    ]
+                },
+                {
+                    "name": "createRecording",
                     "description": "Create a new recording.",
                     "parameters": [
                         {
@@ -39,23 +64,44 @@
                     ]
                 },
                 {
-                    "name": "addData",
+                    "name": "addRecordingData",
                     "description": "Add data to a recording. The next message sent after this must be a binary\nmessage with the data described by this message. Uploaded recordings are not\nexplicitly finished; replay sessions created for a recording will include\nall data which was successfully uploaded.",
                     "parameters": [
                         {
                             "name": "recordingId",
-                            "description": "ID of the recording data is being added to.",
+                            "description": "ID of the recording data is being added to. This recording must have\nbeen produced by a createRecording command previously sent on this\nconnection.",
                             "$ref": "Recording.RecordingID"
                         },
                         {
                             "name": "offset",
-                            "description": "Offset into the recording's blob of the data being sent.",
+                            "description": "Byte offset into the recording's blob of the data being sent.",
                             "type": "integer"
                         },
                         {
                             "name": "length",
                             "description": "Byte length of the data being sent.",
                             "type": "integer"
+                        }
+                    ]
+                },
+                {
+                    "name": "addRecordingDescription",
+                    "description": "Add metadata about a recording. This information is advisory and does not\nneed to be correct, but can be fetched and used when loading recordings for\nreplay (especially recordings that haven't finished uploading).",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "ID of the recording being described.",
+                            "$ref": "Recording.RecordingID"
+                        },
+                        {
+                            "name": "length",
+                            "description": "Total byte length of the recording.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "duration",
+                            "description": "Duration of the entire recording.",
+                            "$ref": "Recording.TimeStamp"
                         }
                     ]
                 }

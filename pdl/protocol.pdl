@@ -12,8 +12,26 @@ domain Recording
   # Unique identifier for the software used to produce a recording.
   type BuildID extends string
 
+  # A time which can be used in reference to a recording. This is the elapsed
+  # time in seconds since the recording started.
+  type TimeStamp extends number
+
+# The Internal domain is for use by Web Replay's own tools and other software.
+# While use of this domain is not restricted, it won't be very helpful for other
+# users.
+domain Internal
+
+  # Add text to the server side log for this connection.
+  command log
+    parameters
+      # Text to log. This must not contain identifying information about the
+      # user or website being visited.
+      string text
+      # Timestamp from Date.now() to associate with this logged text.
+      integer time
+
   # Create a new recording.
-  command create
+  command createRecording
     parameters
       # Build ID of the software which produced the recording.
       Recording.BuildID buildId
@@ -25,11 +43,25 @@ domain Recording
   # message with the data described by this message. Uploaded recordings are not
   # explicitly finished; replay sessions created for a recording will include
   # all data which was successfully uploaded.
-  command addData
+  command addRecordingData
     parameters
-      # ID of the recording data is being added to.
+      # ID of the recording data is being added to. This recording must have
+      # been produced by a createRecording command previously sent on this
+      # connection.
       Recording.RecordingID recordingId
-      # Offset into the recording's blob of the data being sent.
+      # Byte offset into the recording's blob of the data being sent.
       integer offset
       # Byte length of the data being sent.
       integer length
+
+  # Add metadata about a recording. This information is advisory and does not
+  # need to be correct, but can be fetched and used when loading recordings for
+  # replay (especially recordings that haven't finished uploading).
+  command addRecordingDescription
+    parameters
+      # ID of the recording being described.
+      Recording.RecordingID recordingId
+      # Total byte length of the recording.
+      integer length
+      # Duration of the entire recording.
+      Recording.TimeStamp duration
