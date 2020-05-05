@@ -11,13 +11,48 @@ domain Recording
   # Unique identifier for the software used to produce a recording.
   type BuildID extends string
 
-  # A time which can be used in reference to a recording. This is the elapsed
-  # time in seconds since the recording started.
-  type TimeStamp extends number
+  # A point in time within a recording, specified as the elapsed time in
+  # milliseconds since the recording started.
+  type TimeStamp extends integer
 
-  # Get any available description for a recording, or an error if there is no
-  # description set.
-  command getRecordingDescription
+  # Description for a range of time within a recording.
+  type TimeRange extends object
+    properties
+      TimeStamp begin
+      TimeStamp end
+
+  # Identifier for a point within a recording at which the program state can be
+  # inspected. Execution points are integers encoded as base-10 numeric strings,
+  # such that smaller numbered points precede larger numbered ones. They can be
+  # compared by e.g. converting to BigInts and then comparing those BigInts.
+  type ExecutionPoint extends string
+
+  # An execution point and its associated time stamp.
+  type TimeStampedPoint extends object
+    properties
+      ExecutionPoint point
+      TimeStamp time
+
+  # A mouse event that occurs somewhere in a recording.
+  type MouseEvent extends object
+    properties
+      # Point at which the event occurs.
+      TimeStampedPoint point
+      # Kind of mouse event
+      MouseEventKind kind
+      # X coordinate of the event, relative to the upper left of the page's main window.
+      integer clientX
+      # Y coordinate of the event, relative to the upper left of the page's main window.
+      integer clientY
+
+  # Kinds of mouse events described in a recording.
+  type MouseEventKind extends string
+    enum
+      mousemove
+      mousedown
+
+  # Get a description of a recording.
+  command getDescription
     parameters
       # Recording to get the description for.
       RecordingID recordingId
@@ -45,16 +80,62 @@ domain Recording
 # The Session domain defines methods for using recording sessions. In order to
 # inspect a recording, it must first be loaded into a session via
 # <code>Recording.createSession</code>.
+#
+# After the session is created, it is an unprocessed state. Commands sent using
+# the session to query information about the recording will only find
+# information about parts of the recording that have been processed. Processing
+# starts automatically after the session is created.<br><br>
+#
+# All commands and events in this domain must include a <code>sessionId</code>.
 domain Session
 
   # Unique identifier for a session which a recording has been loaded into.
   type SessionID extends string
 
+  # Does not return until the recording is fully processed. Before returning,
+  # <code>missingRegions</code> and <code>unprocessedRegions</code> events will
+  # be periodically emitted.
+  command ensureProcessed
+
+  # Event describing regions of the recording that have not been uploaded.
+  event missingRegions
+    parameters
+      # Regions that have not been uploaded.
+      array of Recording.TimeRange regions
+
+  # Event describing regions of the recording that have not been processed.
+  event unprocessedRegions
+    parameters
+      # Any missing regions are also unprocessed regions.
+      array of Recording.TimeRange regions
+
+  # Find all points in the recording at which paints occurred. Does not return
+  # until the recording is fully processed. Before returning,
+  # <code>paintPoints</code> events will be periodically emitted. The union
+  # of all these events describes all paint points in the recording.
+  command findPaints
+
+  # Describes some points in the recording at which paints occurred.
+  event paintPoints
+    parameters
+      array of Recording.TimeStampedPoint paints
+
+  # Find all points in the recording at which a mouse move or click occurred.
+  # Does not return until the recording is fully processed. Before returning,
+  # <code>mouseEvents</code> events will be periodically emitted. The union
+  # of all these events describes all mouse events in the recording.
+  command findMouseEvents
+
+  # Describes some mouse events that occur in the recording.
+  event mouseEvents
+    parameters
+      array of Recording.MouseEvent events
+
 # The Graphics domain defines methods for accessing a recording's graphics data.
 domain Graphics
 
   # Graphics encoding format.
-  type MimeType extends String
+  type MimeType extends string
     enum
       image/jpeg
       image/png
@@ -105,9 +186,7 @@ domain Internal
       # Byte length of the data being sent.
       integer length
 
-  # Add metadata about a recording. This information is advisory and does not
-  # need to be correct, but can be fetched and used when loading recordings for
-  # replay (especially recordings that haven't finished uploading).
+  # Add metadata about a recording.
   command addRecordingDescription
     parameters
       # ID of the recording being described.

@@ -20,14 +20,85 @@
                 },
                 {
                     "id": "TimeStamp",
-                    "description": "A time which can be used in reference to a recording. This is the elapsed\ntime in seconds since the recording started.",
-                    "type": "number"
+                    "description": "A point in time within a recording, specified as the elapsed time in\nmilliseconds since the recording started.",
+                    "type": "integer"
+                },
+                {
+                    "id": "TimeRange",
+                    "description": "Description for a range of time within a recording.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "begin",
+                            "$ref": "TimeStamp"
+                        },
+                        {
+                            "name": "end",
+                            "$ref": "TimeStamp"
+                        }
+                    ]
+                },
+                {
+                    "id": "ExecutionPoint",
+                    "description": "Identifier for a point within a recording at which the program state can be\ninspected. Execution points are integers encoded as base-10 numeric strings,\nsuch that smaller numbered points precede larger numbered ones. They can be\ncompared by e.g. converting to BigInts and then comparing those BigInts.",
+                    "type": "string"
+                },
+                {
+                    "id": "TimeStampedPoint",
+                    "description": "An execution point and its associated time stamp.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "point",
+                            "$ref": "ExecutionPoint"
+                        },
+                        {
+                            "name": "time",
+                            "$ref": "TimeStamp"
+                        }
+                    ]
+                },
+                {
+                    "id": "MouseEvent",
+                    "description": "A mouse event that occurs somewhere in a recording.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "point",
+                            "description": "Point at which the event occurs.",
+                            "$ref": "TimeStampedPoint"
+                        },
+                        {
+                            "name": "kind",
+                            "description": "Kind of mouse event",
+                            "$ref": "MouseEventKind"
+                        },
+                        {
+                            "name": "clientX",
+                            "description": "X coordinate of the event, relative to the upper left of the page's main window.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "clientY",
+                            "description": "Y coordinate of the event, relative to the upper left of the page's main window.",
+                            "type": "integer"
+                        }
+                    ]
+                },
+                {
+                    "id": "MouseEventKind",
+                    "description": "Kinds of mouse events described in a recording.",
+                    "type": "string",
+                    "enum": [
+                        "mousemove",
+                        "mousedown"
+                    ]
                 }
             ],
             "commands": [
                 {
-                    "name": "getRecordingDescription",
-                    "description": "Get any available description for a recording, or an error if there is no\ndescription set.",
+                    "name": "getDescription",
+                    "description": "Get a description of a recording.",
                     "parameters": [
                         {
                             "name": "recordingId",
@@ -82,12 +153,82 @@
         },
         {
             "domain": "Session",
-            "description": "The Session domain defines methods for using recording sessions. In order to\ninspect a recording, it must first be loaded into a session via\n<code>Recording.createSession</code>.",
+            "description": "The Session domain defines methods for using recording sessions. In order to\ninspect a recording, it must first be loaded into a session via\n<code>Recording.createSession</code>.\n\nAfter the session is created, it is an unprocessed state. Commands sent using\nthe session to query information about the recording will only find\ninformation about parts of the recording that have been processed. Processing\nstarts automatically after the session is created.<br><br>\n\nAll commands and events in this domain must include a <code>sessionId</code>.",
             "types": [
                 {
                     "id": "SessionID",
                     "description": "Unique identifier for a session which a recording has been loaded into.",
                     "type": "string"
+                }
+            ],
+            "commands": [
+                {
+                    "name": "ensureProcessed",
+                    "description": "Does not return until the recording is fully processed. Before returning,\n<code>missingRegions</code> and <code>unprocessedRegions</code> events will\nbe periodically emitted."
+                },
+                {
+                    "name": "findPaints",
+                    "description": "Find all points in the recording at which paints occurred. Does not return\nuntil the recording is fully processed. Before returning,\n<code>paintPoints</code> events will be periodically emitted. The union\nof all these events describes all paint points in the recording."
+                },
+                {
+                    "name": "findMouseEvents",
+                    "description": "Find all points in the recording at which a mouse move or click occurred.\nDoes not return until the recording is fully processed. Before returning,\n<code>mouseEvents</code> events will be periodically emitted. The union\nof all these events describes all mouse events in the recording."
+                }
+            ],
+            "events": [
+                {
+                    "name": "missingRegions",
+                    "description": "Event describing regions of the recording that have not been uploaded.",
+                    "parameters": [
+                        {
+                            "name": "regions",
+                            "description": "Regions that have not been uploaded.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Recording.TimeRange"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "unprocessedRegions",
+                    "description": "Event describing regions of the recording that have not been processed.",
+                    "parameters": [
+                        {
+                            "name": "regions",
+                            "description": "Any missing regions are also unprocessed regions.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Recording.TimeRange"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "paintPoints",
+                    "description": "Describes some points in the recording at which paints occurred.",
+                    "parameters": [
+                        {
+                            "name": "paints",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Recording.TimeStampedPoint"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "mouseEvents",
+                    "description": "Describes some mouse events that occur in the recording.",
+                    "parameters": [
+                        {
+                            "name": "events",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Recording.MouseEvent"
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -98,7 +239,7 @@
                 {
                     "id": "MimeType",
                     "description": "Graphics encoding format.",
-                    "$ref": "String",
+                    "type": "string",
                     "enum": [
                         "image/jpeg",
                         "image/png"
@@ -184,7 +325,7 @@
                 },
                 {
                     "name": "addRecordingDescription",
-                    "description": "Add metadata about a recording. This information is advisory and does not\nneed to be correct, but can be fetched and used when loading recordings for\nreplay (especially recordings that haven't finished uploading).",
+                    "description": "Add metadata about a recording.",
                     "parameters": [
                         {
                             "name": "recordingId",
