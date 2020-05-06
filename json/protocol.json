@@ -61,16 +61,11 @@
                 {
                     "id": "MouseEvent",
                     "description": "A mouse event that occurs somewhere in a recording.",
-                    "type": "object",
+                    "$ref": "TimeStampedPoint",
                     "properties": [
                         {
-                            "name": "point",
-                            "description": "Point at which the event occurs.",
-                            "$ref": "TimeStampedPoint"
-                        },
-                        {
                             "name": "kind",
-                            "description": "Kind of mouse event",
+                            "description": "Kind of mouse event.",
                             "$ref": "MouseEventKind"
                         },
                         {

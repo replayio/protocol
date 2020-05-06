@@ -34,11 +34,9 @@ domain Recording
       TimeStamp time
 
   # A mouse event that occurs somewhere in a recording.
-  type MouseEvent extends object
+  type MouseEvent extends TimeStampedPoint
     properties
-      # Point at which the event occurs.
-      TimeStampedPoint point
-      # Kind of mouse event
+      # Kind of mouse event.
       MouseEventKind kind
       # X coordinate of the event, relative to the upper left of the page's main window.
       integer clientX
