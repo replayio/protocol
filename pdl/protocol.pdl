@@ -82,9 +82,9 @@ domain Recording
 # After the session is created, it is an unprocessed state. Commands sent using
 # the session to query information about the recording will only find
 # information about parts of the recording that have been processed. Processing
-# starts automatically after the session is created.<br><br>
+# starts automatically after the session is created.
 #
-# All commands and events in this domain must include a <code>sessionId</code>.
+# <br><br>All commands and events in this domain must include a <code>sessionId</code>.
 domain Session
 
   # Unique identifier for a session which a recording has been loaded into.
@@ -107,17 +107,6 @@ domain Session
       # Any missing regions are also unprocessed regions.
       array of Recording.TimeRange regions
 
-  # Find all points in the recording at which paints occurred. Does not return
-  # until the recording is fully processed. Before returning,
-  # <code>paintPoints</code> events will be periodically emitted. The union
-  # of all these events describes all paint points in the recording.
-  command findPaints
-
-  # Describes some points in the recording at which paints occurred.
-  event paintPoints
-    parameters
-      array of Recording.TimeStampedPoint paints
-
   # Find all points in the recording at which a mouse move or click occurred.
   # Does not return until the recording is fully processed. Before returning,
   # <code>mouseEvents</code> events will be periodically emitted. The union
@@ -130,7 +119,20 @@ domain Session
       array of Recording.MouseEvent events
 
 # The Graphics domain defines methods for accessing a recording's graphics data.
+#
+# <br><br>All commands and events in this domain must include a <code>sessionId</code>.
 domain Graphics
+
+  # Find all points in the recording at which paints occurred. Does not return
+  # until the recording is fully processed. Before returning,
+  # <code>paintPoints</code> events will be periodically emitted. The union
+  # of all these events describes all paint points in the recording.
+  command findPaints
+
+  # Describes some points in the recording at which paints occurred.
+  event paintPoints
+    parameters
+      array of Recording.TimeStampedPoint paints
 
   # Graphics encoding format.
   type MimeType extends string

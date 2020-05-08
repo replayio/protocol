@@ -162,10 +162,6 @@
                     "description": "Does not return until the recording is fully processed. Before returning,\n<code>missingRegions</code> and <code>unprocessedRegions</code> events will\nbe periodically emitted."
                 },
                 {
-                    "name": "findPaints",
-                    "description": "Find all points in the recording at which paints occurred. Does not return\nuntil the recording is fully processed. Before returning,\n<code>paintPoints</code> events will be periodically emitted. The union\nof all these events describes all paint points in the recording."
-                },
-                {
                     "name": "findMouseEvents",
                     "description": "Find all points in the recording at which a mouse move or click occurred.\nDoes not return until the recording is fully processed. Before returning,\n<code>mouseEvents</code> events will be periodically emitted. The union\nof all these events describes all mouse events in the recording."
                 }
@@ -200,19 +196,6 @@
                     ]
                 },
                 {
-                    "name": "paintPoints",
-                    "description": "Describes some points in the recording at which paints occurred.",
-                    "parameters": [
-                        {
-                            "name": "paints",
-                            "type": "array",
-                            "items": {
-                                "$ref": "Recording.TimeStampedPoint"
-                            }
-                        }
-                    ]
-                },
-                {
                     "name": "mouseEvents",
                     "description": "Describes some mouse events that occur in the recording.",
                     "parameters": [
@@ -230,6 +213,27 @@
         {
             "domain": "Graphics",
             "description": "The Graphics domain defines methods for accessing a recording's graphics data.",
+            "commands": [
+                {
+                    "name": "findPaints",
+                    "description": "Find all points in the recording at which paints occurred. Does not return\nuntil the recording is fully processed. Before returning,\n<code>paintPoints</code> events will be periodically emitted. The union\nof all these events describes all paint points in the recording."
+                }
+            ],
+            "events": [
+                {
+                    "name": "paintPoints",
+                    "description": "Describes some points in the recording at which paints occurred.",
+                    "parameters": [
+                        {
+                            "name": "paints",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Recording.TimeStampedPoint"
+                            }
+                        }
+                    ]
+                }
+            ],
             "types": [
                 {
                     "id": "MimeType",
