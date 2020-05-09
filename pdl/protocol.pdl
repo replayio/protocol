@@ -12,8 +12,9 @@ domain Recording
   type BuildID extends string
 
   # A point in time within a recording, specified as the elapsed time in
-  # milliseconds since the recording started.
-  type TimeStamp extends integer
+  # milliseconds since the recording started. Sub-millisecond resolution
+  # is possible.
+  type TimeStamp extends number
 
   # Description for a range of time within a recording.
   type TimeRange extends object
@@ -27,7 +28,8 @@ domain Recording
   # compared by e.g. converting to BigInts and then comparing those BigInts.
   type ExecutionPoint extends string
 
-  # An execution point and its associated time stamp.
+  # An execution point and its associated time stamp. Recordings always have a
+  # beginning execution point with value "0" and a time stamp of zero.
   type TimeStampedPoint extends object
     properties
       ExecutionPoint point
@@ -129,10 +131,24 @@ domain Graphics
   # of all these events describes all paint points in the recording.
   command findPaints
 
-  # Describes some points in the recording at which paints occurred.
+  # Describes some points in the recording at which paints occurred. No paint
+  # will occur for the recording's beginning execution point.
   event paintPoints
     parameters
       array of Recording.TimeStampedPoint paints
+
+  # Get the graphics at a point where a paint occurred.
+  command getPaintContents
+    parameters
+      # Execution point to get the graphics for. This must have been listed in
+      # a paintPoints event.
+      Recording.ExecutionPoint point
+      # Desired encoding format for the returned screen.
+      MimeType mimeType
+    returns
+      # Screen shot of the rendered graphics. The encoding of this screen shot
+      # is not required to match the <code>mimeType</code> parameter.
+      ScreenShot screen
 
   # Graphics encoding format.
   type MimeType extends string
@@ -140,13 +156,20 @@ domain Graphics
       image/jpeg
       image/png
 
+  # Compact hash code for a screen shot.
+  type ScreenShotHash extends string
+
   # Screen shot of the graphics rendered at some point.
   type ScreenShot extends object
     properties
       # Encoding used for the graphics data.
       MimeType mimeType
-      # Raw graphics data encoded in base64.
-      string data
+      # Hash code for the graphics data.
+      ScreenShotHash hash
+      # Raw graphics data encoded in base64. This is omitted if another screen
+      # shot with the same hash was returned in an earlier message on the
+      # connection.
+      optional string data
 
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other

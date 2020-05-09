@@ -20,8 +20,8 @@
                 },
                 {
                     "id": "TimeStamp",
-                    "description": "A point in time within a recording, specified as the elapsed time in\nmilliseconds since the recording started.",
-                    "type": "integer"
+                    "description": "A point in time within a recording, specified as the elapsed time in\nmilliseconds since the recording started. Sub-millisecond resolution\nis possible.",
+                    "type": "number"
                 },
                 {
                     "id": "TimeRange",
@@ -45,7 +45,7 @@
                 },
                 {
                     "id": "TimeStampedPoint",
-                    "description": "An execution point and its associated time stamp.",
+                    "description": "An execution point and its associated time stamp. Recordings always have a\nbeginning execution point with value \"0\" and a time stamp of zero.",
                     "type": "object",
                     "properties": [
                         {
@@ -148,7 +148,7 @@
         },
         {
             "domain": "Session",
-            "description": "The Session domain defines methods for using recording sessions. In order to\ninspect a recording, it must first be loaded into a session via\n<code>Recording.createSession</code>.\n\nAfter the session is created, it is an unprocessed state. Commands sent using\nthe session to query information about the recording will only find\ninformation about parts of the recording that have been processed. Processing\nstarts automatically after the session is created.<br><br>\n\nAll commands and events in this domain must include a <code>sessionId</code>.",
+            "description": "The Session domain defines methods for using recording sessions. In order to\ninspect a recording, it must first be loaded into a session via\n<code>Recording.createSession</code>.\n\nAfter the session is created, it is an unprocessed state. Commands sent using\nthe session to query information about the recording will only find\ninformation about parts of the recording that have been processed. Processing\nstarts automatically after the session is created.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
             "types": [
                 {
                     "id": "SessionID",
@@ -212,17 +212,40 @@
         },
         {
             "domain": "Graphics",
-            "description": "The Graphics domain defines methods for accessing a recording's graphics data.",
+            "description": "The Graphics domain defines methods for accessing a recording's graphics data.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
             "commands": [
                 {
                     "name": "findPaints",
                     "description": "Find all points in the recording at which paints occurred. Does not return\nuntil the recording is fully processed. Before returning,\n<code>paintPoints</code> events will be periodically emitted. The union\nof all these events describes all paint points in the recording."
+                },
+                {
+                    "name": "getPaintContents",
+                    "description": "Get the graphics at a point where a paint occurred.",
+                    "parameters": [
+                        {
+                            "name": "point",
+                            "description": "Execution point to get the graphics for. This must have been listed in\na paintPoints event.",
+                            "$ref": "Recording.ExecutionPoint"
+                        },
+                        {
+                            "name": "mimeType",
+                            "description": "Desired encoding format for the returned screen.",
+                            "$ref": "MimeType"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "screen",
+                            "description": "Screen shot of the rendered graphics. The encoding of this screen shot\nis not required to match the <code>mimeType</code> parameter.",
+                            "$ref": "ScreenShot"
+                        }
+                    ]
                 }
             ],
             "events": [
                 {
                     "name": "paintPoints",
-                    "description": "Describes some points in the recording at which paints occurred.",
+                    "description": "Describes some points in the recording at which paints occurred. No paint\nwill occur for the recording's beginning execution point.",
                     "parameters": [
                         {
                             "name": "paints",
@@ -245,6 +268,11 @@
                     ]
                 },
                 {
+                    "id": "ScreenShotHash",
+                    "description": "Compact hash code for a screen shot.",
+                    "type": "string"
+                },
+                {
                     "id": "ScreenShot",
                     "description": "Screen shot of the graphics rendered at some point.",
                     "type": "object",
@@ -255,8 +283,14 @@
                             "$ref": "MimeType"
                         },
                         {
+                            "name": "hash",
+                            "description": "Hash code for the graphics data.",
+                            "$ref": "ScreenShotHash"
+                        },
+                        {
                             "name": "data",
-                            "description": "Raw graphics data encoded in base64.",
+                            "description": "Raw graphics data encoded in base64. This is omitted if another screen\nshot with the same hash was returned in an earlier message on the\nconnection.",
+                            "optional": true,
                             "type": "string"
                         }
                     ]
