@@ -376,10 +376,16 @@
                             "$ref": "Recording.TimeStamp"
                         },
                         {
-                            "name": "lastScreen",
-                            "description": "Painted graphics at the end of the recording.",
+                            "name": "lastScreenMimeType",
+                            "description": "Mime type for graphics data at the end of the recording.",
                             "optional": true,
-                            "$ref": "Graphics.ScreenShot"
+                            "$ref": "Graphics.MimeType"
+                        },
+                        {
+                            "name": "lastScreenData",
+                            "description": "Raw graphics data for the end of the recording.",
+                            "optional": true,
+                            "type": "string"
                         }
                     ]
                 }

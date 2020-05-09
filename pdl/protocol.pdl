@@ -218,5 +218,7 @@ domain Internal
       integer length
       # Duration of the entire recording.
       Recording.TimeStamp duration
-      # Painted graphics at the end of the recording.
-      optional Graphics.ScreenShot lastScreen
+      # Mime type for graphics data at the end of the recording.
+      optional Graphics.MimeType lastScreenMimeType
+      # Raw graphics data for the end of the recording.
+      optional string lastScreenData
