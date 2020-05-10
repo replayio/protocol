@@ -202,6 +202,25 @@ domain Debugger
   # Unique ID for a script.
   type ScriptId extends string
 
+  # Get the source contents of a script.
+  command getScriptSource
+    parameters
+      # Script to fetch the source for.
+      ScriptId scriptId
+    returns
+      # Source contents of the script.
+      string scriptSource
+      # Content type of the source contents. For scripts originating from inline
+      # <code>script</code> tags this will be <code>text/html</code>, and the
+      # source includes the associated HTML file's entire contents. For other
+      # scripts this is <code>text/javascript</code>.
+      ContentType contentType
+
+  # Possible content types for script sources.
+  type ContentType extends string
+      text/javascript
+      text/html
+
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other
 # users.

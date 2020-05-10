@@ -264,7 +264,9 @@
                     "type": "string",
                     "enum": [
                         "image/jpeg",
-                        "image/png"
+                        "image/png",
+                        "text/javascript",
+                        "text/html"
                     ]
                 },
                 {
@@ -325,6 +327,29 @@
                 {
                     "name": "findScripts",
                     "description": "Find all scripts in the recording. Does not return until the recording is\nfully processed. Before returning, <code>scriptParsed</code> events will be\nemitted for every script in the recording."
+                },
+                {
+                    "name": "getScriptSource",
+                    "description": "Get the source contents of a script.",
+                    "parameters": [
+                        {
+                            "name": "scriptId",
+                            "description": "Script to fetch the source for.",
+                            "$ref": "ScriptId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "scriptSource",
+                            "description": "Source contents of the script.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "contentType",
+                            "description": "Content type of the source contents. For scripts originating from inline\n<code>script</code> tags this will be <code>text/html</code>, and the\nsource includes the associated HTML file's entire contents. For other\nscripts this is <code>text/javascript</code>.",
+                            "$ref": "ContentType"
+                        }
+                    ]
                 }
             ],
             "events": [
@@ -356,6 +381,11 @@
                 {
                     "id": "ScriptId",
                     "description": "Unique ID for a script.",
+                    "type": "string"
+                },
+                {
+                    "id": "ContentType",
+                    "description": "Possible content types for script sources.",
                     "type": "string"
                 }
             ]
