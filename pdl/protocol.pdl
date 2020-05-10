@@ -135,7 +135,7 @@ domain Graphics
   # will occur for the recording's beginning execution point.
   event paintPoints
     parameters
-      array of Recording.TimeStampedPoint paints
+      array of PaintPoint paints
 
   # Get the graphics at a point where a paint occurred.
   command getPaintContents
@@ -143,11 +143,10 @@ domain Graphics
       # Execution point to get the graphics for. This must have been listed in
       # a paintPoints event.
       Recording.ExecutionPoint point
-      # Desired encoding format for the returned screen.
+      # Encoding format for the returned screen.
       MimeType mimeType
     returns
-      # Screen shot of the rendered graphics. The encoding of this screen shot
-      # is not required to match the <code>mimeType</code> parameter.
+      # Screen shot of the rendered graphics.
       ScreenShot screen
 
   # Graphics encoding format.
@@ -159,17 +158,25 @@ domain Graphics
   # Compact hash code for a screen shot.
   type ScreenShotHash extends string
 
-  # Screen shot of the graphics rendered at some point.
-  type ScreenShot extends object
+  # Compact description of the graphics rendered at some point.
+  type ScreenShotDescription extends object
     properties
-      # Encoding used for the graphics data.
+      # Encoding used for the screen shot.
       MimeType mimeType
-      # Hash code for the graphics data.
+      # Hash code for the screen shot's graphics data.
       ScreenShotHash hash
-      # Raw graphics data encoded in base64. This is omitted if another screen
-      # shot with the same hash was returned in an earlier message on the
-      # connection.
-      optional string data
+
+  # Complete contents of the graphics rendered at some point.
+  type ScreenShot extends ScreenShotDescription
+    properties
+      # Raw graphics data encoded in base64.
+      string data
+
+  # Information about a point where a paint occurred.
+  type PaintPoint extends Recording.TimeStampedPoint
+    properties
+      # Available screen shots for the graphics rendered at this point.
+      array of ScreenShotDescription screenShots
 
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other

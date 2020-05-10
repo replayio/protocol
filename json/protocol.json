@@ -229,14 +229,14 @@
                         },
                         {
                             "name": "mimeType",
-                            "description": "Desired encoding format for the returned screen.",
+                            "description": "Encoding format for the returned screen.",
                             "$ref": "MimeType"
                         }
                     ],
                     "returns": [
                         {
                             "name": "screen",
-                            "description": "Screen shot of the rendered graphics. The encoding of this screen shot\nis not required to match the <code>mimeType</code> parameter.",
+                            "description": "Screen shot of the rendered graphics.",
                             "$ref": "ScreenShot"
                         }
                     ]
@@ -251,7 +251,7 @@
                             "name": "paints",
                             "type": "array",
                             "items": {
-                                "$ref": "Recording.TimeStampedPoint"
+                                "$ref": "PaintPoint"
                             }
                         }
                     ]
@@ -273,25 +273,46 @@
                     "type": "string"
                 },
                 {
-                    "id": "ScreenShot",
-                    "description": "Screen shot of the graphics rendered at some point.",
+                    "id": "ScreenShotDescription",
+                    "description": "Compact description of the graphics rendered at some point.",
                     "type": "object",
                     "properties": [
                         {
                             "name": "mimeType",
-                            "description": "Encoding used for the graphics data.",
+                            "description": "Encoding used for the screen shot.",
                             "$ref": "MimeType"
                         },
                         {
                             "name": "hash",
-                            "description": "Hash code for the graphics data.",
+                            "description": "Hash code for the screen shot's graphics data.",
                             "$ref": "ScreenShotHash"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "id": "ScreenShot",
+                    "description": "Complete contents of the graphics rendered at some point.",
+                    "$ref": "ScreenShotDescription",
+                    "properties": [
                         {
                             "name": "data",
-                            "description": "Raw graphics data encoded in base64. This is omitted if another screen\nshot with the same hash was returned in an earlier message on the\nconnection.",
-                            "optional": true,
+                            "description": "Raw graphics data encoded in base64.",
                             "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "id": "PaintPoint",
+                    "description": "Information about a point where a paint occurred.",
+                    "$ref": "Recording.TimeStampedPoint",
+                    "properties": [
+                        {
+                            "name": "screenShots",
+                            "description": "Available screen shots for the graphics rendered at this point.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "ScreenShotDescription"
+                            }
                         }
                     ]
                 }
