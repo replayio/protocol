@@ -6,10 +6,10 @@ version
 domain Recording
 
   # Globally unique identifier for a recording.
-  type RecordingID extends string
+  type RecordingId extends string
 
   # Unique identifier for the software used to produce a recording.
-  type BuildID extends string
+  type BuildId extends string
 
   # A point in time within a recording, specified as the elapsed time in
   # milliseconds since the recording started. Sub-millisecond resolution
@@ -55,7 +55,7 @@ domain Recording
   command getDescription
     parameters
       # Recording to get the description for.
-      RecordingID recordingId
+      RecordingId recordingId
     returns
       # Duration of the recording.
       TimeStamp duration
@@ -66,16 +66,16 @@ domain Recording
   command createSession
     parameters
       # Recording to load into the session.
-      RecordingID recordingId
+      RecordingId recordingId
     returns
       # Identifier for the new session.
-      Session.SessionID sessionId
+      Session.SessionId sessionId
 
   # Release a session and allow its resources to be reclaimed.
   command releaseSession
     parameters
       # Session to release.
-      Session.SessionID sessionId
+      Session.SessionId sessionId
 
 # The Session domain defines methods for using recording sessions. In order to
 # inspect a recording, it must first be loaded into a session via
@@ -90,7 +90,7 @@ domain Recording
 domain Session
 
   # Unique identifier for a session which a recording has been loaded into.
-  type SessionID extends string
+  type SessionId extends string
 
   # Does not return until the recording is fully processed. Before returning,
   # <code>missingRegions</code> and <code>unprocessedRegions</code> events will
@@ -178,6 +178,30 @@ domain Graphics
       # Available screen shots for the graphics rendered at this point.
       array of ScreenShotDescription screenShots
 
+# The Debugger domain defines methods for accessing JS scripts and navigating
+# around the recording using breakpoints, stepping, and so forth.
+#
+# <br><br>All commands and events in this domain must include a <code>sessionId</code>.
+domain Debugger
+
+  # Find all scripts in the recording. Does not return until the recording is
+  # fully processed. Before returning, <code>scriptParsed</code> events will be
+  # emitted for every script in the recording.
+  command findScripts
+
+  # Describes a script that was successfully parsed.
+  event scriptParsed
+    parameters
+      # ID for the script.
+      ScriptId scriptId
+      # URL of the script. Omitted for dynamically generated scripts (from eval etc.).
+      optional string url
+      # Any source map URL for the script.
+      optional string sourceMapURL
+
+  # Unique ID for a script.
+  type ScriptId extends string
+
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other
 # users.
@@ -195,11 +219,11 @@ domain Internal
   # Create a new recording.
   command createRecording
     parameters
-      # Build ID of the software which produced the recording.
-      Recording.BuildID buildId
+      # Build Id of the software which produced the recording.
+      Recording.BuildId buildId
     returns
       # Identifier for the recording.
-      Recording.RecordingID recordingId
+      Recording.RecordingId recordingId
 
   # Add data to a recording. The next message sent after this must be a binary
   # message with the data described by this message. Uploaded recordings are not
@@ -210,7 +234,7 @@ domain Internal
       # ID of the recording data is being added to. This recording must have
       # been produced by a createRecording command previously sent on this
       # connection.
-      Recording.RecordingID recordingId
+      Recording.RecordingId recordingId
       # Byte offset into the recording's blob of the data being sent.
       integer offset
       # Byte length of the data being sent.
@@ -220,7 +244,7 @@ domain Internal
   command addRecordingDescription
     parameters
       # ID of the recording being described.
-      Recording.RecordingID recordingId
+      Recording.RecordingId recordingId
       # Total byte length of the recording.
       integer length
       # Duration of the entire recording.

@@ -9,12 +9,12 @@
             "description": "The Recording domain defines methods for managing recordings.",
             "types": [
                 {
-                    "id": "RecordingID",
+                    "id": "RecordingId",
                     "description": "Globally unique identifier for a recording.",
                     "type": "string"
                 },
                 {
-                    "id": "BuildID",
+                    "id": "BuildId",
                     "description": "Unique identifier for the software used to produce a recording.",
                     "type": "string"
                 },
@@ -98,7 +98,7 @@
                         {
                             "name": "recordingId",
                             "description": "Recording to get the description for.",
-                            "$ref": "RecordingID"
+                            "$ref": "RecordingId"
                         }
                     ],
                     "returns": [
@@ -122,14 +122,14 @@
                         {
                             "name": "recordingId",
                             "description": "Recording to load into the session.",
-                            "$ref": "RecordingID"
+                            "$ref": "RecordingId"
                         }
                     ],
                     "returns": [
                         {
                             "name": "sessionId",
                             "description": "Identifier for the new session.",
-                            "$ref": "Session.SessionID"
+                            "$ref": "Session.SessionId"
                         }
                     ]
                 },
@@ -140,7 +140,7 @@
                         {
                             "name": "sessionId",
                             "description": "Session to release.",
-                            "$ref": "Session.SessionID"
+                            "$ref": "Session.SessionId"
                         }
                     ]
                 }
@@ -151,7 +151,7 @@
             "description": "The Session domain defines methods for using recording sessions. In order to\ninspect a recording, it must first be loaded into a session via\n<code>Recording.createSession</code>.\n\nAfter the session is created, it is an unprocessed state. Commands sent using\nthe session to query information about the recording will only find\ninformation about parts of the recording that have been processed. Processing\nstarts automatically after the session is created.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
             "types": [
                 {
-                    "id": "SessionID",
+                    "id": "SessionId",
                     "description": "Unique identifier for a session which a recording has been loaded into.",
                     "type": "string"
                 }
@@ -319,6 +319,48 @@
             ]
         },
         {
+            "domain": "Debugger",
+            "description": "The Debugger domain defines methods for accessing JS scripts and navigating\naround the recording using breakpoints, stepping, and so forth.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
+            "commands": [
+                {
+                    "name": "findScripts",
+                    "description": "Find all scripts in the recording. Does not return until the recording is\nfully processed. Before returning, <code>scriptParsed</code> events will be\nemitted for every script in the recording."
+                }
+            ],
+            "events": [
+                {
+                    "name": "scriptParsed",
+                    "description": "Describes a script that was successfully parsed.",
+                    "parameters": [
+                        {
+                            "name": "scriptId",
+                            "description": "ID for the script.",
+                            "$ref": "ScriptId"
+                        },
+                        {
+                            "name": "url",
+                            "description": "URL of the script. Omitted for dynamically generated scripts (from eval etc.).",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "sourceMapURL",
+                            "description": "Any source map URL for the script.",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "id": "ScriptId",
+                    "description": "Unique ID for a script.",
+                    "type": "string"
+                }
+            ]
+        },
+        {
             "domain": "Internal",
             "description": "The Internal domain is for use by Web Replay's own tools and other software.\nWhile use of this domain is not restricted, it won't be very helpful for other\nusers.",
             "commands": [
@@ -344,15 +386,15 @@
                     "parameters": [
                         {
                             "name": "buildId",
-                            "description": "Build ID of the software which produced the recording.",
-                            "$ref": "Recording.BuildID"
+                            "description": "Build Id of the software which produced the recording.",
+                            "$ref": "Recording.BuildId"
                         }
                     ],
                     "returns": [
                         {
                             "name": "recordingId",
                             "description": "Identifier for the recording.",
-                            "$ref": "Recording.RecordingID"
+                            "$ref": "Recording.RecordingId"
                         }
                     ]
                 },
@@ -363,7 +405,7 @@
                         {
                             "name": "recordingId",
                             "description": "ID of the recording data is being added to. This recording must have\nbeen produced by a createRecording command previously sent on this\nconnection.",
-                            "$ref": "Recording.RecordingID"
+                            "$ref": "Recording.RecordingId"
                         },
                         {
                             "name": "offset",
@@ -384,7 +426,7 @@
                         {
                             "name": "recordingId",
                             "description": "ID of the recording being described.",
-                            "$ref": "Recording.RecordingID"
+                            "$ref": "Recording.RecordingId"
                         },
                         {
                             "name": "length",
