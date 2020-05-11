@@ -218,8 +218,64 @@ domain Debugger
 
   # Possible content types for script sources.
   type ContentType extends string
+    enum
       text/javascript
       text/html
+
+  # Get a compact representation of the locations where breakpoints can be set
+  # in a region of a script.
+  command getPossibleBreakpoints
+    parameters
+      # Script to return breakpoint locations for.
+      ScriptId scriptId
+      # If specified, earlier breakpoint locations will be excluded.
+      optional ScriptLocation begin
+      # If specified, later breakpoint locations will be excluded.
+      optional ScriptLocation end
+    returns
+      # All breakpoint locations in the specified script and range.
+      array of SameLineScriptLocations lineLocations
+
+  # Location within a particular script.
+  type ScriptLocation extends object
+    properties
+      # 0-indexed line in the script's source.
+      integer line
+      # 0-indexed column in the script's source.
+      integer column
+
+  # Set of locations which are all on the same line of the same script.
+  type SameLineScriptLocations extends object
+    properties
+      # Common line number for the locations.
+      integer line
+      # Different column numbers for the locations.
+      array of integer columns
+
+  # Location within a script.
+  type Location extends ScriptLocation
+    properties
+      ScriptId scriptId
+
+  # ID for a breakpoint.
+  type BreakpointId extends string
+
+  # Set a breakpoint at a location.
+  command setBreakpoint
+    parameters
+      # Location to set the breakpoint at.
+      Location location
+      # Any condition which must evaluate to a non-falsy value for an execution
+      # point to hit the breakpoint.
+      optional string condition
+    returns
+      # ID for the new breakpoint.
+      BreakpointId breakpointId
+
+  # Remove a breakpoint.
+  command removeBreakpoint
+    parameters
+      BreakpointId breakpointId
 
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other

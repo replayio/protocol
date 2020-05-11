@@ -264,9 +264,7 @@
                     "type": "string",
                     "enum": [
                         "image/jpeg",
-                        "image/png",
-                        "text/javascript",
-                        "text/html"
+                        "image/png"
                     ]
                 },
                 {
@@ -350,6 +348,73 @@
                             "$ref": "ContentType"
                         }
                     ]
+                },
+                {
+                    "name": "getPossibleBreakpoints",
+                    "description": "Get a compact representation of the locations where breakpoints can be set\nin a region of a script.",
+                    "parameters": [
+                        {
+                            "name": "scriptId",
+                            "description": "Script to return breakpoint locations for.",
+                            "$ref": "ScriptId"
+                        },
+                        {
+                            "name": "begin",
+                            "description": "If specified, earlier breakpoint locations will be excluded.",
+                            "optional": true,
+                            "$ref": "ScriptLocation"
+                        },
+                        {
+                            "name": "end",
+                            "description": "If specified, later breakpoint locations will be excluded.",
+                            "optional": true,
+                            "$ref": "ScriptLocation"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "lineLocations",
+                            "description": "All breakpoint locations in the specified script and range.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "SameLineScriptLocations"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "setBreakpoint",
+                    "description": "Set a breakpoint at a location.",
+                    "parameters": [
+                        {
+                            "name": "location",
+                            "description": "Location to set the breakpoint at.",
+                            "$ref": "Location"
+                        },
+                        {
+                            "name": "condition",
+                            "description": "Any condition which must evaluate to a non-falsy value for an execution\npoint to hit the breakpoint.",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "breakpointId",
+                            "description": "ID for the new breakpoint.",
+                            "$ref": "BreakpointId"
+                        }
+                    ]
+                },
+                {
+                    "name": "removeBreakpoint",
+                    "description": "Remove a breakpoint.",
+                    "parameters": [
+                        {
+                            "name": "breakpointId",
+                            "$ref": "BreakpointId"
+                        }
+                    ]
                 }
             ],
             "events": [
@@ -386,6 +451,63 @@
                 {
                     "id": "ContentType",
                     "description": "Possible content types for script sources.",
+                    "type": "string",
+                    "enum": [
+                        "text/javascript",
+                        "text/html"
+                    ]
+                },
+                {
+                    "id": "ScriptLocation",
+                    "description": "Location within a particular script.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "line",
+                            "description": "0-indexed line in the script's source.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "column",
+                            "description": "0-indexed column in the script's source.",
+                            "type": "integer"
+                        }
+                    ]
+                },
+                {
+                    "id": "SameLineScriptLocations",
+                    "description": "Set of locations which are all on the same line of the same script.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "line",
+                            "description": "Common line number for the locations.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "columns",
+                            "description": "Different column numbers for the locations.",
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "Location",
+                    "description": "Location within a script.",
+                    "$ref": "ScriptLocation",
+                    "properties": [
+                        {
+                            "name": "scriptId",
+                            "$ref": "ScriptId"
+                        }
+                    ]
+                },
+                {
+                    "id": "BreakpointId",
+                    "description": "ID for a breakpoint.",
                     "type": "string"
                 }
             ]
