@@ -164,6 +164,16 @@
                 {
                     "name": "findMouseEvents",
                     "description": "Find all points in the recording at which a mouse move or click occurred.\nDoes not return until the recording is fully processed. Before returning,\n<code>mouseEvents</code> events will be periodically emitted. The union\nof all these events describes all mouse events in the recording."
+                },
+                {
+                    "name": "getEndpoint",
+                    "description": "Get the last execution point in the recording.",
+                    "returns": [
+                        {
+                            "name": "endpoint",
+                            "$ref": "Recording.TimeStampedPoint"
+                        }
+                    ]
                 }
             ],
             "events": [

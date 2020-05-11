@@ -120,6 +120,11 @@ domain Session
     parameters
       array of Recording.MouseEvent events
 
+  # Get the last execution point in the recording.
+  command getEndpoint
+    returns
+      Recording.TimeStampedPoint endpoint
+
 # The Graphics domain defines methods for accessing a recording's graphics data.
 #
 # <br><br>All commands and events in this domain must include a <code>sessionId</code>.
