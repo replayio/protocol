@@ -282,6 +282,21 @@ domain Debugger
     parameters
       BreakpointId breakpointId
 
+  # Basic description of a point where execution can pause.
+  type PauseDescription extends Recording.TimeStampedPoint
+    properties
+      # Location of the topmost frame, omitted if there are no frames on stack.
+      optional Location frame
+
+  # Find the point to pause at when rewinding from a point.
+  command findRewindTarget
+    parameters
+      # Point to start rewinding from.
+      Recording.ExecutionPoint point
+    returns
+      # Point where execution should pause when rewinding.
+      PauseDescription target
+
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other
 # users.

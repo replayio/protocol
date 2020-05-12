@@ -425,6 +425,24 @@
                             "$ref": "BreakpointId"
                         }
                     ]
+                },
+                {
+                    "name": "findRewindTarget",
+                    "description": "Find the point to pause at when rewinding from a point.",
+                    "parameters": [
+                        {
+                            "name": "point",
+                            "description": "Point to start rewinding from.",
+                            "$ref": "Recording.ExecutionPoint"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "target",
+                            "description": "Point where execution should pause when rewinding.",
+                            "$ref": "PauseDescription"
+                        }
+                    ]
                 }
             ],
             "events": [
@@ -519,6 +537,19 @@
                     "id": "BreakpointId",
                     "description": "ID for a breakpoint.",
                     "type": "string"
+                },
+                {
+                    "id": "PauseDescription",
+                    "description": "Basic description of a point where execution can pause.",
+                    "$ref": "Recording.TimeStampedPoint",
+                    "properties": [
+                        {
+                            "name": "frame",
+                            "description": "Location of the topmost frame, omitted if there are no frames on stack.",
+                            "optional": true,
+                            "$ref": "Location"
+                        }
+                    ]
                 }
             ]
         },
