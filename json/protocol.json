@@ -669,7 +669,7 @@
                         {
                             "name": "location",
                             "description": "Location in the source of where this frame is paused at.",
-                            "$ref": "Location"
+                            "$ref": "Debugger.Location"
                         },
                         {
                             "name": "scopeChain",

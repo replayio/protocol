@@ -363,7 +363,7 @@ domain Pause
       # ID of this frame.
       CallFrameId callFrameId
       # Location in the source of where this frame is paused at.
-      Location location
+      Debugger.Location location
       # Scope chain for the call frame, from innermost to outermost.
       array of ScopeId scopeChain
       # <code>this</code> value of the call frame.
