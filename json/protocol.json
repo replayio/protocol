@@ -197,7 +197,7 @@
                             "optional": true,
                             "type": "array",
                             "items": {
-                                "$ref": "Pause.CallFrameId"
+                                "$ref": "Pause.FrameId"
                             }
                         },
                         {
@@ -606,7 +606,7 @@
                     "type": "string"
                 },
                 {
-                    "id": "CallFrameId",
+                    "id": "FrameId",
                     "description": "Identifier for a call frame in a pause.",
                     "type": "string"
                 },
@@ -657,14 +657,25 @@
                     ]
                 },
                 {
-                    "id": "CallFrame",
-                    "description": "Description of a call frame.",
+                    "id": "Frame",
+                    "description": "Description of a stack frame.",
                     "type": "object",
                     "properties": [
                         {
-                            "name": "callFrameId",
+                            "name": "frameId",
                             "description": "ID of this frame.",
-                            "$ref": "CallFrameId"
+                            "$ref": "FrameId"
+                        },
+                        {
+                            "name": "type",
+                            "description": "Type of frame which is executing.",
+                            "$ref": "FrameType"
+                        },
+                        {
+                            "name": "functionName",
+                            "description": "For call frames, the name of the function being called.",
+                            "optional": true,
+                            "type": "string"
                         },
                         {
                             "name": "location",
@@ -684,6 +695,17 @@
                             "description": "<code>this</code> value of the call frame.",
                             "$ref": "Value"
                         }
+                    ]
+                },
+                {
+                    "id": "FrameType",
+                    "description": "Different kinds of stack frames.",
+                    "type": "string",
+                    "enum": [
+                        "call",
+                        "global",
+                        "module",
+                        "eval"
                     ]
                 },
                 {
@@ -872,7 +894,7 @@
                             "optional": true,
                             "type": "array",
                             "items": {
-                                "$ref": "CallFrame"
+                                "$ref": "Frame"
                             }
                         },
                         {
