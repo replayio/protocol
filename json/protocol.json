@@ -174,6 +174,49 @@
                             "$ref": "Recording.TimeStampedPoint"
                         }
                     ]
+                },
+                {
+                    "name": "createPause",
+                    "description": "Create a pause describing the state at an execution point.",
+                    "parameters": [
+                        {
+                            "name": "point",
+                            "description": "Point to create the pause at.",
+                            "$ref": "Recording.ExecutionPoint"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "pauseId",
+                            "description": "Identifier for the new pause.",
+                            "$ref": "Pause.PauseId"
+                        },
+                        {
+                            "name": "stack",
+                            "description": "IDs of all frames on the stack. Omitted if there are no\nframes on the stack at this point.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "Pause.CallFrameId"
+                            }
+                        },
+                        {
+                            "name": "data",
+                            "description": "Optional data describing the frames on the stack and the in scope\nvariables of the topmost frame.",
+                            "optional": true,
+                            "$ref": "Pause.PauseData"
+                        }
+                    ]
+                },
+                {
+                    "name": "releasePause",
+                    "description": "Release a pause and allow its resources to be reclaimed.",
+                    "parameters": [
+                        {
+                            "name": "pauseId",
+                            "$ref": "Pause.PauseId"
+                        }
+                    ]
                 }
             ],
             "events": [
@@ -548,6 +591,302 @@
                             "description": "Location of the topmost frame, omitted if there are no frames on stack.",
                             "optional": true,
                             "$ref": "Location"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "domain": "Pause",
+            "description": "The Pause domain is used to inspect the state of the program when it is paused\nat particular execution points.\n\n<br><br>All commands and events in this domain must include both a <code>sessionId</code>\nand a <code>pauseId</code>.",
+            "types": [
+                {
+                    "id": "PauseId",
+                    "description": "Unique identifier for a pause session where the program state can be inspected.\nPauses are each associated with a specific execution point, and when created\nreflect the program state when it reached that point. Operations on a pause\ncan have side effects due to evaluations and so forth. These side effects will\naffect later results produced for the same pause, but will have no effect on\nthe state of the program in other pauses.",
+                    "type": "string"
+                },
+                {
+                    "id": "CallFrameId",
+                    "description": "Identifier for a call frame in a pause.",
+                    "type": "string"
+                },
+                {
+                    "id": "ScopeId",
+                    "description": "Identifier for a scope in a pause.",
+                    "type": "string"
+                },
+                {
+                    "id": "ObjectId",
+                    "description": "Identifier for a JS object in a pause.",
+                    "type": "string"
+                },
+                {
+                    "id": "Value",
+                    "description": "Description of a value. At most one property will be specified.\nIf no properties are specified, the value is <code>undefined</code>.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "value",
+                            "description": "For non-object values that are valid JSON values.",
+                            "optional": true,
+                            "type": "any"
+                        },
+                        {
+                            "name": "unserializable",
+                            "description": "For non-object values that are not valid JSON values.",
+                            "optional": true,
+                            "$ref": "UnserializableValue"
+                        },
+                        {
+                            "name": "object",
+                            "description": "For object values.",
+                            "optional": true,
+                            "$ref": "ObjectId"
+                        }
+                    ]
+                },
+                {
+                    "id": "NamedValue",
+                    "description": "Description of a value, with an associated name.",
+                    "$ref": "Value",
+                    "properties": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "id": "CallFrame",
+                    "description": "Description of a call frame.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "callFrameId",
+                            "description": "ID of this frame.",
+                            "$ref": "CallFrameId"
+                        },
+                        {
+                            "name": "location",
+                            "description": "Location in the source of where this frame is paused at.",
+                            "$ref": "Location"
+                        },
+                        {
+                            "name": "scopeChain",
+                            "description": "Scope chain for the call frame, from innermost to outermost.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "ScopeId"
+                            }
+                        },
+                        {
+                            "name": "this",
+                            "description": "<code>this</code> value of the call frame.",
+                            "$ref": "Value"
+                        }
+                    ]
+                },
+                {
+                    "id": "Scope",
+                    "description": "Description of a scope.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "scopeId",
+                            "description": "ID of this scope.",
+                            "$ref": "ScopeId"
+                        },
+                        {
+                            "name": "type",
+                            "description": "Type of this scope.",
+                            "$ref": "ScopeType"
+                        },
+                        {
+                            "name": "functionLexical",
+                            "description": "Set for the top-level lexical scope of a function.",
+                            "optional": true,
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "object",
+                            "description": "For <code>global</code> and <code>with</code> scopes, the underlying object.",
+                            "optional": true,
+                            "$ref": "ObjectId"
+                        },
+                        {
+                            "name": "bindings",
+                            "description": "For <code>function</code> and <code>block</code> scopes, the scope bindings.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "NamedValue"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "ScopeType",
+                    "description": "Possible types of a scope.",
+                    "type": "string",
+                    "enum": [
+                        "global",
+                        "with",
+                        "function",
+                        "block"
+                    ]
+                },
+                {
+                    "id": "Object",
+                    "description": "Description of an object.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "objectId",
+                            "description": "ID of this object.",
+                            "$ref": "ObjectId"
+                        },
+                        {
+                            "name": "className",
+                            "description": "Object class name.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "prototypeId",
+                            "description": "ID of the prototype, if there is one.",
+                            "optional": true,
+                            "$ref": "ObjectId"
+                        },
+                        {
+                            "name": "description",
+                            "description": "String representation of the object, if available.",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "preview",
+                            "description": "Any preview data available for the object's properties.",
+                            "optional": true,
+                            "$ref": "ObjectPreview"
+                        }
+                    ]
+                },
+                {
+                    "id": "ObjectPreview",
+                    "description": "Description of some or all of an object's contents.",
+                    "$ref": "Object",
+                    "properties": [
+                        {
+                            "name": "overflow",
+                            "description": "Whether there are additional contents not in this preview.",
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "properties",
+                            "description": "Descriptors of the object's own properties.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "Property"
+                            }
+                        },
+                        {
+                            "name": "containerEntries",
+                            "description": "Entries of container objects.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "ContainerEntry"
+                            }
+                        },
+                        {
+                            "name": "getterValues",
+                            "description": "Results of evaluating getter properties from this or the prototype chain\non this object, if they could be evaluated without side effects.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "NamedValue"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "Property",
+                    "description": "Description of an object's own property. The <code>NamedValue</code> members\nindicate the property's name and its value if it is a data descriptor.",
+                    "$ref": "NamedValue",
+                    "properties": [
+                        {
+                            "name": "flags",
+                            "description": "Configuration flags for the property, omitted if the property is\nwritable, configurable, and enumerable (a bitmask of <code>7</code>).",
+                            "optional": true,
+                            "$ref": "PropertyConfigurationFlags"
+                        },
+                        {
+                            "name": "get",
+                            "description": "Any getter function if this is an accessor property.",
+                            "optional": true,
+                            "$ref": "ObjectId"
+                        },
+                        {
+                            "name": "set",
+                            "description": "Any setter function if this is an accessor property.",
+                            "optional": true,
+                            "$ref": "ObjectId"
+                        }
+                    ]
+                },
+                {
+                    "id": "PropertyConfigurationFlags",
+                    "description": "Compact bitmask of configuration flags on a property. Possible values in the mask\nare <code>1</code> (whether the property is writable), <code>2</code>\n(whether the property is configurable), <code>4</code> (whether the\nproperty is enumerable), and combinations of these values using bitwise-or.",
+                    "type": "integer"
+                },
+                {
+                    "id": "ContainerEntry",
+                    "description": "An entry in a container object (maps, sets, weak maps, and weak sets).",
+                    "$ref": "Object",
+                    "properties": [
+                        {
+                            "name": "key",
+                            "description": "For maps and weak maps, this entry's key.",
+                            "optional": true,
+                            "$ref": "Value"
+                        },
+                        {
+                            "name": "value",
+                            "description": "This entry's value.",
+                            "$ref": "Value"
+                        }
+                    ]
+                },
+                {
+                    "id": "UnserializableValue",
+                    "description": "String representation of a defined value that is not a valid JSON value:\n<code>-0</code>, <code>Infinity</code>, <code>-Infinity</code>,\n<code>NaN</code>, and BigInts.",
+                    "type": "string"
+                },
+                {
+                    "id": "PauseData",
+                    "description": "Block of data from this pause which might be useful to the protocol client.\nTo reduce the number of back-and-forth calls required over the protocol,\ndata which wasn't specifically asked for can be returned by commands or\nevents. <code>PauseData</code> objects will not duplicate data from a\n<code>PauseData</code> object produced earlier for the same pause.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "frames",
+                            "type": "array",
+                            "items": {
+                                "$ref": "CallFrame"
+                            }
+                        },
+                        {
+                            "name": "scopes",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Scope"
+                            }
+                        },
+                        {
+                            "name": "objects",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Object"
+                            }
                         }
                     ]
                 }

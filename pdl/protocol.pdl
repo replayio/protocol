@@ -125,6 +125,26 @@ domain Session
     returns
       Recording.TimeStampedPoint endpoint
 
+  # Create a pause describing the state at an execution point.
+  command createPause
+    parameters
+      # Point to create the pause at.
+      Recording.ExecutionPoint point
+    returns
+      # Identifier for the new pause.
+      Pause.PauseId pauseId
+      # IDs of all frames on the stack. Omitted if there are no
+      # frames on the stack at this point.
+      optional array of Pause.CallFrameId stack
+      # Optional data describing the frames on the stack and the in scope
+      # variables of the topmost frame.
+      optional Pause.PauseData data
+
+  # Release a pause and allow its resources to be reclaimed.
+  command releasePause
+    parameters
+      Pause.PauseId pauseId
+
 # The Graphics domain defines methods for accessing a recording's graphics data.
 #
 # <br><br>All commands and events in this domain must include a <code>sessionId</code>.
@@ -296,6 +316,149 @@ domain Debugger
     returns
       # Point where execution should pause when rewinding.
       PauseDescription target
+
+# The Pause domain is used to inspect the state of the program when it is paused
+# at particular execution points.
+#
+# <br><br>All commands and events in this domain must include both a <code>sessionId</code>
+# and a <code>pauseId</code>.
+domain Pause
+
+  # Unique identifier for a pause session where the program state can be inspected.
+  # Pauses are each associated with a specific execution point, and when created
+  # reflect the program state when it reached that point. Operations on a pause
+  # can have side effects due to evaluations and so forth. These side effects will
+  # affect later results produced for the same pause, but will have no effect on
+  # the state of the program in other pauses.
+  type PauseId extends string
+
+  # Identifier for a call frame in a pause.
+  type CallFrameId extends string
+
+  # Identifier for a scope in a pause.
+  type ScopeId extends string
+
+  # Identifier for a JS object in a pause.
+  type ObjectId extends string
+
+  # Description of a value. At most one property will be specified.
+  # If no properties are specified, the value is <code>undefined</code>.
+  type Value extends object
+    properties
+      # For non-object values that are valid JSON values.
+      optional any value
+      # For non-object values that are not valid JSON values.
+      optional UnserializableValue unserializable
+      # For object values.
+      optional ObjectId object
+
+  # Description of a value, with an associated name.
+  type NamedValue extends Value
+    properties
+      string name
+
+  # Description of a call frame.
+  type CallFrame extends object
+    properties
+      # ID of this frame.
+      CallFrameId callFrameId
+      # Location in the source of where this frame is paused at.
+      Location location
+      # Scope chain for the call frame, from innermost to outermost.
+      array of ScopeId scopeChain
+      # <code>this</code> value of the call frame.
+      Value this
+
+  # Description of a scope.
+  type Scope extends object
+    properties
+      # ID of this scope.
+      ScopeId scopeId
+      # Type of this scope.
+      ScopeType type
+      # Set for the top-level lexical scope of a function.
+      optional boolean functionLexical
+      # For <code>global</code> and <code>with</code> scopes, the underlying object.
+      optional ObjectId object
+      # For <code>function</code> and <code>block</code> scopes, the scope bindings.
+      optional array of NamedValue bindings
+
+  # Possible types of a scope.
+  type ScopeType extends string
+    enum
+      global
+      with
+      function
+      block
+
+  # Description of an object.
+  type Object extends object
+    properties
+      # ID of this object.
+      ObjectId objectId
+      # Object class name.
+      string className
+      # ID of the prototype, if there is one.
+      optional ObjectId prototypeId
+      # String representation of the object, if available.
+      optional string description
+      # Any preview data available for the object's properties.
+      optional ObjectPreview preview
+
+  # Description of some or all of an object's contents.
+  type ObjectPreview extends Object
+    properties
+      # Whether there are additional contents not in this preview.
+      boolean overflow
+      # Descriptors of the object's own properties.
+      optional array of Property properties
+      # Entries of container objects.
+      optional array of ContainerEntry containerEntries
+      # Results of evaluating getter properties from this or the prototype chain
+      # on this object, if they could be evaluated without side effects.
+      optional array of NamedValue getterValues
+
+  # Description of an object's own property. The <code>NamedValue</code> members
+  # indicate the property's name and its value if it is a data descriptor.
+  type Property extends NamedValue
+    properties
+      # Configuration flags for the property, omitted if the property is
+      # writable, configurable, and enumerable (a bitmask of <code>7</code>).
+      optional PropertyConfigurationFlags flags
+      # Any getter function if this is an accessor property.
+      optional ObjectId get
+      # Any setter function if this is an accessor property.
+      optional ObjectId set
+
+  # Compact bitmask of configuration flags on a property. Possible values in the mask
+  # are <code>1</code> (whether the property is writable), <code>2</code>
+  # (whether the property is configurable), <code>4</code> (whether the
+  # property is enumerable), and combinations of these values using bitwise-or.
+  type PropertyConfigurationFlags extends integer
+
+  # An entry in a container object (maps, sets, weak maps, and weak sets).
+  type ContainerEntry extends Object
+    properties
+      # For maps and weak maps, this entry's key.
+      optional Value key
+      # This entry's value.
+      Value value
+
+  # String representation of a defined value that is not a valid JSON value:
+  # <code>-0</code>, <code>Infinity</code>, <code>-Infinity</code>,
+  # <code>NaN</code>, and BigInts.
+  type UnserializableValue extends string
+
+  # Block of data from this pause which might be useful to the protocol client.
+  # To reduce the number of back-and-forth calls required over the protocol,
+  # data which wasn't specifically asked for can be returned by commands or
+  # events. <code>PauseData</code> objects will not duplicate data from a
+  # <code>PauseData</code> object produced earlier for the same pause.
+  type PauseData extends object
+    properties
+      array of CallFrame frames
+      array of Scope scopes
+      array of Object objects
 
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other
