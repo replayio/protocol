@@ -869,6 +869,7 @@
                     "properties": [
                         {
                             "name": "frames",
+                            "optional": true,
                             "type": "array",
                             "items": {
                                 "$ref": "CallFrame"
@@ -876,6 +877,7 @@
                         },
                         {
                             "name": "scopes",
+                            "optional": true,
                             "type": "array",
                             "items": {
                                 "$ref": "Scope"
@@ -883,6 +885,7 @@
                         },
                         {
                             "name": "objects",
+                            "optional": true,
                             "type": "array",
                             "items": {
                                 "$ref": "Object"

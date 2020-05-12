@@ -456,9 +456,9 @@ domain Pause
   # <code>PauseData</code> object produced earlier for the same pause.
   type PauseData extends object
     properties
-      array of CallFrame frames
-      array of Scope scopes
-      array of Object objects
+      optional array of CallFrame frames
+      optional array of Scope scopes
+      optional array of Object objects
 
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other
