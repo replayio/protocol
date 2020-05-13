@@ -915,6 +915,38 @@
                         }
                     ]
                 }
+            ],
+            "commands": [
+                {
+                    "name": "evaluateInFrame",
+                    "description": "Evaluate an expression in the context of a call frame.",
+                    "parameters": [
+                        {
+                            "name": "frameId",
+                            "description": "Frame to perform the evaluation in.",
+                            "$ref": "FrameId"
+                        },
+                        {
+                            "name": "expression",
+                            "description": "Expression to evaluate.",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "description": "If execution returned normally, the evaluation result.",
+                            "optional": true,
+                            "$ref": "Value"
+                        },
+                        {
+                            "name": "exception",
+                            "description": "If execution threw an exception, the thrown value.",
+                            "optional": true,
+                            "$ref": "Value"
+                        }
+                    ]
+                }
             ]
         },
         {
