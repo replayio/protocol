@@ -202,8 +202,7 @@
                         },
                         {
                             "name": "data",
-                            "description": "Optional data describing the frames on the stack and the in scope\nvariables of the topmost frame.",
-                            "optional": true,
+                            "description": "Data describing the frames on the stack and the in scope\nvariables of the topmost frame.",
                             "$ref": "Pause.PauseData"
                         }
                     ]
@@ -944,6 +943,11 @@
                             "description": "If execution threw an exception, the thrown value.",
                             "optional": true,
                             "$ref": "Value"
+                        },
+                        {
+                            "name": "data",
+                            "description": "Any additional data associated with the returned/thrown value.",
+                            "$ref": "PauseData"
                         }
                     ]
                 }
