@@ -469,6 +469,24 @@
                     ]
                 },
                 {
+                    "name": "findResumeTarget",
+                    "description": "Find the point to pause at when running forward from a point.",
+                    "parameters": [
+                        {
+                            "name": "point",
+                            "description": "Point to start the resume from.",
+                            "$ref": "Recording.ExecutionPoint"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "target",
+                            "description": "Point where execution should pause when resuming.",
+                            "$ref": "PauseDescription"
+                        }
+                    ]
+                },
+                {
                     "name": "findRewindTarget",
                     "description": "Find the point to pause at when rewinding from a point.",
                     "parameters": [

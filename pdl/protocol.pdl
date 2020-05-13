@@ -308,6 +308,15 @@ domain Debugger
       # Location of the topmost frame, omitted if there are no frames on stack.
       optional Location frame
 
+  # Find the point to pause at when running forward from a point.
+  command findResumeTarget
+    parameters
+      # Point to start the resume from.
+      Recording.ExecutionPoint point
+    returns
+      # Point where execution should pause when resuming.
+      PauseDescription target
+
   # Find the point to pause at when rewinding from a point.
   command findRewindTarget
     parameters
