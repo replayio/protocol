@@ -499,12 +499,12 @@ domain Pause
   # Get the topmost frame on the stack.
   command getTopFrame
     returns
-      CallFrame frame
+      Frame frame
 
   # Get all frames on the stack.
   command getAllFrames
     returns
-      array of CallFrame frames
+      array of Frame frames
 
   # Get the names and values of a frame's formal parameters.
   command getFrameParameters

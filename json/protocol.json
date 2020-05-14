@@ -975,7 +975,7 @@
                     "returns": [
                         {
                             "name": "frame",
-                            "$ref": "CallFrame"
+                            "$ref": "Frame"
                         }
                     ]
                 },
@@ -987,7 +987,7 @@
                             "name": "frames",
                             "type": "array",
                             "items": {
-                                "$ref": "CallFrame"
+                                "$ref": "Frame"
                             }
                         }
                     ]
