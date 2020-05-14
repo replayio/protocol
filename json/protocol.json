@@ -968,12 +968,33 @@
                             "$ref": "PauseData"
                         }
                     ]
+                },
+                {
+                    "name": "getFrameParameters",
+                    "description": "Get the names and values of a frame's formal parameters.",
+                    "parameters": [
+                        {
+                            "name": "frameId",
+                            "description": "Frame to get the parameters for.",
+                            "$ref": "FrameId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "parameters",
+                            "description": "Names and current values of each of the frame's formal parameters,\nin order.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "NamedValue"
+                            }
+                        }
+                    ]
                 }
             ]
         },
         {
             "domain": "Analysis",
-            "description": "The Analysis domain is used to efficiently analyze the program state at many\nexecution points. Analysis specifications are based on the MapReduce\nalgorithm: a map operation is performed on all the execution points of\ninterest, and the results are reduced to a summary afterwards.\n\n<br><br>The life cycle of an analysis is as follows. First, use <code>createAnalysis</code>\nto create the analysis and specify its map and reduce operations. Next, use one\nor more other commands to specify the set of execution points to apply the\nanalysis to. Finally, use <code>executeAnalysis</code> to start running the\nanalysis and generate <code>analysisResult</code> events.\n\n<br><br>Currently, analyses can only be applied to one session/recording.\nThis restriction will be relaxed in the future.",
+            "description": "The Analysis domain is used to efficiently analyze the program state at many\nexecution points. Analysis specifications are based on the MapReduce\nalgorithm: a map operation is performed on all the execution points of\ninterest, and the results are reduced to a summary afterwards.\n\n<br><br>The life cycle of an analysis is as follows. First, use <code>createAnalysis</code>\nto create the analysis and specify its map and reduce operations. Next, use one\nor more other commands to specify the set of execution points to apply the\nanalysis to. Finally, use <code>runAnalysis</code> to start running the\nanalysis and generate <code>analysisResult</code> events.\n\n<br><br>Currently, analyses can only be applied to one session/recording.\nThis restriction will be relaxed in the future.",
             "types": [
                 {
                     "id": "AnalysisId",
@@ -1033,7 +1054,7 @@
                         },
                         {
                             "name": "effectful",
-                            "description": "Whether effectful commands in the <code>Pause</code> domain might be\nsent by the mapper function. An analysis which does not use effectful\ncommands will run more efficiently.",
+                            "description": "Whether effectful commands in the <code>Pause</code> domain might be\nsent by the mapper function. An analysis which does not use effectful\ncommands will run more efficiently. Effectful commands are\n<code>Pause.evaluateInFrame</code>.",
                             "type": "boolean"
                         }
                     ],
