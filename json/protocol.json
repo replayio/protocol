@@ -970,6 +970,29 @@
                     ]
                 },
                 {
+                    "name": "getTopFrame",
+                    "description": "Get the topmost frame on the stack.",
+                    "returns": [
+                        {
+                            "name": "frame",
+                            "$ref": "CallFrame"
+                        }
+                    ]
+                },
+                {
+                    "name": "getAllFrames",
+                    "description": "Get all frames on the stack.",
+                    "returns": [
+                        {
+                            "name": "frames",
+                            "type": "array",
+                            "items": {
+                                "$ref": "CallFrame"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "getFrameParameters",
                     "description": "Get the names and values of a frame's formal parameters.",
                     "parameters": [
