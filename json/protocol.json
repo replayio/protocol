@@ -276,7 +276,7 @@
                     "parameters": [
                         {
                             "name": "point",
-                            "description": "Execution point to get the graphics for. This must have been listed in\na paintPoints event.",
+                            "description": "Execution point to get the graphics for. This must have been listed in\na <code>paintPoints</code> event.",
                             "$ref": "Recording.ExecutionPoint"
                         },
                         {
@@ -966,6 +966,160 @@
                             "name": "data",
                             "description": "Any additional data associated with the returned/thrown value.",
                             "$ref": "PauseData"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "domain": "Analysis",
+            "description": "The Analysis domain is used to efficiently analyze the program state at many\nexecution points. Analysis specifications are based on the MapReduce\nalgorithm: a map operation is performed on all the execution points of\ninterest, and the results are reduced to a summary afterwards.\n\n<br><br>The life cycle of an analysis is as follows. First, use <code>createAnalysis</code>\nto create the analysis and specify its map and reduce operations. Next, use one\nor more other commands to specify the set of execution points to apply the\nanalysis to. Finally, use <code>executeAnalysis</code> to start running the\nanalysis and generate <code>analysisResult</code> events.\n\n<br><br>Currently, analyses can only be applied to one session/recording.\nThis restriction will be relaxed in the future.",
+            "types": [
+                {
+                    "id": "AnalysisId",
+                    "description": "Unique identifier for an analysis.",
+                    "type": "string"
+                },
+                {
+                    "id": "MapInput",
+                    "description": "Input to the mapper function.",
+                    "$ref": "Recording.TimeStampedPoint",
+                    "properties": [
+                        {
+                            "name": "sessionId",
+                            "description": "Associated session ID for the current execution point.",
+                            "$ref": "SessionId"
+                        },
+                        {
+                            "name": "pauseId",
+                            "description": "Pause ID created for the current execution point.",
+                            "$ref": "PauseId"
+                        }
+                    ]
+                },
+                {
+                    "id": "AnalysisEntry",
+                    "description": "Result of a map or reduce operation.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "key",
+                            "description": "Key for the entry. This can be any JSON value. Keys are equivalent if they\nare structurally equivalent: they have the same contents, though object\nkeys may be ordered differently when stringified.",
+                            "type": "any"
+                        },
+                        {
+                            "name": "value",
+                            "description": "Value for the entry. This can be any JSON value.",
+                            "type": "any"
+                        }
+                    ]
+                }
+            ],
+            "commands": [
+                {
+                    "name": "createAnalysis",
+                    "description": "Start specifying a new analysis.",
+                    "parameters": [
+                        {
+                            "name": "mapper",
+                            "description": "Body of the mapper function. The mapper function takes two arguments:\n<code>input</code> is a <code>MapInput</code> object, and\n<code>sendCommand</code> is a function that can be passed a command\nname and parameters (in that order) and synchronously returns the\ncommand result. Only methods from the <code>Pause</code> domain may\nbe used with <code>sendCommand</code>. The mapper function must\n<code>return</code> an array of <code>AnalysisEntry</code> objects.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "reducer",
+                            "description": "Body of the reducer function. The reducer function takes two arguments:\n<code>key</code> is an <code>AnalysisEntry</code> key, and <code>values</code>\nis an array of <code>AnalysisEntry</code> values. All the input values\nwere associated with the key by an earlier call to <code>mapper</code>\n<strong>or</strong> <code>reducer</code>. The reducer function must\nreturn a single <code>AnalysisEntry</code> value, which summarizes all\nthe input values and will be associated with <code>key</code> for\n<code>analysisResult</code> events or further calls to the reducer.\nThe reducer may be omitted if no reduction phase is needed.",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "effectful",
+                            "description": "Whether effectful commands in the <code>Pause</code> domain might be\nsent by the mapper function. An analysis which does not use effectful\ncommands will run more efficiently.",
+                            "type": "boolean"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "analysisId",
+                            "description": "ID of the resulting analysis.",
+                            "$ref": "AnalysisId"
+                        }
+                    ]
+                },
+                {
+                    "name": "addLocation",
+                    "description": "Apply the analysis to every point where a script location executes.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Associated analysis.",
+                            "$ref": "AnalysisId"
+                        },
+                        {
+                            "name": "sessionId",
+                            "description": "Session containing the script.",
+                            "$ref": "SessionId"
+                        },
+                        {
+                            "name": "location",
+                            "description": "Location to apply the analysis to.",
+                            "$ref": "Debugger.Location"
+                        }
+                    ]
+                },
+                {
+                    "name": "addFunctionEntryPoints",
+                    "description": "Apply the analysis to every function entry point in a session.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Associated analysis.",
+                            "$ref": "AnalysisId"
+                        },
+                        {
+                            "name": "sessionId",
+                            "description": "Associated session.",
+                            "$ref": "SessionId"
+                        },
+                        {
+                            "name": "scriptIds",
+                            "description": "Set of scripts to apply the analysis to function entry points in.\nThis can be omitted to apply the analysis to every function entry point\nin the session's recording.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "Debugger.ScriptId"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "runAnalysis",
+                    "description": "Run the analysis. After this is called, <code>analysisResult</code> events\nwill be emitted as results are gathered. Does not return until the analysis\nhas finished and all events have been emitted.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Analysis to run.",
+                            "$ref": "AnalysisId"
+                        }
+                    ]
+                }
+            ],
+            "events": [
+                {
+                    "name": "analysisResult",
+                    "description": "Describes some results of an analysis.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Associated analysis.",
+                            "$ref": "AnalysisId"
+                        },
+                        {
+                            "name": "results",
+                            "description": "Results for different keys. If a reducer was specified, a given key can\nonly appear once in the results emitted for the analysis.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "AnalysisEntry"
+                            }
                         }
                     ]
                 }

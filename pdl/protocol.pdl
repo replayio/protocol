@@ -166,7 +166,7 @@ domain Graphics
   command getPaintContents
     parameters
       # Execution point to get the graphics for. This must have been listed in
-      # a paintPoints event.
+      # a <code>paintPoints</code> event.
       Recording.ExecutionPoint point
       # Encoding format for the returned screen.
       MimeType mimeType
@@ -495,6 +495,110 @@ domain Pause
       optional Value exception
       # Any additional data associated with the returned/thrown value.
       PauseData data
+
+# The Analysis domain is used to efficiently analyze the program state at many
+# execution points. Analysis specifications are based on the MapReduce
+# algorithm: a map operation is performed on all the execution points of
+# interest, and the results are reduced to a summary afterwards.
+#
+# <br><br>The life cycle of an analysis is as follows. First, use <code>createAnalysis</code>
+# to create the analysis and specify its map and reduce operations. Next, use one
+# or more other commands to specify the set of execution points to apply the
+# analysis to. Finally, use <code>executeAnalysis</code> to start running the
+# analysis and generate <code>analysisResult</code> events.
+#
+# <br><br>Currently, analyses can only be applied to one session/recording.
+# This restriction will be relaxed in the future.
+domain Analysis
+
+  # Unique identifier for an analysis.
+  type AnalysisId extends string
+
+  # Start specifying a new analysis.
+  command createAnalysis
+    parameters
+      # Body of the mapper function. The mapper function takes two arguments:
+      # <code>input</code> is a <code>MapInput</code> object, and
+      # <code>sendCommand</code> is a function that can be passed a command
+      # name and parameters (in that order) and synchronously returns the
+      # command result. Only methods from the <code>Pause</code> domain may
+      # be used with <code>sendCommand</code>. The mapper function must
+      # <code>return</code> an array of <code>AnalysisEntry</code> objects.
+      string mapper
+      # Body of the reducer function. The reducer function takes two arguments:
+      # <code>key</code> is an <code>AnalysisEntry</code> key, and <code>values</code>
+      # is an array of <code>AnalysisEntry</code> values. All the input values
+      # were associated with the key by an earlier call to <code>mapper</code>
+      # <strong>or</strong> <code>reducer</code>. The reducer function must
+      # return a single <code>AnalysisEntry</code> value, which summarizes all
+      # the input values and will be associated with <code>key</code> for
+      # <code>analysisResult</code> events or further calls to the reducer.
+      # The reducer may be omitted if no reduction phase is needed.
+      optional string reducer
+      # Whether effectful commands in the <code>Pause</code> domain might be
+      # sent by the mapper function. An analysis which does not use effectful
+      # commands will run more efficiently.
+      boolean effectful
+    returns
+      # ID of the resulting analysis.
+      AnalysisId analysisId
+
+  # Input to the mapper function.
+  type MapInput extends Recording.TimeStampedPoint
+    properties
+      # Associated session ID for the current execution point.
+      SessionId sessionId
+      # Pause ID created for the current execution point.
+      PauseId pauseId
+
+  # Apply the analysis to every point where a script location executes.
+  command addLocation
+    parameters
+      # Associated analysis.
+      AnalysisId analysisId
+      # Session containing the script.
+      SessionId sessionId
+      # Location to apply the analysis to.
+      Debugger.Location location
+
+  # Apply the analysis to every function entry point in a session.
+  command addFunctionEntryPoints
+    parameters
+      # Associated analysis.
+      AnalysisId analysisId
+      # Associated session.
+      SessionId sessionId
+      # Set of scripts to apply the analysis to function entry points in.
+      # This can be omitted to apply the analysis to every function entry point
+      # in the session's recording.
+      optional array of Debugger.ScriptId scriptIds
+
+  # Run the analysis. After this is called, <code>analysisResult</code> events
+  # will be emitted as results are gathered. Does not return until the analysis
+  # has finished and all events have been emitted.
+  command runAnalysis
+    parameters
+      # Analysis to run.
+      AnalysisId analysisId
+
+  # Describes some results of an analysis.
+  event analysisResult
+    parameters
+      # Associated analysis.
+      AnalysisId analysisId
+      # Results for different keys. If a reducer was specified, a given key can
+      # only appear once in the results emitted for the analysis.
+      array of AnalysisEntry results
+
+  # Result of a map or reduce operation.
+  type AnalysisEntry extends object
+    properties
+      # Key for the entry. This can be any JSON value. Keys are equivalent if they
+      # are structurally equivalent: they have the same contents, though object
+      # keys may be ordered differently when stringified.
+      any key
+      # Value for the entry. This can be any JSON value.
+      any value
 
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other
