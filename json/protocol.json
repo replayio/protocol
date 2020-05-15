@@ -993,8 +993,8 @@
                     ]
                 },
                 {
-                    "name": "getFrameParameters",
-                    "description": "Get the names and values of a frame's formal parameters.",
+                    "name": "getFrameArguments",
+                    "description": "Get the values of a frame's arguments.",
                     "parameters": [
                         {
                             "name": "frameId",
@@ -1004,11 +1004,11 @@
                     ],
                     "returns": [
                         {
-                            "name": "parameters",
-                            "description": "Names and current values of each of the frame's formal parameters,\nin order.",
+                            "name": "arguments",
+                            "description": "Current values of each of the frame's arguments.",
                             "type": "array",
                             "items": {
-                                "$ref": "NamedValue"
+                                "$ref": "Value"
                             }
                         }
                     ]
@@ -1120,7 +1120,7 @@
                 },
                 {
                     "name": "addFunctionEntryPoints",
-                    "description": "Apply the analysis to every function entry point in a session.",
+                    "description": "Apply the analysis to every function entry point in a region of a script.",
                     "parameters": [
                         {
                             "name": "analysisId",
@@ -1133,13 +1133,21 @@
                             "$ref": "Session.SessionId"
                         },
                         {
-                            "name": "scriptIds",
-                            "description": "Set of scripts to apply the analysis to function entry points in.\nThis can be omitted to apply the analysis to every function entry point\nin the session's recording.",
+                            "name": "scriptId",
+                            "description": "Script to look for function entry points in.",
+                            "$ref": "Debugger.ScriptId"
+                        },
+                        {
+                            "name": "begin",
+                            "description": "If specified, earlier functions will be excluded.",
                             "optional": true,
-                            "type": "array",
-                            "items": {
-                                "$ref": "Debugger.ScriptId"
-                            }
+                            "$ref": "Debugger.ScriptLocation"
+                        },
+                        {
+                            "name": "end",
+                            "description": "If specified, later functions will be excluded.",
+                            "optional": true,
+                            "$ref": "Debugger.ScriptLocation"
                         }
                     ]
                 },
