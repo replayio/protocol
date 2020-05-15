@@ -546,11 +546,11 @@ domain Analysis
       # return an array of <code>AnalysisEntry</code> objects.
       string mapper
       # Body of the reducer function. The reducer function takes two arguments:
-      # <code>key</code> is an <code>AnalysisEntry</code> key, and <code>values</code>
-      # is an array of <code>AnalysisEntry</code> values. All the input values
+      # <code>key</code> is an <code>AnalysisKey</code>, and <code>values</code>
+      # is an array of <code>AnalysisValue</code>. All the values
       # were associated with the key by an earlier call to <code>mapper</code>
       # <strong>or</strong> <code>reducer</code>. The reducer function must
-      # return a single <code>AnalysisEntry</code> value, which summarizes all
+      # return an <code>AnalysisValue</code>, which summarizes all
       # the input values and will be associated with <code>key</code> for
       # <code>analysisResult</code> events or further calls to the reducer.
       # The reducer may be omitted if no reduction phase is needed.
@@ -611,15 +611,19 @@ domain Analysis
       # only appear once in the results emitted for the analysis.
       array of AnalysisEntry results
 
-  # Result of a map or reduce operation.
+  # Key for an analysis result. This can be any JSON value. Keys are equivalent
+  # if they are structurally equivalent: they have the same contents, though
+  # object keys may be ordered differently when stringified.
+  type AnalysisKey extends any
+
+  # Value for an analysis result. This can be any JSON value.
+  type AnalysisValue extends any
+
+  # A key/value pair produced by an analysis.
   type AnalysisEntry extends object
     properties
-      # Key for the entry. This can be any JSON value. Keys are equivalent if they
-      # are structurally equivalent: they have the same contents, though object
-      # keys may be ordered differently when stringified.
-      any key
-      # Value for the entry. This can be any JSON value.
-      any value
+      AnalysisKey key
+      AnalysisValue value
 
 # The Internal domain is for use by Web Replay's own tools and other software.
 # While use of this domain is not restricted, it won't be very helpful for other

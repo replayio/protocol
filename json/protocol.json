@@ -1042,19 +1042,27 @@
                     ]
                 },
                 {
+                    "id": "AnalysisKey",
+                    "description": "Key for an analysis result. This can be any JSON value. Keys are equivalent\nif they are structurally equivalent: they have the same contents, though\nobject keys may be ordered differently when stringified.",
+                    "type": "any"
+                },
+                {
+                    "id": "AnalysisValue",
+                    "description": "Value for an analysis result. This can be any JSON value.",
+                    "type": "any"
+                },
+                {
                     "id": "AnalysisEntry",
-                    "description": "Result of a map or reduce operation.",
+                    "description": "A key/value pair produced by an analysis.",
                     "type": "object",
                     "properties": [
                         {
                             "name": "key",
-                            "description": "Key for the entry. This can be any JSON value. Keys are equivalent if they\nare structurally equivalent: they have the same contents, though object\nkeys may be ordered differently when stringified.",
-                            "type": "any"
+                            "$ref": "AnalysisKey"
                         },
                         {
                             "name": "value",
-                            "description": "Value for the entry. This can be any JSON value.",
-                            "type": "any"
+                            "$ref": "AnalysisValue"
                         }
                     ]
                 }
@@ -1071,7 +1079,7 @@
                         },
                         {
                             "name": "reducer",
-                            "description": "Body of the reducer function. The reducer function takes two arguments:\n<code>key</code> is an <code>AnalysisEntry</code> key, and <code>values</code>\nis an array of <code>AnalysisEntry</code> values. All the input values\nwere associated with the key by an earlier call to <code>mapper</code>\n<strong>or</strong> <code>reducer</code>. The reducer function must\nreturn a single <code>AnalysisEntry</code> value, which summarizes all\nthe input values and will be associated with <code>key</code> for\n<code>analysisResult</code> events or further calls to the reducer.\nThe reducer may be omitted if no reduction phase is needed.",
+                            "description": "Body of the reducer function. The reducer function takes two arguments:\n<code>key</code> is an <code>AnalysisKey</code>, and <code>values</code>\nis an array of <code>AnalysisValue</code>. All the values\nwere associated with the key by an earlier call to <code>mapper</code>\n<strong>or</strong> <code>reducer</code>. The reducer function must\nreturn an <code>AnalysisValue</code>, which summarizes all\nthe input values and will be associated with <code>key</code> for\n<code>analysisResult</code> events or further calls to the reducer.\nThe reducer may be omitted if no reduction phase is needed.",
                             "optional": true,
                             "type": "string"
                         },
