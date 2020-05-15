@@ -1032,12 +1032,12 @@
                         {
                             "name": "sessionId",
                             "description": "Associated session ID for the current execution point.",
-                            "$ref": "SessionId"
+                            "$ref": "Session.SessionId"
                         },
                         {
                             "name": "pauseId",
                             "description": "Pause ID created for the current execution point.",
-                            "$ref": "PauseId"
+                            "$ref": "Pause.PauseId"
                         }
                     ]
                 },
@@ -1066,7 +1066,7 @@
                     "parameters": [
                         {
                             "name": "mapper",
-                            "description": "Body of the mapper function. The mapper function takes two arguments:\n<code>input</code> is a <code>MapInput</code> object, and\n<code>sendCommand</code> is a function that can be passed a command\nname and parameters (in that order) and synchronously returns the\ncommand result. Only methods from the <code>Pause</code> domain may\nbe used with <code>sendCommand</code>. The mapper function must\n<code>return</code> an array of <code>AnalysisEntry</code> objects.",
+                            "description": "Body of the mapper function. The mapper function takes two arguments:\n<code>input</code> is a <code>MapInput</code> object, and\n<code>sendCommand</code> is a function that can be passed a command\nname and parameters (in that order) and synchronously returns the\ncommand result. Only methods from the <code>Pause</code> domain may\nbe used with <code>sendCommand</code>. The mapper function must\nreturn an array of <code>AnalysisEntry</code> objects.",
                             "type": "string"
                         },
                         {
@@ -1101,7 +1101,7 @@
                         {
                             "name": "sessionId",
                             "description": "Session containing the script.",
-                            "$ref": "SessionId"
+                            "$ref": "Session.SessionId"
                         },
                         {
                             "name": "location",
@@ -1122,7 +1122,7 @@
                         {
                             "name": "sessionId",
                             "description": "Associated session.",
-                            "$ref": "SessionId"
+                            "$ref": "Session.SessionId"
                         },
                         {
                             "name": "scriptIds",

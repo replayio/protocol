@@ -543,7 +543,7 @@ domain Analysis
       # name and parameters (in that order) and synchronously returns the
       # command result. Only methods from the <code>Pause</code> domain may
       # be used with <code>sendCommand</code>. The mapper function must
-      # <code>return</code> an array of <code>AnalysisEntry</code> objects.
+      # return an array of <code>AnalysisEntry</code> objects.
       string mapper
       # Body of the reducer function. The reducer function takes two arguments:
       # <code>key</code> is an <code>AnalysisEntry</code> key, and <code>values</code>
@@ -568,9 +568,9 @@ domain Analysis
   type MapInput extends Recording.TimeStampedPoint
     properties
       # Associated session ID for the current execution point.
-      SessionId sessionId
+      Session.SessionId sessionId
       # Pause ID created for the current execution point.
-      PauseId pauseId
+      Pause.PauseId pauseId
 
   # Apply the analysis to every point where a script location executes.
   command addLocation
@@ -578,7 +578,7 @@ domain Analysis
       # Associated analysis.
       AnalysisId analysisId
       # Session containing the script.
-      SessionId sessionId
+      Session.SessionId sessionId
       # Location to apply the analysis to.
       Debugger.Location location
 
@@ -588,7 +588,7 @@ domain Analysis
       # Associated analysis.
       AnalysisId analysisId
       # Associated session.
-      SessionId sessionId
+      Session.SessionId sessionId
       # Set of scripts to apply the analysis to function entry points in.
       # This can be omitted to apply the analysis to every function entry point
       # in the session's recording.
