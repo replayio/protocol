@@ -264,7 +264,7 @@ domain Debugger
   # Location within a particular script.
   type ScriptLocation extends object
     properties
-      # 0-indexed line in the script's source.
+      # 1-indexed line in the script's source.
       integer line
       # 0-indexed column in the script's source.
       integer column

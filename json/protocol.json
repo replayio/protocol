@@ -552,7 +552,7 @@
                     "properties": [
                         {
                             "name": "line",
-                            "description": "0-indexed line in the script's source.",
+                            "description": "1-indexed line in the script's source.",
                             "type": "integer"
                         },
                         {
