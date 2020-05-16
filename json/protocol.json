@@ -695,8 +695,14 @@
                             "type": "string"
                         },
                         {
+                            "name": "functionLocation",
+                            "description": "For call frames, the location of the function being called.",
+                            "optional": true,
+                            "$ref": "Debugger.Location"
+                        },
+                        {
                             "name": "location",
-                            "description": "Location in the source of where this frame is paused at.",
+                            "description": "Location in the source where this frame is paused at.",
                             "$ref": "Debugger.Location"
                         },
                         {

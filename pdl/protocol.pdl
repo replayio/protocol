@@ -374,8 +374,11 @@ domain Pause
       # Type of frame which is executing.
       FrameType type
       # For call frames, the name of the function being called.
+      # Omitted if the function has no name.
       optional string functionName
-      # Location in the source of where this frame is paused at.
+      # For call frames, the location of the function being called.
+      optional Debugger.Location functionLocation
+      # Location in the source where this frame is paused at.
       Debugger.Location location
       # Scope chain for the call frame, from innermost to outermost.
       array of ScopeId scopeChain
