@@ -513,7 +513,7 @@ domain Pause
       FrameId frameId
     returns
       # Current values of each of the frame's arguments.
-      array of Value arguments
+      array of Value argumentValues
 
 # The Analysis domain is used to efficiently analyze the program state at many
 # execution points. Analysis specifications are based on the MapReduce

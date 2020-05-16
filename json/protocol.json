@@ -1004,7 +1004,7 @@
                     ],
                     "returns": [
                         {
-                            "name": "arguments",
+                            "name": "argumentValues",
                             "description": "Current values of each of the frame's arguments.",
                             "type": "array",
                             "items": {
