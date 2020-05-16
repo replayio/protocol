@@ -690,7 +690,7 @@
                         },
                         {
                             "name": "functionName",
-                            "description": "For call frames, the name of the function being called.",
+                            "description": "For call frames, the name of the function being called.\nOmitted if the function has no name.",
                             "optional": true,
                             "type": "string"
                         },
@@ -1011,7 +1011,8 @@
                     "returns": [
                         {
                             "name": "argumentValues",
-                            "description": "Current values of each of the frame's arguments.",
+                            "description": "Current values of each of the frame's arguments. Omitted for non-call frames.",
+                            "optional": true,
                             "type": "array",
                             "items": {
                                 "$ref": "Value"
