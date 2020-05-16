@@ -1153,7 +1153,7 @@
                 },
                 {
                     "name": "runAnalysis",
-                    "description": "Run the analysis. After this is called, <code>analysisResult</code> events\nwill be emitted as results are gathered. Does not return until the analysis\nhas finished and all events have been emitted.",
+                    "description": "Run the analysis. After this is called, <code>analysisResult</code> and/or\n<code>analysisError</code> events will be emitted as results are gathered.\nDoes not return until the analysis has finished and all events have been\nemitted.",
                     "parameters": [
                         {
                             "name": "analysisId",
@@ -1180,6 +1180,22 @@
                             "items": {
                                 "$ref": "AnalysisEntry"
                             }
+                        }
+                    ]
+                },
+                {
+                    "name": "analysisError",
+                    "description": "Describes an error that occurred when running an analysis mapper or reducer\nfunction. This will not be emitted for every error, but if there was any\nerror then at least one event will be emitted.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Associated analysis.",
+                            "$ref": "AnalysisId"
+                        },
+                        {
+                            "name": "error",
+                            "description": "Description of the error.",
+                            "type": "string"
                         }
                     ]
                 }

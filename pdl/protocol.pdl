@@ -595,9 +595,10 @@ domain Analysis
       # If specified, later functions will be excluded.
       optional Debugger.ScriptLocation end
 
-  # Run the analysis. After this is called, <code>analysisResult</code> events
-  # will be emitted as results are gathered. Does not return until the analysis
-  # has finished and all events have been emitted.
+  # Run the analysis. After this is called, <code>analysisResult</code> and/or
+  # <code>analysisError</code> events will be emitted as results are gathered.
+  # Does not return until the analysis has finished and all events have been
+  # emitted.
   command runAnalysis
     parameters
       # Analysis to run.
@@ -611,6 +612,16 @@ domain Analysis
       # Results for different keys. If a reducer was specified, a given key can
       # only appear once in the results emitted for the analysis.
       array of AnalysisEntry results
+
+  # Describes an error that occurred when running an analysis mapper or reducer
+  # function. This will not be emitted for every error, but if there was any
+  # error then at least one event will be emitted.
+  event analysisError
+    parameters
+      # Associated analysis.
+      AnalysisId analysisId
+      # Description of the error.
+      string error
 
   # Key for an analysis result. This can be any JSON value. Keys are equivalent
   # if they are structurally equivalent: they have the same contents, though
