@@ -356,10 +356,14 @@ domain Pause
     properties
       # For non-object values that are valid JSON values.
       optional any value
-      # For non-object values that are not valid JSON values.
-      optional UnserializableValue unserializable
       # For object values.
       optional ObjectId object
+      # String representation of a number that is not a valid JSON value:
+      # <code>-0</code>, <code>Infinity</code>, <code>-Infinity</code>,
+      # and <code>NaN</code>.
+      optional string unserializableNumber
+      # String representation of a bigint.
+      optional string bigint
 
   # Description of a value, with an associated name.
   type NamedValue extends Value
@@ -467,11 +471,6 @@ domain Pause
       optional Value key
       # This entry's value.
       Value value
-
-  # String representation of a defined value that is not a valid JSON value:
-  # <code>-0</code>, <code>Infinity</code>, <code>-Infinity</code>,
-  # <code>NaN</code>, and BigInts.
-  type UnserializableValue extends string
 
   # Block of data from this pause which might be useful to the protocol client.
   # To reduce the number of back-and-forth calls required over the protocol,

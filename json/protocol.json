@@ -649,16 +649,22 @@
                             "type": "any"
                         },
                         {
-                            "name": "unserializable",
-                            "description": "For non-object values that are not valid JSON values.",
-                            "optional": true,
-                            "$ref": "UnserializableValue"
-                        },
-                        {
                             "name": "object",
                             "description": "For object values.",
                             "optional": true,
                             "$ref": "ObjectId"
+                        },
+                        {
+                            "name": "unserializableNumber",
+                            "description": "String representation of a number that is not a valid JSON value:\n<code>-0</code>, <code>Infinity</code>, <code>-Infinity</code>,\nand <code>NaN</code>.",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "bigint",
+                            "description": "String representation of a bigint.",
+                            "optional": true,
+                            "type": "string"
                         }
                     ]
                 },
@@ -901,11 +907,6 @@
                             "$ref": "Value"
                         }
                     ]
-                },
-                {
-                    "id": "UnserializableValue",
-                    "description": "String representation of a defined value that is not a valid JSON value:\n<code>-0</code>, <code>Infinity</code>, <code>-Infinity</code>,\n<code>NaN</code>, and BigInts.",
-                    "type": "string"
                 },
                 {
                     "id": "PauseData",
