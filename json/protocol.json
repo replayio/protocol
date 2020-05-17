@@ -575,6 +575,52 @@
                             "$ref": "PauseDescription"
                         }
                     ]
+                },
+                {
+                    "name": "blackboxScript",
+                    "description": "Blackbox a script or a region in it. Resume commands like\n<code>findResumeTarget</code> will not return execution points in\nblackboxed regions of a script.",
+                    "parameters": [
+                        {
+                            "name": "scriptId",
+                            "description": "Script to blackbox.",
+                            "$ref": "ScriptId"
+                        },
+                        {
+                            "name": "begin",
+                            "description": "If specified, earlier locations will keep their blackbox state.",
+                            "optional": true,
+                            "$ref": "ScriptLocation"
+                        },
+                        {
+                            "name": "end",
+                            "description": "If specified, later locations will keep their blackbox state.",
+                            "optional": true,
+                            "$ref": "ScriptLocation"
+                        }
+                    ]
+                },
+                {
+                    "name": "unblackboxScript",
+                    "description": "Unblackbox a script or a region in it.",
+                    "parameters": [
+                        {
+                            "name": "scriptId",
+                            "description": "Script to unblackbox.",
+                            "$ref": "ScriptId"
+                        },
+                        {
+                            "name": "begin",
+                            "description": "If specified, earlier locations will keep their blackbox state.",
+                            "optional": true,
+                            "$ref": "ScriptLocation"
+                        },
+                        {
+                            "name": "end",
+                            "description": "If specified, later locations will keep their blackbox state.",
+                            "optional": true,
+                            "$ref": "ScriptLocation"
+                        }
+                    ]
                 }
             ],
             "events": [

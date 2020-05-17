@@ -385,6 +385,28 @@ domain Debugger
       # Point where execution should pause.
       PauseDescription target
 
+  # Blackbox a script or a region in it. Resume commands like
+  # <code>findResumeTarget</code> will not return execution points in
+  # blackboxed regions of a script.
+  command blackboxScript
+    parameters
+      # Script to blackbox.
+      ScriptId scriptId
+      # If specified, earlier locations will keep their blackbox state.
+      optional ScriptLocation begin
+      # If specified, later locations will keep their blackbox state.
+      optional ScriptLocation end
+
+  # Unblackbox a script or a region in it.
+  command unblackboxScript
+    parameters
+      # Script to unblackbox.
+      ScriptId scriptId
+      # If specified, earlier locations will keep their blackbox state.
+      optional ScriptLocation begin
+      # If specified, later locations will keep their blackbox state.
+      optional ScriptLocation end
+
 # The Pause domain is used to inspect the state of the program when it is paused
 # at particular execution points.
 #
