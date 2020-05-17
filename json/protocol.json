@@ -674,7 +674,7 @@
                         },
                         {
                             "name": "unavailable",
-                            "description": "Set for values which are not available from the underlying execution\nengine (for example, they have been optimized out).",
+                            "description": "Set for values which are not available for some reason.",
                             "optional": true,
                             "type": "boolean"
                         }
