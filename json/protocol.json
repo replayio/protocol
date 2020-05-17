@@ -969,6 +969,12 @@
                             "$ref": "Value"
                         },
                         {
+                            "name": "failed",
+                            "description": "Set if execution failed and no value was returned or thrown.\nThis can happen if the evaluation interacts with the system in\nan unsupported way (such as by calling <code>window.alert</code>)\nor if the evaluation took too long and was forcibly terminated.",
+                            "optional": true,
+                            "type": "boolean"
+                        },
+                        {
                             "name": "data",
                             "description": "Any additional data associated with the returned/thrown value.",
                             "$ref": "PauseData"

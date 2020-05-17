@@ -496,6 +496,11 @@ domain Pause
       optional Value result
       # If execution threw an exception, the thrown value.
       optional Value exception
+      # Set if execution failed and no value was returned or thrown.
+      # This can happen if the evaluation interacts with the system in
+      # an unsupported way (such as by calling <code>window.alert</code>)
+      # or if the evaluation took too long and was forcibly terminated.
+      optional boolean failed
       # Any additional data associated with the returned/thrown value.
       PauseData data
 
