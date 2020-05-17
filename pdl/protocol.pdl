@@ -302,28 +302,87 @@ domain Debugger
     parameters
       BreakpointId breakpointId
 
-  # Basic description of a point where execution can pause.
+  # Reasons why execution can pause when running forward or backward through
+  # the recording.
+  # <br>
+  # <br><code>endpoint</code>: Ran to the beginning or end of the recording.
+  # <br><code>breakpoint</code>: Hit an installed breakpoint.
+  # <br><code>debuggerStatement</code>: Hit a debugger statement.
+  # <br><code>step</code>: Reached the target of a step operation.
+  # <br><br>
+  type PauseReason extends string
+    enum
+      # Hit an endpoint of the recording.
+      endpoint
+      # Hit a breakpoint.
+      breakpoint
+      # Hit a debugger statement.
+      debuggerStatement
+      # Finished a step.
+      step
+
+  # Description of a point where execution can pause after running forward or
+  # backward through the recording.
   type PauseDescription extends Recording.TimeStampedPoint
     properties
+      # Reason for pausing.
+      PauseReason reason
       # Location of the topmost frame, omitted if there are no frames on stack.
       optional Location frame
 
-  # Find the point to pause at when running forward from a point.
+  # Find where to pause when running forward from a point.
   command findResumeTarget
     parameters
       # Point to start the resume from.
       Recording.ExecutionPoint point
     returns
-      # Point where execution should pause when resuming.
+      # Point where execution should pause.
       PauseDescription target
 
-  # Find the point to pause at when rewinding from a point.
+  # Find where to pause when rewinding from a point.
   command findRewindTarget
     parameters
       # Point to start rewinding from.
       Recording.ExecutionPoint point
     returns
-      # Point where execution should pause when rewinding.
+      # Point where execution should pause.
+      PauseDescription target
+
+  # Find where to pause when reverse-stepping from a point.
+  command findReverseStepOverTarget
+    parameters
+      # Point to start reverse-stepping from.
+      Recording.ExecutionPoint point
+    returns
+      # Point where execution should pause.
+      PauseDescription target
+
+  # Find where to pause when stepping from a point.
+  command findStepOverTarget
+    parameters
+      # Point to start stepping from.
+      Recording.ExecutionPoint point
+    returns
+      # Point where execution should pause.
+      PauseDescription target
+
+  # Find where to pause when stepping from a point and stopping at the entry of
+  # any encountered call.
+  command findStepInTarget
+    parameters
+      # Point to start stepping from.
+      Recording.ExecutionPoint point
+    returns
+      # Point where execution should pause.
+      PauseDescription target
+
+  # Find where to pause when stepping out from a frame to the caller.
+  command findStepOutTarget
+    parameters
+      # Point to step out from.
+      Recording.ExecutionPoint point
+    returns
+      # Point where execution should pause.
       PauseDescription target
 
 # The Pause domain is used to inspect the state of the program when it is paused

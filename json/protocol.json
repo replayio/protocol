@@ -470,7 +470,7 @@
                 },
                 {
                     "name": "findResumeTarget",
-                    "description": "Find the point to pause at when running forward from a point.",
+                    "description": "Find where to pause when running forward from a point.",
                     "parameters": [
                         {
                             "name": "point",
@@ -481,14 +481,14 @@
                     "returns": [
                         {
                             "name": "target",
-                            "description": "Point where execution should pause when resuming.",
+                            "description": "Point where execution should pause.",
                             "$ref": "PauseDescription"
                         }
                     ]
                 },
                 {
                     "name": "findRewindTarget",
-                    "description": "Find the point to pause at when rewinding from a point.",
+                    "description": "Find where to pause when rewinding from a point.",
                     "parameters": [
                         {
                             "name": "point",
@@ -499,7 +499,79 @@
                     "returns": [
                         {
                             "name": "target",
-                            "description": "Point where execution should pause when rewinding.",
+                            "description": "Point where execution should pause.",
+                            "$ref": "PauseDescription"
+                        }
+                    ]
+                },
+                {
+                    "name": "findReverseStepOverTarget",
+                    "description": "Find where to pause when reverse-stepping from a point.",
+                    "parameters": [
+                        {
+                            "name": "point",
+                            "description": "Point to start reverse-stepping from.",
+                            "$ref": "Recording.ExecutionPoint"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "target",
+                            "description": "Point where execution should pause.",
+                            "$ref": "PauseDescription"
+                        }
+                    ]
+                },
+                {
+                    "name": "findStepOverTarget",
+                    "description": "Find where to pause when stepping from a point.",
+                    "parameters": [
+                        {
+                            "name": "point",
+                            "description": "Point to start stepping from.",
+                            "$ref": "Recording.ExecutionPoint"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "target",
+                            "description": "Point where execution should pause.",
+                            "$ref": "PauseDescription"
+                        }
+                    ]
+                },
+                {
+                    "name": "findStepInTarget",
+                    "description": "Find where to pause when stepping from a point and stopping at the entry of\nany encountered call.",
+                    "parameters": [
+                        {
+                            "name": "point",
+                            "description": "Point to start stepping from.",
+                            "$ref": "Recording.ExecutionPoint"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "target",
+                            "description": "Point where execution should pause.",
+                            "$ref": "PauseDescription"
+                        }
+                    ]
+                },
+                {
+                    "name": "findStepOutTarget",
+                    "description": "Find where to pause when stepping out from a frame to the caller.",
+                    "parameters": [
+                        {
+                            "name": "point",
+                            "description": "Point to step out from.",
+                            "$ref": "Recording.ExecutionPoint"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "target",
+                            "description": "Point where execution should pause.",
                             "$ref": "PauseDescription"
                         }
                     ]
@@ -599,10 +671,26 @@
                     "type": "string"
                 },
                 {
+                    "id": "PauseReason",
+                    "description": "Reasons why execution can pause when running forward or backward through\nthe recording.\n<br>\n<br><code>endpoint</code>: Ran to the beginning or end of the recording.\n<br><code>breakpoint</code>: Hit an installed breakpoint.\n<br><code>debuggerStatement</code>: Hit a debugger statement.\n<br><code>step</code>: Reached the target of a step operation.\n<br><br>",
+                    "type": "string",
+                    "enum": [
+                        "endpoint",
+                        "breakpoint",
+                        "debuggerStatement",
+                        "step"
+                    ]
+                },
+                {
                     "id": "PauseDescription",
-                    "description": "Basic description of a point where execution can pause.",
+                    "description": "Description of a point where execution can pause after running forward or\nbackward through the recording.",
                     "$ref": "Recording.TimeStampedPoint",
                     "properties": [
+                        {
+                            "name": "reason",
+                            "description": "Reason for pausing.",
+                            "$ref": "PauseReason"
+                        },
                         {
                             "name": "frame",
                             "description": "Location of the topmost frame, omitted if there are no frames on stack.",
