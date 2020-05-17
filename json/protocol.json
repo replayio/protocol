@@ -665,6 +665,18 @@
                             "description": "String representation of a bigint.",
                             "optional": true,
                             "type": "string"
+                        },
+                        {
+                            "name": "uninitialized",
+                            "description": "Set for values of variables which haven't been initialized yet.",
+                            "optional": true,
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "unavailable",
+                            "description": "Set for values which are not available from the underlying execution\nengine (for example, they have been optimized out).",
+                            "optional": true,
+                            "type": "boolean"
                         }
                     ]
                 },

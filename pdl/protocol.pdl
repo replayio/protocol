@@ -364,6 +364,11 @@ domain Pause
       optional string unserializableNumber
       # String representation of a bigint.
       optional string bigint
+      # Set for values of variables which haven't been initialized yet.
+      optional boolean uninitialized
+      # Set for values which are not available from the underlying execution
+      # engine (for example, they have been optimized out).
+      optional boolean unavailable
 
   # Description of a value, with an associated name.
   type NamedValue extends Value
