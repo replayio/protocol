@@ -407,6 +407,64 @@ domain Debugger
       # If specified, later locations will keep their blackbox state.
       optional ScriptLocation end
 
+# The Console domain defines methods for accessing messages reported to the console.
+#
+# <br><br>All commands and events in this domain must include a <code>sessionId</code>.
+domain Console
+
+  # Find all messages in the recording. Does not return until the recording is
+  # fully processed. Before returning, <code>newMessage</code> events will be
+  # emitted for every console message in the recording.
+  command findMessages
+
+  # Describes a console message in the recording.
+  event newMessage
+    parameters
+      # Contents of the message.
+      Message message
+
+  # Contents of a console message.
+  type Message extends object
+    properties
+      # Source of the message.
+      MessageSource source
+      # Severity level of the message.
+      MessageLevel level
+      # Any text associated with the message.
+      string text
+      # Any URL associated with the message.
+      optional string url
+      # Any 1-indexed line number associated with the message.
+      optional integer line
+      # Any 0-indexed column number associated with the message.
+      optional integer column
+      # Point associated with the message. For messages added due to uncaught
+      # exceptions this is the point at which the exception was thrown. For
+      # other types of messages it is the point where the message was added.
+      Recording.TimeStampedPoint point
+      # Pause ID associated with the message arguments and stack.
+      Pause.PauseId pauseId
+      # Any arguments to the message.
+      optional array of Pause.Value argumentValues
+      # Stack contents, omitted if there are no frames on the stack
+      # at the message's point.
+      optional array of Pause.FrameId stack
+      # Data describing the message arguments and frames on the stack.
+      Pause.PauseData data
+
+  # Possible sources from which a message can originate.
+  type MessageSource extends string
+    enum
+      PageError
+      ConsoleAPI
+
+  # Severity level of a message.
+  type MessageLevel extends string
+    enum
+      info
+      warning
+      error
+
 # The Pause domain is used to inspect the state of the program when it is paused
 # at particular execution points.
 #

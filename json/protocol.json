@@ -748,6 +748,96 @@
             ]
         },
         {
+            "domain": "Console",
+            "description": "The Console domain defines methods for accessing messages reported to the console.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
+            "commands": [
+                {
+                    "name": "findMessages",
+                    "description": "Find all messages in the recording. Does not return until the recording is\nfully processed. Before returning, <code>newMessage</code> events will be\nemitted for every console message in the recording."
+                }
+            ],
+            "events": [
+                {
+                    "name": "newMessage",
+                    "description": "Describes a console message in the recording.",
+                    "parameters": [
+                        {
+                            "name": "message",
+                            "description": "Contents of the message.",
+                            "$ref": "Message"
+                        }
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "id": "Message",
+                    "description": "Contents of a console message.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "source",
+                            "description": "Source of the message.",
+                            "$ref": "MessageSource"
+                        },
+                        {
+                            "name": "level",
+                            "description": "Severity level of the message.",
+                            "$ref": "MessageLevel"
+                        },
+                        {
+                            "name": "text",
+                            "description": "Any text associated with the message.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "point",
+                            "description": "Point associated with the message. For messages added due to uncaught\nexceptions this is the point at which the exception was thrown. For\nother types of messages it is the point where the message was added.",
+                            "$ref": "Recording.TimeStampedPoint"
+                        },
+                        {
+                            "name": "pauseId",
+                            "description": "Pause ID associated with the message arguments and stack.",
+                            "$ref": "Pause.PauseId"
+                        },
+                        {
+                            "name": "argumentValues",
+                            "description": "Any arguments to the message.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "Pause.Value"
+                            }
+                        },
+                        {
+                            "name": "stack",
+                            "description": "Stack contents, omitted if there are no frames on the stack\nat the message's point.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "Pause.FrameId"
+                            }
+                        },
+                        {
+                            "name": "data",
+                            "description": "Data describing the message arguments and frames on the stack.",
+                            "$ref": "Pause.PauseData"
+                        }
+                    ]
+                },
+                {
+                    "id": "MessageSource",
+                    "description": "Possible sources from which a message can originate.",
+                    "type": "string"
+                },
+                {
+                    "id": "MessageLevel",
+                    "description": "Severity level of a message.",
+                    "type": "string"
+                }
+            ]
+        },
+        {
             "domain": "Pause",
             "description": "The Pause domain is used to inspect the state of the program when it is paused\nat particular execution points.\n\n<br><br>All commands and events in this domain must include both a <code>sessionId</code>\nand a <code>pauseId</code>.",
             "types": [
