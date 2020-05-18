@@ -791,6 +791,24 @@
                             "type": "string"
                         },
                         {
+                            "name": "url",
+                            "description": "Any URL associated with the message.",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "line",
+                            "description": "Any 1-indexed line number associated with the message.",
+                            "optional": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "column",
+                            "description": "Any 0-indexed column number associated with the message.",
+                            "optional": true,
+                            "type": "integer"
+                        },
+                        {
                             "name": "point",
                             "description": "Point associated with the message. For messages added due to uncaught\nexceptions this is the point at which the exception was thrown. For\nother types of messages it is the point where the message was added.",
                             "$ref": "Recording.TimeStampedPoint"
@@ -828,12 +846,21 @@
                 {
                     "id": "MessageSource",
                     "description": "Possible sources from which a message can originate.",
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "PageError",
+                        "ConsoleAPI"
+                    ]
                 },
                 {
                     "id": "MessageLevel",
                     "description": "Severity level of a message.",
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "info",
+                        "warning",
+                        "error"
+                    ]
                 }
             ]
         },
