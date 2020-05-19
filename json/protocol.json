@@ -1438,6 +1438,28 @@
                             "$ref": "AnalysisId"
                         }
                     ]
+                },
+                {
+                    "name": "cancelAnalysis",
+                    "description": "Cancel an in progress analysis, preventing further <code>analysisResult</code>\nand <code>analysisError</code> events from being emitted and releasing server\nside resources.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Analysis to cancel.",
+                            "$ref": "AnalysisId"
+                        }
+                    ]
+                },
+                {
+                    "name": "findAnalysisPoints",
+                    "description": "Find the set of execution points at which an analysis will run. After this\nis called, <code>analysisPoints</code> events will be emitted as the points\nare found. Does not return until events for all points have been emitted.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Analysis to find points for.",
+                            "$ref": "AnalysisId"
+                        }
+                    ]
                 }
             ],
             "events": [
@@ -1473,6 +1495,25 @@
                             "name": "error",
                             "description": "Description of the error.",
                             "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "analysisPoints",
+                    "description": "Describes some points at which an analysis will run.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Associated analysis.",
+                            "$ref": "AnalysisId"
+                        },
+                        {
+                            "name": "points",
+                            "description": "Some points at which the analysis will run.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Recording.TimeStampedPoint"
+                            }
                         }
                     ]
                 }

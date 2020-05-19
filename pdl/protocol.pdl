@@ -773,6 +773,30 @@ domain Analysis
       # Description of the error.
       string error
 
+  # Cancel an in progress analysis, preventing further <code>analysisResult</code>
+  # and <code>analysisError</code> events from being emitted and releasing server
+  # side resources.
+  command cancelAnalysis
+    parameters
+      # Analysis to cancel.
+      AnalysisId analysisId
+
+  # Find the set of execution points at which an analysis will run. After this
+  # is called, <code>analysisPoints</code> events will be emitted as the points
+  # are found. Does not return until events for all points have been emitted.
+  command findAnalysisPoints
+    parameters
+      # Analysis to find points for.
+      AnalysisId analysisId
+
+  # Describes some points at which an analysis will run.
+  event analysisPoints
+    parameters
+      # Associated analysis.
+      AnalysisId analysisId
+      # Some points at which the analysis will run.
+      array of Recording.TimeStampedPoint points
+
   # Key for an analysis result. This can be any JSON value. Keys are equivalent
   # if they are structurally equivalent: they have the same contents, though
   # object keys may be ordered differently when stringified.
