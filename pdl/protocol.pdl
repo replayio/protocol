@@ -773,17 +773,18 @@ domain Analysis
       # Description of the error.
       string error
 
-  # Cancel an in progress analysis, preventing further <code>analysisResult</code>
-  # and <code>analysisError</code> events from being emitted and releasing server
-  # side resources.
-  command cancelAnalysis
+  # Release an analysis and its server side resources. If the analysis is
+  # running, it will be canceled, preventing further <code>analysisResult</code>
+  # and <code>analysisError</code> events from being emitted.
+  command releaseAnalysis
     parameters
-      # Analysis to cancel.
+      # Analysis to release.
       AnalysisId analysisId
 
   # Find the set of execution points at which an analysis will run. After this
   # is called, <code>analysisPoints</code> events will be emitted as the points
   # are found. Does not return until events for all points have been emitted.
+  # Can only be used after the analysis has started running.
   command findAnalysisPoints
     parameters
       # Analysis to find points for.

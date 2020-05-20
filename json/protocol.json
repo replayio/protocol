@@ -1440,19 +1440,19 @@
                     ]
                 },
                 {
-                    "name": "cancelAnalysis",
-                    "description": "Cancel an in progress analysis, preventing further <code>analysisResult</code>\nand <code>analysisError</code> events from being emitted and releasing server\nside resources.",
+                    "name": "releaseAnalysis",
+                    "description": "Release an analysis and its server side resources. If the analysis is\nrunning, it will be canceled, preventing further <code>analysisResult</code>\nand <code>analysisError</code> events from being emitted.",
                     "parameters": [
                         {
                             "name": "analysisId",
-                            "description": "Analysis to cancel.",
+                            "description": "Analysis to release.",
                             "$ref": "AnalysisId"
                         }
                     ]
                 },
                 {
                     "name": "findAnalysisPoints",
-                    "description": "Find the set of execution points at which an analysis will run. After this\nis called, <code>analysisPoints</code> events will be emitted as the points\nare found. Does not return until events for all points have been emitted.",
+                    "description": "Find the set of execution points at which an analysis will run. After this\nis called, <code>analysisPoints</code> events will be emitted as the points\nare found. Does not return until events for all points have been emitted.\nCan only be used after the analysis has started running.",
                     "parameters": [
                         {
                             "name": "analysisId",
