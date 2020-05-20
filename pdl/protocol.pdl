@@ -634,7 +634,7 @@ domain Pause
   type Result extends object
     properties
       # If the operation returned normally, the returned value.
-      optional Value result
+      optional Value returned
       # If the operation threw an exception, the thrown value.
       optional Value exception
       # Set if the operation failed and no value was returned or thrown.

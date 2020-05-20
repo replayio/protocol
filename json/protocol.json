@@ -1215,7 +1215,7 @@
                     "type": "object",
                     "properties": [
                         {
-                            "name": "result",
+                            "name": "returned",
                             "description": "If the operation returned normally, the returned value.",
                             "optional": true,
                             "$ref": "Value"
