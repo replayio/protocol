@@ -321,14 +321,18 @@ domain Debugger
       # Finished a step.
       step
 
+  # Description of an execution point.
+  type PointDescription extends Recording.TimeStampedPoint
+    properties
+      # Location of the topmost frame, omitted if there are no frames on stack.
+      optional Location frame
+
   # Description of a point where execution can pause after running forward or
   # backward through the recording.
-  type PauseDescription extends Recording.TimeStampedPoint
+  type PauseDescription extends PointDescription
     properties
       # Reason for pausing.
       PauseReason reason
-      # Location of the topmost frame, omitted if there are no frames on stack.
-      optional Location frame
 
   # Find where to pause when running forward from a point.
   command findResumeTarget
@@ -796,7 +800,7 @@ domain Analysis
       # Associated analysis.
       AnalysisId analysisId
       # Some points at which the analysis will run.
-      array of Recording.TimeStampedPoint points
+      array of Debugger.PointDescription points
 
   # Key for an analysis result. This can be any JSON value. Keys are equivalent
   # if they are structurally equivalent: they have the same contents, though

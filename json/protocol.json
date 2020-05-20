@@ -728,20 +728,27 @@
                     ]
                 },
                 {
-                    "id": "PauseDescription",
-                    "description": "Description of a point where execution can pause after running forward or\nbackward through the recording.",
+                    "id": "PointDescription",
+                    "description": "Description of an execution point.",
                     "$ref": "Recording.TimeStampedPoint",
                     "properties": [
-                        {
-                            "name": "reason",
-                            "description": "Reason for pausing.",
-                            "$ref": "PauseReason"
-                        },
                         {
                             "name": "frame",
                             "description": "Location of the topmost frame, omitted if there are no frames on stack.",
                             "optional": true,
                             "$ref": "Location"
+                        }
+                    ]
+                },
+                {
+                    "id": "PauseDescription",
+                    "description": "Description of a point where execution can pause after running forward or\nbackward through the recording.",
+                    "$ref": "PointDescription",
+                    "properties": [
+                        {
+                            "name": "reason",
+                            "description": "Reason for pausing.",
+                            "$ref": "PauseReason"
                         }
                     ]
                 }
@@ -1512,7 +1519,7 @@
                             "description": "Some points at which the analysis will run.",
                             "type": "array",
                             "items": {
-                                "$ref": "Recording.TimeStampedPoint"
+                                "$ref": "Debugger.PointDescription"
                             }
                         }
                     ]
