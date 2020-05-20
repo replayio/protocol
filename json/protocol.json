@@ -1208,6 +1208,36 @@
                             }
                         }
                     ]
+                },
+                {
+                    "id": "Result",
+                    "description": "Result of performing an effectful operation.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "result",
+                            "description": "If the operation returned normally, the returned value.",
+                            "optional": true,
+                            "$ref": "Value"
+                        },
+                        {
+                            "name": "exception",
+                            "description": "If the operation threw an exception, the thrown value.",
+                            "optional": true,
+                            "$ref": "Value"
+                        },
+                        {
+                            "name": "failed",
+                            "description": "Set if the operation failed and no value was returned or thrown.\nThis can happen when operations interact with the system in an\nunsupported way (such as by calling <code>dump()</code>)\nor if the evaluation took too long and was forcibly terminated.",
+                            "optional": true,
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "data",
+                            "description": "Any additional data associated with the returned/thrown value.",
+                            "$ref": "PauseData"
+                        }
+                    ]
                 }
             ],
             "commands": [
@@ -1229,26 +1259,31 @@
                     "returns": [
                         {
                             "name": "result",
-                            "description": "If execution returned normally, the evaluation result.",
-                            "optional": true,
-                            "$ref": "Value"
+                            "description": "Result of the evaluation.",
+                            "$ref": "Result"
+                        }
+                    ]
+                },
+                {
+                    "name": "getObjectProperty",
+                    "description": "Read a property from an object.",
+                    "parameters": [
+                        {
+                            "name": "object",
+                            "description": "Object to get the property from.",
+                            "$ref": "ObjectId"
                         },
                         {
-                            "name": "exception",
-                            "description": "If execution threw an exception, the thrown value.",
-                            "optional": true,
-                            "$ref": "Value"
-                        },
+                            "name": "name",
+                            "description": "Property to get.",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
                         {
-                            "name": "failed",
-                            "description": "Set if execution failed and no value was returned or thrown.\nThis can happen if the evaluation interacts with the system in\nan unsupported way (such as by calling <code>window.alert</code>)\nor if the evaluation took too long and was forcibly terminated.",
-                            "optional": true,
-                            "type": "boolean"
-                        },
-                        {
-                            "name": "data",
-                            "description": "Any additional data associated with the returned/thrown value.",
-                            "$ref": "PauseData"
+                            "name": "result",
+                            "description": "Result of getting the property.",
+                            "$ref": "Result"
                         }
                     ]
                 },
@@ -1369,7 +1404,7 @@
                         },
                         {
                             "name": "effectful",
-                            "description": "Whether effectful commands in the <code>Pause</code> domain might be\nsent by the mapper function. An analysis which does not use effectful\ncommands will run more efficiently. Effectful commands are\n<code>Pause.evaluateInFrame</code>.",
+                            "description": "Whether effectful commands in the <code>Pause</code> domain might be\nsent by the mapper function. An analysis which does not use effectful\ncommands will run more efficiently. Effectful commands are\n<code>Pause.evaluateInFrame</code>, and <code>Pause.getObjectProperty</code>.",
                             "type": "boolean"
                         }
                     ],

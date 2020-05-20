@@ -630,6 +630,21 @@ domain Pause
       optional array of Scope scopes
       optional array of Object objects
 
+  # Result of performing an effectful operation.
+  type Result extends object
+    properties
+      # If the operation returned normally, the returned value.
+      optional Value result
+      # If the operation threw an exception, the thrown value.
+      optional Value exception
+      # Set if the operation failed and no value was returned or thrown.
+      # This can happen when operations interact with the system in an
+      # unsupported way (such as by calling <code>dump()</code>)
+      # or if the evaluation took too long and was forcibly terminated.
+      optional boolean failed
+      # Any additional data associated with the returned/thrown value.
+      PauseData data
+
   # Evaluate an expression in the context of a call frame.
   command evaluateInFrame
     parameters
@@ -638,17 +653,19 @@ domain Pause
       # Expression to evaluate.
       string expression
     returns
-      # If execution returned normally, the evaluation result.
-      optional Value result
-      # If execution threw an exception, the thrown value.
-      optional Value exception
-      # Set if execution failed and no value was returned or thrown.
-      # This can happen if the evaluation interacts with the system in
-      # an unsupported way (such as by calling <code>window.alert</code>)
-      # or if the evaluation took too long and was forcibly terminated.
-      optional boolean failed
-      # Any additional data associated with the returned/thrown value.
-      PauseData data
+      # Result of the evaluation.
+      Result result
+
+  # Read a property from an object.
+  command getObjectProperty
+    parameters
+      # Object to get the property from.
+      ObjectId object
+      # Property to get.
+      string name
+    returns
+      # Result of getting the property.
+      Result result
 
   # Get the topmost frame on the stack.
   command getTopFrame
@@ -711,7 +728,7 @@ domain Analysis
       # Whether effectful commands in the <code>Pause</code> domain might be
       # sent by the mapper function. An analysis which does not use effectful
       # commands will run more efficiently. Effectful commands are
-      # <code>Pause.evaluateInFrame</code>.
+      # <code>Pause.evaluateInFrame</code>, and <code>Pause.getObjectProperty</code>.
       boolean effectful
     returns
       # ID of the resulting analysis.
