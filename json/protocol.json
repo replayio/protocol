@@ -1254,6 +1254,15 @@
                             "name": "expression",
                             "description": "Expression to evaluate.",
                             "type": "string"
+                        },
+                        {
+                            "name": "bindings",
+                            "description": "Any extra bindings to add to the evaluation's scope.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "NamedValue"
+                            }
                         }
                     ],
                     "returns": [

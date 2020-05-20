@@ -652,6 +652,8 @@ domain Pause
       FrameId frameId
       # Expression to evaluate.
       string expression
+      # Any extra bindings to add to the evaluation's scope.
+      optional array of NamedValue bindings
     returns
       # Result of the evaluation.
       Result result
