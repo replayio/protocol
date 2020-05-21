@@ -1196,7 +1196,7 @@
                 {
                     "id": "ContainerEntry",
                     "description": "An entry in a container object (maps, sets, weak maps, and weak sets).",
-                    "$ref": "Object",
+                    "type": "object",
                     "properties": [
                         {
                             "name": "key",

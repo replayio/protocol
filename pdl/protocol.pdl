@@ -623,7 +623,7 @@ domain Pause
   type PropertyConfigurationFlags extends integer
 
   # An entry in a container object (maps, sets, weak maps, and weak sets).
-  type ContainerEntry extends Object
+  type ContainerEntry extends object
     properties
       # For maps and weak maps, this entry's key.
       optional Value key
