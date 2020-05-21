@@ -575,13 +575,11 @@ domain Pause
       string className
       # ID of the prototype, if there is one.
       optional ObjectId prototypeId
-      # String representation of the object, if available.
-      optional string description
-      # Any preview data available for the object's properties.
+      # Any preview data available for the object's contents.
       optional ObjectPreview preview
 
   # Description of some or all of an object's contents.
-  type ObjectPreview extends Object
+  type ObjectPreview extends object
     properties
       # Whether there are additional contents not in this preview.
       boolean overflow
@@ -592,6 +590,19 @@ domain Pause
       # Results of evaluating getter properties from this or the prototype chain
       # on this object, if they could be evaluated without side effects.
       optional array of NamedValue getterValues
+      # For container objects, the number of entries in the container.
+      optional integer containerEntryCount
+      # For RegExp objects, the string representation.
+      optional string regexpString
+      # For Date objects, the result of calling <code>getTime()</code>.
+      optional integer dateTime
+      # For Function objects, the name of the function.
+      # Omitted for functions with no name.
+      optional string functionName
+      # For Function objects, the names of the parameters.
+      optional array of string functionParameterNames
+      # For scripted Function objects, the location of the function.
+      optional Debugger.Location functionLocation
 
   # Description of an object's own property. The <code>NamedValue</code> members
   # indicate the property's name and its value if it is a data descriptor.

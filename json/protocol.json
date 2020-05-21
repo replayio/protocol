@@ -1078,14 +1078,8 @@
                             "$ref": "ObjectId"
                         },
                         {
-                            "name": "description",
-                            "description": "String representation of the object, if available.",
-                            "optional": true,
-                            "type": "string"
-                        },
-                        {
                             "name": "preview",
-                            "description": "Any preview data available for the object's properties.",
+                            "description": "Any preview data available for the object's contents.",
                             "optional": true,
                             "$ref": "ObjectPreview"
                         }
@@ -1094,7 +1088,7 @@
                 {
                     "id": "ObjectPreview",
                     "description": "Description of some or all of an object's contents.",
-                    "$ref": "Object",
+                    "type": "object",
                     "properties": [
                         {
                             "name": "overflow",
@@ -1127,6 +1121,45 @@
                             "items": {
                                 "$ref": "NamedValue"
                             }
+                        },
+                        {
+                            "name": "containerEntryCount",
+                            "description": "For container objects, the number of entries in the container.",
+                            "optional": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "regexpString",
+                            "description": "For RegExp objects, the string representation.",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "dateTime",
+                            "description": "For Date objects, the result of calling <code>getTime()</code>.",
+                            "optional": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "functionName",
+                            "description": "For Function objects, the name of the function.\nOmitted for functions with no name.",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "functionParameterNames",
+                            "description": "For Function objects, the names of the parameters.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "name": "functionLocation",
+                            "description": "For scripted Function objects, the location of the function.",
+                            "optional": true,
+                            "$ref": "Debugger.Location"
                         }
                     ]
                 },
