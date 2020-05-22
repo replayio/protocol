@@ -702,11 +702,12 @@ domain Pause
       optional array of Value argumentValues
 
 # The DOM domain is used to inspect the DOM at particular execution points.
-# Inspecting the DOM requires a <code>Pause.PauseId</code>, and all DOM nodes
+# Inspecting the DOM requires a <code>Pause.PauseId</code>, and DOM nodes
 # are identified by a <code>Pause.ObjectId</code>.
 #
 # <br><br>All commands and events in this domain must include both a <code>sessionId</code>
 # and a <code>pauseId</code>.
+domain DOM
 
   # Description of a node's contents.
   type Node extends object

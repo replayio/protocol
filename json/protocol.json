@@ -1277,70 +1277,6 @@
                             "$ref": "PauseData"
                         }
                     ]
-                },
-                {
-                    "id": "Node",
-                    "description": "Description of a node's contents.",
-                    "type": "object",
-                    "properties": [
-                        {
-                            "name": "nodeType",
-                            "description": "Value of <code>node.nodeType</code>.",
-                            "type": "integer"
-                        },
-                        {
-                            "name": "nodeName",
-                            "description": "Value of <code>node.nodeName</code>.",
-                            "type": "string"
-                        },
-                        {
-                            "name": "isConnected",
-                            "description": "Value of <code>node.isConnected</code>.",
-                            "type": "boolean"
-                        },
-                        {
-                            "name": "attributes",
-                            "description": "For element nodes, the attributes.",
-                            "optional": true,
-                            "type": "array",
-                            "items": {
-                                "$ref": "Attr"
-                            }
-                        },
-                        {
-                            "name": "pseudoType",
-                            "description": "For pseudo elements, the pseudo type.",
-                            "optional": true,
-                            "$ref": "PseudoType"
-                        }
-                    ]
-                },
-                {
-                    "id": "Attr",
-                    "description": "Description of an element attribute.",
-                    "type": "object",
-                    "properties": [
-                        {
-                            "name": "name",
-                            "description": "Value of <code>attr.name</code>.",
-                            "type": "string"
-                        },
-                        {
-                            "name": "value",
-                            "description": "Value of <code>attr.value</code>.",
-                            "type": "string"
-                        }
-                    ]
-                },
-                {
-                    "id": "PseudoType",
-                    "description": "Type of a pseudo element.",
-                    "type": "string",
-                    "enum": [
-                        "before",
-                        "after",
-                        "marker"
-                    ]
                 }
             ],
             "commands": [
@@ -1442,6 +1378,76 @@
                                 "$ref": "Value"
                             }
                         }
+                    ]
+                }
+            ]
+        },
+        {
+            "domain": "DOM",
+            "description": "The DOM domain is used to inspect the DOM at particular execution points.\nInspecting the DOM requires a <code>Pause.PauseId</code>, and all DOM nodes\nare identified by a <code>Pause.ObjectId</code>.\n\n<br><br>All commands and events in this domain must include both a <code>sessionId</code>\nand a <code>pauseId</code>.",
+            "types": [
+                {
+                    "id": "Node",
+                    "description": "Description of a node's contents.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "nodeType",
+                            "description": "Value of <code>node.nodeType</code>.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "nodeName",
+                            "description": "Value of <code>node.nodeName</code>.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "isConnected",
+                            "description": "Value of <code>node.isConnected</code>.",
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "attributes",
+                            "description": "For element nodes, the attributes.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "Attr"
+                            }
+                        },
+                        {
+                            "name": "pseudoType",
+                            "description": "For pseudo elements, the pseudo type.",
+                            "optional": true,
+                            "$ref": "PseudoType"
+                        }
+                    ]
+                },
+                {
+                    "id": "Attr",
+                    "description": "Description of an element attribute.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "name",
+                            "description": "Value of <code>attr.name</code>.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "value",
+                            "description": "Value of <code>attr.value</code>.",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "id": "PseudoType",
+                    "description": "Type of a pseudo element.",
+                    "type": "string",
+                    "enum": [
+                        "before",
+                        "after",
+                        "marker"
                     ]
                 }
             ]
