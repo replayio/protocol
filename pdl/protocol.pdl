@@ -603,6 +603,8 @@ domain Pause
       optional array of string functionParameterNames
       # For scripted Function objects, the location of the function.
       optional Debugger.Location functionLocation
+      # For DOM Node objects, information about the node.
+      optional DOM.Node node
 
   # Description of an object's own property. The <code>NamedValue</code> members
   # indicate the property's name and its value if it is a data descriptor.
@@ -698,6 +700,42 @@ domain Pause
     returns
       # Current values of each of the frame's arguments. Omitted for non-call frames.
       optional array of Value argumentValues
+
+# The DOM domain is used to inspect the DOM at particular execution points.
+# Inspecting the DOM requires a <code>Pause.PauseId</code>, and all DOM nodes
+# are identified by a <code>Pause.ObjectId</code>.
+#
+# <br><br>All commands and events in this domain must include both a <code>sessionId</code>
+# and a <code>pauseId</code>.
+
+  # Description of a node's contents.
+  type Node extends object
+    properties
+      # Value of <code>node.nodeType</code>.
+      integer nodeType
+      # Value of <code>node.nodeName</code>.
+      string nodeName
+      # Value of <code>node.isConnected</code>.
+      boolean isConnected
+      # For element nodes, the attributes.
+      optional array of Attr attributes
+      # For pseudo elements, the pseudo type.
+      optional PseudoType pseudoType
+
+  # Description of an element attribute.
+  type Attr extends object
+    properties
+      # Value of <code>attr.name</code>.
+      string name
+      # Value of <code>attr.value</code>.
+      string value
+
+  # Type of a pseudo element.
+  type PseudoType extends string
+    enum
+      before
+      after
+      marker
 
 # The Analysis domain is used to efficiently analyze the program state at many
 # execution points. Analysis specifications are based on the MapReduce

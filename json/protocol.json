@@ -1160,6 +1160,12 @@
                             "description": "For scripted Function objects, the location of the function.",
                             "optional": true,
                             "$ref": "Debugger.Location"
+                        },
+                        {
+                            "name": "node",
+                            "description": "For DOM Node objects, information about the node.",
+                            "optional": true,
+                            "$ref": "DOM.Node"
                         }
                     ]
                 },
@@ -1270,6 +1276,70 @@
                             "description": "Any additional data associated with the returned/thrown value.",
                             "$ref": "PauseData"
                         }
+                    ]
+                },
+                {
+                    "id": "Node",
+                    "description": "Description of a node's contents.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "nodeType",
+                            "description": "Value of <code>node.nodeType</code>.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "nodeName",
+                            "description": "Value of <code>node.nodeName</code>.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "isConnected",
+                            "description": "Value of <code>node.isConnected</code>.",
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "attributes",
+                            "description": "For element nodes, the attributes.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "Attr"
+                            }
+                        },
+                        {
+                            "name": "pseudoType",
+                            "description": "For pseudo elements, the pseudo type.",
+                            "optional": true,
+                            "$ref": "PseudoType"
+                        }
+                    ]
+                },
+                {
+                    "id": "Attr",
+                    "description": "Description of an element attribute.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "name",
+                            "description": "Value of <code>attr.name</code>.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "value",
+                            "description": "Value of <code>attr.value</code>.",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "id": "PseudoType",
+                    "description": "Type of a pseudo element.",
+                    "type": "string",
+                    "enum": [
+                        "before",
+                        "after",
+                        "marker"
                     ]
                 }
             ],
