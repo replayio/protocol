@@ -573,8 +573,6 @@ domain Pause
       ObjectId objectId
       # Object class name.
       string className
-      # ID of the prototype, if there is one.
-      optional ObjectId prototypeId
       # Any preview data available for the object's contents.
       optional ObjectPreview preview
 
@@ -583,6 +581,8 @@ domain Pause
     properties
       # Whether there are additional contents not in this preview.
       boolean overflow
+      # ID of the prototype, if there is one.
+      optional ObjectId prototypeId
       # Descriptors of the object's own properties.
       optional array of Property properties
       # Entries of container objects.
@@ -681,6 +681,17 @@ domain Pause
     returns
       # Result of getting the property.
       Result result
+
+  # Load a complete preview for an object.
+  command getObjectPreview
+    parameters
+      # Object to load the preview for.
+      ObjectId object
+    returns
+      # Returned data. This includes a preview for the object which does not
+      # have <code>overflow</code> set, and additional data for objects which
+      # it references.
+      PauseData data
 
   # Get the topmost frame on the stack.
   command getTopFrame

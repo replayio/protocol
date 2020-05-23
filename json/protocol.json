@@ -1072,12 +1072,6 @@
                             "type": "string"
                         },
                         {
-                            "name": "prototypeId",
-                            "description": "ID of the prototype, if there is one.",
-                            "optional": true,
-                            "$ref": "ObjectId"
-                        },
-                        {
                             "name": "preview",
                             "description": "Any preview data available for the object's contents.",
                             "optional": true,
@@ -1094,6 +1088,12 @@
                             "name": "overflow",
                             "description": "Whether there are additional contents not in this preview.",
                             "type": "boolean"
+                        },
+                        {
+                            "name": "prototypeId",
+                            "description": "ID of the prototype, if there is one.",
+                            "optional": true,
+                            "$ref": "ObjectId"
                         },
                         {
                             "name": "properties",
@@ -1336,6 +1336,24 @@
                     ]
                 },
                 {
+                    "name": "getObjectPreview",
+                    "description": "Load a complete preview for an object.",
+                    "parameters": [
+                        {
+                            "name": "object",
+                            "description": "Object to load the preview for.",
+                            "$ref": "ObjectId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "data",
+                            "description": "Returned data. This includes a preview for the object which does not\nhave <code>overflow</code> set, and additional data for objects which\nit references.",
+                            "$ref": "PauseData"
+                        }
+                    ]
+                },
+                {
                     "name": "getTopFrame",
                     "description": "Get the topmost frame on the stack.",
                     "returns": [
@@ -1384,7 +1402,7 @@
         },
         {
             "domain": "DOM",
-            "description": "The DOM domain is used to inspect the DOM at particular execution points.\nInspecting the DOM requires a <code>Pause.PauseId</code>, and all DOM nodes\nare identified by a <code>Pause.ObjectId</code>.\n\n<br><br>All commands and events in this domain must include both a <code>sessionId</code>\nand a <code>pauseId</code>.",
+            "description": "The DOM domain is used to inspect the DOM at particular execution points.\nInspecting the DOM requires a <code>Pause.PauseId</code>, and DOM nodes\nare identified by a <code>Pause.ObjectId</code>.\n\n<br><br>All commands and events in this domain must include both a <code>sessionId</code>\nand a <code>pauseId</code>.",
             "types": [
                 {
                     "id": "Node",
