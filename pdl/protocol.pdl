@@ -720,6 +720,14 @@ domain Pause
 # and a <code>pauseId</code>.
 domain DOM
 
+  # Get the page's root document.
+  command getDocument
+    returns
+      # ID for the document.
+      Pause.ObjectId document
+      # Information about the document and related nodes.
+      Pause.PauseData data
+
   # Description of a node's contents.
   type Node extends object
     properties

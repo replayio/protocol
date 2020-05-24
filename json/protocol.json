@@ -1403,6 +1403,24 @@
         {
             "domain": "DOM",
             "description": "The DOM domain is used to inspect the DOM at particular execution points.\nInspecting the DOM requires a <code>Pause.PauseId</code>, and DOM nodes\nare identified by a <code>Pause.ObjectId</code>.\n\n<br><br>All commands and events in this domain must include both a <code>sessionId</code>\nand a <code>pauseId</code>.",
+            "commands": [
+                {
+                    "name": "getDocument",
+                    "description": "Get the page's root document.",
+                    "returns": [
+                        {
+                            "name": "document",
+                            "description": "ID for the document.",
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "data",
+                            "description": "Information about the document and related nodes.",
+                            "$ref": "Pause.PauseData"
+                        }
+                    ]
+                }
+            ],
             "types": [
                 {
                     "id": "Node",
