@@ -761,12 +761,6 @@ domain DOM
       Pause.ObjectId handler
       # Event being listened for.
       string type
-      # Whether the <code>capture</code> flag is set on the listener.
-      boolean capture
-      # Whether the <code>passive</code> flag is set on the listener.
-      boolean passive
-      # Whether the <code>once</code> flag is set on the listener.
-      boolean once
 
   # Description of a node's contents.
   type Node extends object
@@ -781,8 +775,10 @@ domain DOM
       optional array of Attr attributes
       # For pseudo elements, the pseudo type.
       optional PseudoType pseudoType
-      # ID of any <code>node.parentNode</code> node.
+      # ID of any <code>node.parentNode</code>.
       optional Pause.ObjectId parentNode
+      # IDs of all <code>node.children</code>.
+      optional array of Pause.ObjectId children
 
   # Description of an element attribute.
   type Attr extends object

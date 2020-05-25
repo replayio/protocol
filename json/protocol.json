@@ -1496,21 +1496,6 @@
                             "name": "type",
                             "description": "Event being listened for.",
                             "type": "string"
-                        },
-                        {
-                            "name": "capture",
-                            "description": "Whether the <code>capture</code> flag is set on the listener.",
-                            "type": "boolean"
-                        },
-                        {
-                            "name": "passive",
-                            "description": "Whether the <code>passive</code> flag is set on the listener.",
-                            "type": "boolean"
-                        },
-                        {
-                            "name": "once",
-                            "description": "Whether the <code>once</code> flag is set on the listener.",
-                            "type": "boolean"
                         }
                     ]
                 },
@@ -1551,9 +1536,18 @@
                         },
                         {
                             "name": "parentNode",
-                            "description": "ID of any <code>node.parentNode</code> node.",
+                            "description": "ID of any <code>node.parentNode</code>.",
                             "optional": true,
                             "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "children",
+                            "description": "IDs of all <code>node.children</code>.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "Pause.ObjectId"
+                            }
                         }
                     ]
                 },
