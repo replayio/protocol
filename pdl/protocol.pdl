@@ -605,6 +605,10 @@ domain Pause
       optional Debugger.Location functionLocation
       # For DOM Node objects, information about the node.
       optional DOM.Node node
+      # For CSSRule objects, information about the rule.
+      optional CSS.Rule rule
+      # For CSSStyleDeclaration objects, information about the style.
+      optional CSS.StyleDeclaration style
 
   # Description of an object's own property. The <code>NamedValue</code> members
   # indicate the property's name and its value if it is a data descriptor.
@@ -762,7 +766,8 @@ domain DOM
       # Event being listened for.
       string type
 
-  # Description of a node's contents.
+  # Description of a node's contents which is attached to its
+  # associated <code>Pause.ObjectPreview.node</code>.
   type Node extends object
     properties
       # Value of <code>node.nodeType</code>.
@@ -801,7 +806,7 @@ domain DOM
 # and a <code>pauseId</code>.
 domain CSS
 
-  # Get all styles being applied to a node.
+  # Get the styles computed for a node.
   command getComputedStyle
     parameters
       Pause.ObjectId node
@@ -815,6 +820,56 @@ domain CSS
       string name
       # Value of the style.
       string value
+
+  # Get the style rules and declarations being applied to a node.
+  command getAppliedStyle
+    parameters
+      Pause.ObjectId node
+    returns
+      array of AppliedStyle appliedStyles
+      Pause.PauseData data
+
+  # A style declaration which is being applied to a node.
+  type AppliedStyle extends object
+    properties
+      # ID of the style declaration being applied.
+      optional Pause.ObjectId style
+      # If the style was applied to a parent node and was inherited by this node,
+      # ID of that parent node.
+      optional Pause.ObjectId inherited
+
+  # Description of a CSSRule's contents which is attached to its
+  # associated <code>Pause.ObjectPreview.rule</code>.
+  type Rule extends object
+    properties
+      # Value of <code>rule.type</code>.
+      integer type
+      # Value of <code>rule.cssText</code>.
+      string cssText
+      # The ID of any style sheet this rule is associated with.
+      optional Pause.ObjectId parentStyleSheet
+      # For <code>CSSStyleRule</code> objects, the value of <code>rule.selectorText</code>.
+      optional string selectorText
+      # For <code>CSSStyleRule</code> objects, the ID of the rule's style declaration.
+      optional Pause.ObjectId style
+
+  # Description of a CSSStyleDeclaration's contents which is attached to its
+  # associated <code>Pause.ObjectPreview.style</code>.
+  type StyleDeclaration extends object
+    properties
+      # Value of <code>style.cssText</code>.
+      string cssText
+      # If this declaration originates from a CSSStyleRule, ID of that rule.
+      optional Pause.ObjectId parentRule
+      # Style properties of this declaration.
+      array of StyleProperty properties
+
+  # Information about a style property declaration.
+  type DeclaredStyleProperty extends ComputedStyleProperty
+    properties
+      # Whether the property is marked <code>!important</code>. Defaults to
+      # <code>false</code> if omitted.
+      optional boolean important
 
 # The Analysis domain is used to efficiently analyze the program state at many
 # execution points. Analysis specifications are based on the MapReduce

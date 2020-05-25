@@ -1166,6 +1166,18 @@
                             "description": "For DOM Node objects, information about the node.",
                             "optional": true,
                             "$ref": "DOM.Node"
+                        },
+                        {
+                            "name": "rule",
+                            "description": "For CSSRule objects, information about the rule.",
+                            "optional": true,
+                            "$ref": "CSS.Rule"
+                        },
+                        {
+                            "name": "style",
+                            "description": "For CSSStyleDeclaration objects, information about the style.",
+                            "optional": true,
+                            "$ref": "CSS.StyleDeclaration"
                         }
                     ]
                 },
@@ -1501,7 +1513,7 @@
                 },
                 {
                     "id": "Node",
-                    "description": "Description of a node's contents.",
+                    "description": "Description of a node's contents which is attached to its\nassociated <code>Pause.ObjectPreview.node</code>.",
                     "type": "object",
                     "properties": [
                         {
@@ -1586,7 +1598,7 @@
             "commands": [
                 {
                     "name": "getComputedStyle",
-                    "description": "Get all styles being applied to a node.",
+                    "description": "Get the styles computed for a node.",
                     "parameters": [
                         {
                             "name": "node",
@@ -1600,6 +1612,29 @@
                             "items": {
                                 "$ref": "ComputedStyleProperty"
                             }
+                        }
+                    ]
+                },
+                {
+                    "name": "getAppliedStyle",
+                    "description": "Get the style rules and declarations being applied to a node.",
+                    "parameters": [
+                        {
+                            "name": "node",
+                            "$ref": "Pause.ObjectId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "appliedStyles",
+                            "type": "array",
+                            "items": {
+                                "$ref": "AppliedStyle"
+                            }
+                        },
+                        {
+                            "name": "data",
+                            "$ref": "Pause.PauseData"
                         }
                     ]
                 }
@@ -1619,6 +1654,99 @@
                             "name": "value",
                             "description": "Value of the style.",
                             "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "id": "AppliedStyle",
+                    "description": "A style declaration which is being applied to a node.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "style",
+                            "description": "ID of the style declaration being applied.",
+                            "optional": true,
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "inherited",
+                            "description": "If the style was applied to a parent node and was inherited by this node,\nID of that parent node.",
+                            "optional": true,
+                            "$ref": "Pause.ObjectId"
+                        }
+                    ]
+                },
+                {
+                    "id": "Rule",
+                    "description": "Description of a CSSRule's contents which is attached to its\nassociated <code>Pause.ObjectPreview.rule</code>.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "type",
+                            "description": "Value of <code>rule.type</code>.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "cssText",
+                            "description": "Value of <code>rule.cssText</code>.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "parentStyleSheet",
+                            "description": "The ID of any style sheet this rule is associated with.",
+                            "optional": true,
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "selectorText",
+                            "description": "For <code>CSSStyleRule</code> objects, the value of <code>rule.selectorText</code>.",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "style",
+                            "description": "For <code>CSSStyleRule</code> objects, the ID of the rule's style declaration.",
+                            "optional": true,
+                            "$ref": "Pause.ObjectId"
+                        }
+                    ]
+                },
+                {
+                    "id": "StyleDeclaration",
+                    "description": "Description of a CSSStyleDeclaration's contents which is attached to its\nassociated <code>Pause.ObjectPreview.style</code>.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "cssText",
+                            "description": "Value of <code>style.cssText</code>.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "parentRule",
+                            "description": "If this declaration originates from a CSSStyleRule, ID of that rule.",
+                            "optional": true,
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "properties",
+                            "description": "Style properties of this declaration.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "StyleProperty"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "DeclaredStyleProperty",
+                    "description": "Information about a style property declaration.",
+                    "$ref": "ComputedStyleProperty",
+                    "properties": [
+                        {
+                            "name": "important",
+                            "description": "Whether the property is marked <code>!important</code>. Defaults to\n<code>false</code> if omitted.",
+                            "optional": true,
+                            "type": "boolean"
                         }
                     ]
                 }
