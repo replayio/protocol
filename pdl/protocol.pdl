@@ -728,6 +728,46 @@ domain DOM
       # Information about the document and related nodes.
       Pause.PauseData data
 
+  # Call querySelector() on a node in the page.
+  command querySelector
+    parameters
+      # Base node for the query.
+      Pause.ObjectId node
+      # Selector to query.
+      string selector
+    returns
+      # ID of the found node, omitted if none was found.
+      optional Pause.ObjectId result
+      # Information about the returned node and related nodes.
+      Pause.PauseData data
+
+  # Get the event listeners attached to a node in the page.
+  command getEventListeners
+    parameters
+      # Node to get listeners for.
+      Pause.ObjectId node
+    returns
+      # All event listeners for the node.
+      array of EventListener listeners
+      # Additional information about the event listeners.
+      Pause.PauseData data
+
+  # Description of an event listener on a page.
+  type EventListener extends object
+    properties
+      # Node the listener is attached to.
+      Pause.ObjectId node
+      # Handler function associated with the listener.
+      Pause.ObjectId handler
+      # Event being listened for.
+      string type
+      # Whether the <code>capture</code> flag is set on the listener.
+      boolean capture
+      # Whether the <code>passive</code> flag is set on the listener.
+      boolean passive
+      # Whether the <code>once</code> flag is set on the listener.
+      boolean once
+
   # Description of a node's contents.
   type Node extends object
     properties
@@ -741,6 +781,8 @@ domain DOM
       optional array of Attr attributes
       # For pseudo elements, the pseudo type.
       optional PseudoType pseudoType
+      # ID of any <code>node.parentNode</code> node.
+      optional Pause.ObjectId parentNode
 
   # Description of an element attribute.
   type Attr extends object
@@ -756,6 +798,27 @@ domain DOM
       before
       after
       marker
+
+# The CSS domain is used to inspect the CSS state at particular execution points.
+#
+# <br><br>All commands and events in this domain must include both a <code>sessionId</code>
+# and a <code>pauseId</code>.
+domain CSS
+
+  # Get all styles being applied to a node.
+  command getComputedStyle
+    parameters
+      Pause.ObjectId node
+    returns
+      array of ComputedStyleProperty computedStyle
+
+  # A style which is applied to a node.
+  type ComputedStyleProperty extends object
+    properties
+      # Name of the style.
+      string name
+      # Value of the style.
+      string value
 
 # The Analysis domain is used to efficiently analyze the program state at many
 # execution points. Analysis specifications are based on the MapReduce

@@ -1419,9 +1419,101 @@
                             "$ref": "Pause.PauseData"
                         }
                     ]
+                },
+                {
+                    "name": "querySelector",
+                    "description": "Call querySelector() on a node in the page.",
+                    "parameters": [
+                        {
+                            "name": "node",
+                            "description": "Base node for the query.",
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "selector",
+                            "description": "Selector to query.",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "description": "ID of the found node, omitted if none was found.",
+                            "optional": true,
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "data",
+                            "description": "Information about the returned node and related nodes.",
+                            "$ref": "Pause.PauseData"
+                        }
+                    ]
+                },
+                {
+                    "name": "getEventListeners",
+                    "description": "Get the event listeners attached to a node in the page.",
+                    "parameters": [
+                        {
+                            "name": "node",
+                            "description": "Node to get listeners for.",
+                            "$ref": "Pause.ObjectId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "listeners",
+                            "description": "All event listeners for the node.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "EventListener"
+                            }
+                        },
+                        {
+                            "name": "data",
+                            "description": "Additional information about the event listeners.",
+                            "$ref": "Pause.PauseData"
+                        }
+                    ]
                 }
             ],
             "types": [
+                {
+                    "id": "EventListener",
+                    "description": "Description of an event listener on a page.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "node",
+                            "description": "Node the listener is attached to.",
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "handler",
+                            "description": "Handler function associated with the listener.",
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "type",
+                            "description": "Event being listened for.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "capture",
+                            "description": "Whether the <code>capture</code> flag is set on the listener.",
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "passive",
+                            "description": "Whether the <code>passive</code> flag is set on the listener.",
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "once",
+                            "description": "Whether the <code>once</code> flag is set on the listener.",
+                            "type": "boolean"
+                        }
+                    ]
+                },
                 {
                     "id": "Node",
                     "description": "Description of a node's contents.",
@@ -1456,6 +1548,12 @@
                             "description": "For pseudo elements, the pseudo type.",
                             "optional": true,
                             "$ref": "PseudoType"
+                        },
+                        {
+                            "name": "parentNode",
+                            "description": "ID of any <code>node.parentNode</code> node.",
+                            "optional": true,
+                            "$ref": "Pause.ObjectId"
                         }
                     ]
                 },
@@ -1484,6 +1582,50 @@
                         "before",
                         "after",
                         "marker"
+                    ]
+                }
+            ]
+        },
+        {
+            "domain": "CSS",
+            "description": "The CSS domain is used to inspect the CSS state at particular execution points.\n\n<br><br>All commands and events in this domain must include both a <code>sessionId</code>\nand a <code>pauseId</code>.",
+            "commands": [
+                {
+                    "name": "getComputedStyle",
+                    "description": "Get all styles being applied to a node.",
+                    "parameters": [
+                        {
+                            "name": "node",
+                            "$ref": "Pause.ObjectId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "computedStyle",
+                            "type": "array",
+                            "items": {
+                                "$ref": "ComputedStyleProperty"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "id": "ComputedStyleProperty",
+                    "description": "A style which is applied to a node.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "name",
+                            "description": "Name of the style.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "value",
+                            "description": "Value of the style.",
+                            "type": "string"
+                        }
                     ]
                 }
             ]
