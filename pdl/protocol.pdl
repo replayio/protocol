@@ -821,12 +821,14 @@ domain CSS
       # Value of the style.
       string value
 
-  # Get the style rules and declarations being applied to a node.
-  command getAppliedStyle
+  # Get the style declarations being applied to a node.
+  command getAppliedStyles
     parameters
       Pause.ObjectId node
     returns
+      # All styles being applied to the node.
       array of AppliedStyle appliedStyles
+      # Information about the declarations and related objects.
       Pause.PauseData data
 
   # A style declaration which is being applied to a node.

@@ -1616,8 +1616,8 @@
                     ]
                 },
                 {
-                    "name": "getAppliedStyle",
-                    "description": "Get the style rules and declarations being applied to a node.",
+                    "name": "getAppliedStyles",
+                    "description": "Get the style declarations being applied to a node.",
                     "parameters": [
                         {
                             "name": "node",
@@ -1627,6 +1627,7 @@
                     "returns": [
                         {
                             "name": "appliedStyles",
+                            "description": "All styles being applied to the node.",
                             "type": "array",
                             "items": {
                                 "$ref": "AppliedStyle"
@@ -1634,6 +1635,7 @@
                         },
                         {
                             "name": "data",
+                            "description": "Information about the declarations and related objects.",
                             "$ref": "Pause.PauseData"
                         }
                     ]
