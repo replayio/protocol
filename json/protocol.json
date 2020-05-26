@@ -2154,6 +2154,119 @@
                             "type": "string"
                         }
                     ]
+                },
+                {
+                    "name": "hasResource",
+                    "description": "Determine whether a resource is known to the cloud service.",
+                    "parameters": [
+                        {
+                            "name": "resource",
+                            "description": "Resource to look for.",
+                            "$ref": "Resource"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "known",
+                            "description": "Whether the resource's contents are known.",
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                {
+                    "name": "addResource",
+                    "description": "Upload a resource's contents to the cloud service.",
+                    "parameters": [
+                        {
+                            "name": "resource",
+                            "description": "Resource to add.",
+                            "$ref": "Resource"
+                        },
+                        {
+                            "name": "contents",
+                            "description": "Text contents of the resource.",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "addRecordingResource",
+                    "description": "Associate a resource with a recording.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "ID of the recording.",
+                            "$ref": "RecordingId"
+                        },
+                        {
+                            "name": "resource",
+                            "description": "Resource which the recording is associated with.",
+                            "$ref": "Resource"
+                        }
+                    ]
+                },
+                {
+                    "name": "listRecordingResources",
+                    "description": "List all resources associated with a recording.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "ID of the recording.",
+                            "$ref": "RecordingId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "resources",
+                            "description": "All resources that have been associated with the recording.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Resource"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getRecordingResource",
+                    "description": "Download a resource associated with a recording.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "ID of the recording.",
+                            "$ref": "RecordingId"
+                        },
+                        {
+                            "name": "resource",
+                            "description": "Resource to download.",
+                            "$ref": "Resource"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "contents",
+                            "description": "Text contents of the resource.",
+                            "type": "string"
+                        }
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "id": "Resource",
+                    "description": "Information about a file based resource. Currently, resources are used for\nsource maps and original sources.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "url",
+                            "description": "URL of the resource.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "checksum",
+                            "description": "Checksum of the resource's contents.",
+                            "type": "string"
+                        }
+                    ]
                 }
             ]
         }

@@ -1109,3 +1109,57 @@ domain Internal
       optional Graphics.MimeType lastScreenMimeType
       # Raw graphics data for the end of the recording.
       optional string lastScreenData
+
+  # Information about a file based resource. Currently, resources are used for
+  # source maps and original sources.
+  type Resource extends object
+    properties
+      # URL of the resource.
+      string url
+      # Checksum of the resource's contents.
+      string checksum
+
+  # Determine whether a resource is known to the cloud service.
+  command hasResource
+    parameters
+      # Resource to look for.
+      Resource resource
+    returns
+      # Whether the resource's contents are known.
+      boolean known
+
+  # Upload a resource's contents to the cloud service.
+  command addResource
+    parameters
+      # Resource to add.
+      Resource resource
+      # Text contents of the resource.
+      string contents
+
+  # Associate a resource with a recording.
+  command addRecordingResource
+    parameters
+      # ID of the recording.
+      RecordingId recordingId
+      # Resource which the recording is associated with.
+      Resource resource
+
+  # List all resources associated with a recording.
+  command listRecordingResources
+    parameters
+      # ID of the recording.
+      RecordingId recordingId
+    returns
+      # All resources that have been associated with the recording.
+      array of Resource resources
+
+  # Download a resource associated with a recording.
+  command getRecordingResource
+    parameters
+      # ID of the recording.
+      RecordingId recordingId
+      # Resource to download.
+      Resource resource
+    returns
+      # Text contents of the resource.
+      string contents
