@@ -780,6 +780,8 @@ domain DOM
       optional array of Attr attributes
       # For pseudo elements, the pseudo type.
       optional PseudoType pseudoType
+      # For element nodes, any inline style declaration.
+      optional Pause.ObjectId style
       # ID of any <code>node.parentNode</code>.
       optional Pause.ObjectId parentNode
       # IDs of all <code>node.children</code>.
@@ -821,24 +823,15 @@ domain CSS
       # Value of the style.
       string value
 
-  # Get the style declarations being applied to a node.
-  command getAppliedStyles
+  # Get the style rules being applied to a node.
+  command getAppliedRules
     parameters
       Pause.ObjectId node
     returns
-      # All styles being applied to the node.
-      array of AppliedStyle appliedStyles
-      # Information about the declarations and related objects.
+      # IDs of all style rules being applied to the node.
+      array of Pause.ObjectId rules
+      # Information about the rules and related objects.
       Pause.PauseData data
-
-  # A style declaration which is being applied to a node.
-  type AppliedStyle extends object
-    properties
-      # ID of the style declaration being applied.
-      optional Pause.ObjectId style
-      # If the style was applied to a parent node and was inherited by this node,
-      # ID of that parent node.
-      optional Pause.ObjectId inherited
 
   # Description of a CSSRule's contents which is attached to its
   # associated <code>Pause.ObjectPreview.rule</code>.

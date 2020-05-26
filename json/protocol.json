@@ -1547,6 +1547,12 @@
                             "$ref": "PseudoType"
                         },
                         {
+                            "name": "style",
+                            "description": "For element nodes, any inline style declaration.",
+                            "optional": true,
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
                             "name": "parentNode",
                             "description": "ID of any <code>node.parentNode</code>.",
                             "optional": true,
@@ -1616,8 +1622,8 @@
                     ]
                 },
                 {
-                    "name": "getAppliedStyles",
-                    "description": "Get the style declarations being applied to a node.",
+                    "name": "getAppliedRules",
+                    "description": "Get the style rules being applied to a node.",
                     "parameters": [
                         {
                             "name": "node",
@@ -1626,16 +1632,16 @@
                     ],
                     "returns": [
                         {
-                            "name": "appliedStyles",
-                            "description": "All styles being applied to the node.",
+                            "name": "rules",
+                            "description": "IDs of all style rules being applied to the node.",
                             "type": "array",
                             "items": {
-                                "$ref": "AppliedStyle"
+                                "$ref": "Pause.ObjectId"
                             }
                         },
                         {
                             "name": "data",
-                            "description": "Information about the declarations and related objects.",
+                            "description": "Information about the rules and related objects.",
                             "$ref": "Pause.PauseData"
                         }
                     ]
@@ -1656,25 +1662,6 @@
                             "name": "value",
                             "description": "Value of the style.",
                             "type": "string"
-                        }
-                    ]
-                },
-                {
-                    "id": "AppliedStyle",
-                    "description": "A style declaration which is being applied to a node.",
-                    "type": "object",
-                    "properties": [
-                        {
-                            "name": "style",
-                            "description": "ID of the style declaration being applied.",
-                            "optional": true,
-                            "$ref": "Pause.ObjectId"
-                        },
-                        {
-                            "name": "inherited",
-                            "description": "If the style was applied to a parent node and was inherited by this node,\nID of that parent node.",
-                            "optional": true,
-                            "$ref": "Pause.ObjectId"
                         }
                     ]
                 },
