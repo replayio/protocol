@@ -1140,7 +1140,7 @@ domain Internal
   command addRecordingResource
     parameters
       # ID of the recording.
-      RecordingId recordingId
+      Recording.RecordingId recordingId
       # Resource which the recording is associated with.
       Resource resource
 
@@ -1148,7 +1148,7 @@ domain Internal
   command listRecordingResources
     parameters
       # ID of the recording.
-      RecordingId recordingId
+      Recording.RecordingId recordingId
     returns
       # All resources that have been associated with the recording.
       array of Resource resources
@@ -1157,7 +1157,7 @@ domain Internal
   command getRecordingResource
     parameters
       # ID of the recording.
-      RecordingId recordingId
+      Recording.RecordingId recordingId
       # Resource to download.
       Resource resource
     returns

@@ -2196,7 +2196,7 @@
                         {
                             "name": "recordingId",
                             "description": "ID of the recording.",
-                            "$ref": "RecordingId"
+                            "$ref": "Recording.RecordingId"
                         },
                         {
                             "name": "resource",
@@ -2212,7 +2212,7 @@
                         {
                             "name": "recordingId",
                             "description": "ID of the recording.",
-                            "$ref": "RecordingId"
+                            "$ref": "Recording.RecordingId"
                         }
                     ],
                     "returns": [
@@ -2233,7 +2233,7 @@
                         {
                             "name": "recordingId",
                             "description": "ID of the recording.",
-                            "$ref": "RecordingId"
+                            "$ref": "Recording.RecordingId"
                         },
                         {
                             "name": "resource",
