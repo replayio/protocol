@@ -776,6 +776,8 @@ domain DOM
       integer nodeType
       # Value of <code>node.nodeName</code>.
       string nodeName
+      # Value of <code>node.nodeValue</code>.
+      optional string nodeValue
       # Value of <code>node.isConnected</code>.
       boolean isConnected
       # For element nodes, the attributes.
@@ -786,8 +788,8 @@ domain DOM
       optional Pause.ObjectId style
       # ID of any <code>node.parentNode</code>.
       optional Pause.ObjectId parentNode
-      # IDs of all <code>node.children</code>.
-      optional array of Pause.ObjectId children
+      # IDs of all <code>node.childNodes</code>.
+      optional array of Pause.ObjectId childNodes
 
   # Description of an element attribute.
   type Attr extends object
@@ -803,6 +805,36 @@ domain DOM
       before
       after
       marker
+
+  # Get boxes for a node.
+  command getBoxModel
+    parameters
+      # Node to get boxes for.
+      Pause.ObjectId node
+    returns
+      # Box model data for the node.
+      BoxModel model
+
+  # Description of the box model for a node.
+  type BoxModel extends object
+    properties
+      # Node this is the box model for.
+      Pause.ObjectId node
+      # Quads holding the node's content.
+      Quads content
+      # Quads including the content and any padding between the border.
+      Quads padding
+      # Quads including the border.
+      Quads border
+      # Quads including the border and any margin between other nodes.
+      Quads margin
+
+  # Compact representation of an array of DOMQuads, projected onto the <code>x/y</code>
+  # plane (i.e. <code>z</code> and <code>w</code> values in points are ignored).
+  # Each quad is 8 elements, with the <code>x</code> and <code>y</code> coordinates
+  # of the four points in the quad. The entire array will have a length that is a
+  # multiple of 8.
+  type Quads extends array of number
 
 # The CSS domain is used to inspect the CSS state at particular execution points.
 #

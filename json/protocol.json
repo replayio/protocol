@@ -1492,6 +1492,24 @@
                             "$ref": "Pause.PauseData"
                         }
                     ]
+                },
+                {
+                    "name": "getBoxModel",
+                    "description": "Get boxes for a node.",
+                    "parameters": [
+                        {
+                            "name": "node",
+                            "description": "Node to get boxes for.",
+                            "$ref": "Pause.ObjectId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "model",
+                            "description": "Box model data for the node.",
+                            "$ref": "BoxModel"
+                        }
+                    ]
                 }
             ],
             "types": [
@@ -1533,6 +1551,12 @@
                             "type": "string"
                         },
                         {
+                            "name": "nodeValue",
+                            "description": "Value of <code>node.nodeValue</code>.",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
                             "name": "isConnected",
                             "description": "Value of <code>node.isConnected</code>.",
                             "type": "boolean"
@@ -1565,8 +1589,8 @@
                             "$ref": "Pause.ObjectId"
                         },
                         {
-                            "name": "children",
-                            "description": "IDs of all <code>node.children</code>.",
+                            "name": "childNodes",
+                            "description": "IDs of all <code>node.childNodes</code>.",
                             "optional": true,
                             "type": "array",
                             "items": {
@@ -1601,6 +1625,46 @@
                         "after",
                         "marker"
                     ]
+                },
+                {
+                    "id": "BoxModel",
+                    "description": "Description of the box model for a node.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "node",
+                            "description": "Node this is the box model for.",
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "content",
+                            "description": "Quads holding the node's content.",
+                            "$ref": "Quads"
+                        },
+                        {
+                            "name": "padding",
+                            "description": "Quads including the content and any padding between the border.",
+                            "$ref": "Quads"
+                        },
+                        {
+                            "name": "border",
+                            "description": "Quads including the border.",
+                            "$ref": "Quads"
+                        },
+                        {
+                            "name": "margin",
+                            "description": "Quads including the border and any margin between other nodes.",
+                            "$ref": "Quads"
+                        }
+                    ]
+                },
+                {
+                    "id": "Quads",
+                    "description": "Compact representation of an array of DOMQuads, projected onto the <code>x/y</code>\nplane (i.e. <code>z</code> and <code>w</code> values in points are ignored).\nEach quad is 8 elements, with the <code>x</code> and <code>y</code> coordinates\nof the four points in the quad. The entire array will have a length that is a\nmultiple of 8.",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
                 }
             ]
         },
@@ -1691,6 +1755,18 @@
                             "description": "The ID of any style sheet this rule is associated with.",
                             "optional": true,
                             "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "startLine",
+                            "description": "Start line in the parent style sheet (1-indexed).",
+                            "optional": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "startColumn",
+                            "description": "Start column in the parent style sheet (0-indexed).",
+                            "optional": true,
+                            "type": "integer"
                         },
                         {
                             "name": "selectorText",
