@@ -609,6 +609,8 @@ domain Pause
       optional CSS.Rule rule
       # For CSSStyleDeclaration objects, information about the style.
       optional CSS.StyleDeclaration style
+      # For StyleSheet objects, information about the style sheet.
+      optional CSS.StyleSheet styleSheet
 
   # Description of an object's own property. The <code>NamedValue</code> members
   # indicate the property's name and its value if it is a data descriptor.
@@ -780,7 +782,7 @@ domain DOM
       optional array of Attr attributes
       # For pseudo elements, the pseudo type.
       optional PseudoType pseudoType
-      # For element nodes, any inline style declaration.
+      # For element nodes, ID of any inline style declaration.
       optional Pause.ObjectId style
       # ID of any <code>node.parentNode</code>.
       optional Pause.ObjectId parentNode
@@ -843,6 +845,10 @@ domain CSS
       string cssText
       # The ID of any style sheet this rule is associated with.
       optional Pause.ObjectId parentStyleSheet
+      # Start line in the parent style sheet (1-indexed).
+      optional integer startLine
+      # Start column in the parent style sheet (0-indexed).
+      optional integer startColumn
       # For <code>CSSStyleRule</code> objects, the value of <code>rule.selectorText</code>.
       optional string selectorText
       # For <code>CSSStyleRule</code> objects, the ID of the rule's style declaration.
@@ -860,11 +866,18 @@ domain CSS
       array of StyleProperty properties
 
   # Information about a style property declaration.
-  type DeclaredStyleProperty extends ComputedStyleProperty
+  type StyleProperty extends ComputedStyleProperty
     properties
       # Whether the property is marked <code>!important</code>. Defaults to
       # <code>false</code> if omitted.
       optional boolean important
+
+  # Description of a StyleSheet's contents which is attached to its
+  # associated <code>Pause.ObjectPreview.styleSheet</code>.
+  type StyleSheet extends object
+    properties
+      # URL of the style sheet.
+      optional string href
 
 # The Analysis domain is used to efficiently analyze the program state at many
 # execution points. Analysis specifications are based on the MapReduce

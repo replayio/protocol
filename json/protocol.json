@@ -1178,6 +1178,12 @@
                             "description": "For CSSStyleDeclaration objects, information about the style.",
                             "optional": true,
                             "$ref": "CSS.StyleDeclaration"
+                        },
+                        {
+                            "name": "styleSheet",
+                            "description": "For StyleSheet objects, information about the style sheet.",
+                            "optional": true,
+                            "$ref": "CSS.StyleSheet"
                         }
                     ]
                 },
@@ -1548,7 +1554,7 @@
                         },
                         {
                             "name": "style",
-                            "description": "For element nodes, any inline style declaration.",
+                            "description": "For element nodes, ID of any inline style declaration.",
                             "optional": true,
                             "$ref": "Pause.ObjectId"
                         },
@@ -1727,7 +1733,7 @@
                     ]
                 },
                 {
-                    "id": "DeclaredStyleProperty",
+                    "id": "StyleProperty",
                     "description": "Information about a style property declaration.",
                     "$ref": "ComputedStyleProperty",
                     "properties": [
@@ -1736,6 +1742,19 @@
                             "description": "Whether the property is marked <code>!important</code>. Defaults to\n<code>false</code> if omitted.",
                             "optional": true,
                             "type": "boolean"
+                        }
+                    ]
+                },
+                {
+                    "id": "StyleSheet",
+                    "description": "Description of a StyleSheet's contents which is attached to its\nassociated <code>Pause.ObjectPreview.styleSheet</code>.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "href",
+                            "description": "URL of the style sheet.",
+                            "optional": true,
+                            "type": "string"
                         }
                     ]
                 }
