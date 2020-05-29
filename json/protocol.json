@@ -1433,6 +1433,27 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "getFrameSteps",
+                    "description": "Get the points of all steps that are executed by a frame.",
+                    "parameters": [
+                        {
+                            "name": "frameId",
+                            "description": "Frame to get steps for.",
+                            "$ref": "FrameId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "steps",
+                            "description": "Execution points for all steps which the frame executes. In the case of\nasync/generator frames, only steps that are executed while the current\nframe is on the stack are included: steps in the same logical frame that\nthat are separated from the current point by an <code>await</code> or\n<code>yield</code> are excluded.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Debugger.PointDescription"
+                            }
+                        }
+                    ]
                 }
             ]
         },

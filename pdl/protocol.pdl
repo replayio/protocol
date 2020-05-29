@@ -728,6 +728,19 @@ domain Pause
       # Current values of each of the frame's arguments. Omitted for non-call frames.
       optional array of Value argumentValues
 
+  # Get the points of all steps that are executed by a frame.
+  command getFrameSteps
+    parameters
+      # Frame to get steps for.
+      FrameId frameId
+    returns
+      # Execution points for all steps which the frame executes. In the case of
+      # async/generator frames, only steps that are executed while the current
+      # frame is on the stack are included: steps in the same logical frame that
+      # that are separated from the current point by an <code>await</code> or
+      # <code>yield</code> are excluded.
+      array of Debugger.PointDescription steps
+
 # The DOM domain is used to inspect the DOM at particular execution points.
 # Inspecting the DOM requires a <code>Pause.PauseId</code>, and DOM nodes
 # are identified by a <code>Pause.ObjectId</code>.
