@@ -1372,6 +1372,24 @@
                     ]
                 },
                 {
+                    "name": "getScope",
+                    "description": "Load a scope's contents.",
+                    "parameters": [
+                        {
+                            "name": "scope",
+                            "description": "Scope to load.",
+                            "$ref": "ScopeId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "data",
+                            "description": "Returned data. This includes the scope's contents, and additional data\nfor objects which it references.",
+                            "$ref": "PauseData"
+                        }
+                    ]
+                },
+                {
                     "name": "getTopFrame",
                     "description": "Get the topmost frame on the stack.",
                     "returns": [

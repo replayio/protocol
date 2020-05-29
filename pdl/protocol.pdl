@@ -699,6 +699,16 @@ domain Pause
       # it references.
       PauseData data
 
+  # Load a scope's contents.
+  command getScope
+    parameters
+      # Scope to load.
+      ScopeId scope
+    returns
+      # Returned data. This includes the scope's contents, and additional data
+      # for objects which it references.
+      PauseData data
+
   # Get the topmost frame on the stack.
   command getTopFrame
     returns
