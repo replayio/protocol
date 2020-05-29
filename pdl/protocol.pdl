@@ -1025,6 +1025,16 @@ domain Analysis
       # If specified, later functions will be excluded.
       optional Debugger.ScriptLocation end
 
+  # Apply the analysis to the entry point of every handler for an event.
+  command addEventHandlerEntryPoints
+    parameters
+      # Associated analysis.
+      AnalysisId analysisId
+      # Associated session.
+      Session.SessionId sessionId
+      # Type of event whose handler calls the analysis should be applied to.
+      string eventType
+
   # Run the analysis. After this is called, <code>analysisResult</code> and/or
   # <code>analysisError</code> events will be emitted as results are gathered.
   # Does not return until the analysis has finished and all events have been

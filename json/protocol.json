@@ -2039,6 +2039,27 @@
                     ]
                 },
                 {
+                    "name": "addEventHandlerEntryPoints",
+                    "description": "Apply the analysis to the entry point of every handler for an event.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Associated analysis.",
+                            "$ref": "AnalysisId"
+                        },
+                        {
+                            "name": "sessionId",
+                            "description": "Associated session.",
+                            "$ref": "Session.SessionId"
+                        },
+                        {
+                            "name": "eventType",
+                            "description": "Type of event whose handler calls the analysis should be applied to.",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
                     "name": "runAnalysis",
                     "description": "Run the analysis. After this is called, <code>analysisResult</code> and/or\n<code>analysisError</code> events will be emitted as results are gathered.\nDoes not return until the analysis has finished and all events have been\nemitted.",
                     "parameters": [
