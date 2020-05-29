@@ -1598,6 +1598,11 @@
                             "name": "type",
                             "description": "Event being listened for.",
                             "type": "string"
+                        },
+                        {
+                            "name": "capture",
+                            "description": "Whether the listener captures events.",
+                            "type": "boolean"
                         }
                     ]
                 },

@@ -801,6 +801,8 @@ domain DOM
       Pause.ObjectId handler
       # Event being listened for.
       string type
+      # Whether the listener captures events.
+      boolean capture
 
   # Description of a node's contents which is attached to its
   # associated <code>Pause.ObjectPreview.node</code>.
