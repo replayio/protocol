@@ -1331,6 +1331,33 @@
                     ]
                 },
                 {
+                    "name": "evaluateInGlobal",
+                    "description": "Evaluate an expression in a global context.",
+                    "parameters": [
+                        {
+                            "name": "expression",
+                            "description": "Expression to evaluate.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "bindings",
+                            "description": "Any extra bindings to add to the evaluation's scope.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "NamedValue"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "description": "Result of the evaluation.",
+                            "$ref": "Result"
+                        }
+                    ]
+                },
+                {
                     "name": "getObjectProperty",
                     "description": "Read a property from an object.",
                     "parameters": [

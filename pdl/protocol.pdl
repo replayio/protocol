@@ -677,6 +677,17 @@ domain Pause
       # Result of the evaluation.
       Result result
 
+  # Evaluate an expression in a global context.
+  command evaluateInGlobal
+    parameters
+      # Expression to evaluate.
+      string expression
+      # Any extra bindings to add to the evaluation's scope.
+      optional array of NamedValue bindings
+    returns
+      # Result of the evaluation.
+      Result result
+
   # Read a property from an object.
   command getObjectProperty
     parameters
