@@ -59,10 +59,15 @@ domain Recording
     returns
       # Duration of the recording.
       TimeStamp duration
+      # Byte length of the recording.
+      integer length
       # Painted graphics at the end of the recording.
       optional Graphics.ScreenShot lastScreen
 
-  # Create a session for inspecting a recording.
+  # Create a session for inspecting a recording. This command does not return
+  # until the recording's description and contents have been fully received.
+  # If the description/contents are incomplete, <code>uploadedData</code> events
+  # will be periodically emitted before the command returns.
   command createSession
     parameters
       # Recording to load into the session.
@@ -70,6 +75,14 @@ domain Recording
     returns
       # Identifier for the new session.
       Session.SessionId sessionId
+
+  # Describes how much of a recording's data has been uploaded to the cloud service.
+  event uploadedData
+    parameters
+      # Recording being described.
+      RecordingId recordingId
+      # How many bytes of recording data have been received by the cloud service.
+      integer byteCount
 
   # Release a session and allow its resources to be reclaimed.
   command releaseSession
@@ -871,6 +884,20 @@ domain DOM
   # of the four points in the quad. The entire array will have a length that is a
   # multiple of 8.
   type Quads extends array of number
+
+  # Get the bounding client rect for a node.
+  command getBoundingClientRect
+    parameters
+      # Node to get the bounds for.
+      Pause.ObjectId node
+    returns
+      # Bounding client rect for the node.
+      Rect rect
+
+  # Compact representation of a DOMRect. A rect has four elements, listing the
+  # rect's <code>left</code>, <code>top</code>, <code>right</code>, and
+  # <code>bottom</code> values in order.
+  type Rect extends array of number
 
 # The CSS domain is used to inspect the CSS state at particular execution points.
 #
