@@ -399,7 +399,7 @@
             "commands": [
                 {
                     "name": "findScripts",
-                    "description": "Find all scripts in the recording. Does not return until the recording is\nfully processed. Before returning, <code>scriptParsed</code> events will be\nemitted for every script in the recording."
+                    "description": "Find all scripts in the recording. Does not return until the recording is\nfully processed. Before returning, <code>scriptParsed</code> events will be\nemitted for every script in the recording.\n\n<br><br>Scripts in a recording include both the generated scripts that ran\nwhile the page was executing, and original scripts referenced in source maps\nfor the generated script. Original scripts are only available when they have\nbeen associated with the recording via <code>Internal.addRecordingResource</code>."
                 },
                 {
                     "name": "getScriptSource",
@@ -663,10 +663,10 @@
                             "type": "string"
                         },
                         {
-                            "name": "sourceMapURL",
-                            "description": "Any source map URL for the script.",
+                            "name": "generatedScriptId",
+                            "description": "If this is an original source, the ID of the script which was generated from\nthis one.",
                             "optional": true,
-                            "type": "string"
+                            "$ref": "ScriptId"
                         }
                     ]
                 }
@@ -735,6 +735,14 @@
                     ]
                 },
                 {
+                    "id": "MappedLocation",
+                    "description": "A location in a generated scripts, along with corresponding locations in any\noriginal scripts which the generated script was source mapped from.\nThe generated script location is the first element of the array.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "Location"
+                    }
+                },
+                {
                     "id": "BreakpointId",
                     "description": "ID for a breakpoint.",
                     "type": "string"
@@ -759,7 +767,7 @@
                             "name": "frame",
                             "description": "Location of the topmost frame, omitted if there are no frames on stack.",
                             "optional": true,
-                            "$ref": "Location"
+                            "$ref": "MappedLocation"
                         }
                     ]
                 },
@@ -997,12 +1005,12 @@
                             "name": "functionLocation",
                             "description": "For call frames, the location of the function being called.",
                             "optional": true,
-                            "$ref": "Debugger.Location"
+                            "$ref": "Debugger.MappedLocation"
                         },
                         {
                             "name": "location",
                             "description": "Location in the source where this frame is paused at.",
-                            "$ref": "Debugger.Location"
+                            "$ref": "Debugger.MappedLocation"
                         },
                         {
                             "name": "scopeChain",
@@ -1182,7 +1190,7 @@
                             "name": "functionLocation",
                             "description": "For scripted Function objects, the location of the function.",
                             "optional": true,
-                            "$ref": "Debugger.Location"
+                            "$ref": "Debugger.MappedLocation"
                         },
                         {
                             "name": "node",
@@ -2343,50 +2351,6 @@
                             "name": "resource",
                             "description": "Resource which the recording is associated with.",
                             "$ref": "Resource"
-                        }
-                    ]
-                },
-                {
-                    "name": "listRecordingResources",
-                    "description": "List all resources associated with a recording.",
-                    "parameters": [
-                        {
-                            "name": "recordingId",
-                            "description": "ID of the recording.",
-                            "$ref": "Recording.RecordingId"
-                        }
-                    ],
-                    "returns": [
-                        {
-                            "name": "resources",
-                            "description": "All resources that have been associated with the recording.",
-                            "type": "array",
-                            "items": {
-                                "$ref": "Resource"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "getRecordingResource",
-                    "description": "Download a resource associated with a recording.",
-                    "parameters": [
-                        {
-                            "name": "recordingId",
-                            "description": "ID of the recording.",
-                            "$ref": "Recording.RecordingId"
-                        },
-                        {
-                            "name": "resource",
-                            "description": "Resource to download.",
-                            "$ref": "Resource"
-                        }
-                    ],
-                    "returns": [
-                        {
-                            "name": "contents",
-                            "description": "Text contents of the resource.",
-                            "type": "string"
                         }
                     ]
                 }

@@ -225,6 +225,11 @@ domain Debugger
   # Find all scripts in the recording. Does not return until the recording is
   # fully processed. Before returning, <code>scriptParsed</code> events will be
   # emitted for every script in the recording.
+  #
+  # <br><br>Scripts in a recording include both the generated scripts that ran
+  # while the page was executing, and original scripts referenced in source maps
+  # for the generated script. Original scripts are only available when they have
+  # been associated with the recording via <code>Internal.addRecordingResource</code>.
   command findScripts
 
   # Describes a script that was successfully parsed.
@@ -234,8 +239,9 @@ domain Debugger
       ScriptId scriptId
       # URL of the script. Omitted for dynamically generated scripts (from eval etc.).
       optional string url
-      # Any source map URL for the script.
-      optional string sourceMapURL
+      # If this is an original source, the ID of the script which was generated from
+      # this one.
+      optional ScriptId generatedScriptId
 
   # Unique ID for a script.
   type ScriptId extends string
@@ -295,6 +301,11 @@ domain Debugger
     properties
       ScriptId scriptId
 
+  # A location in a generated scripts, along with corresponding locations in any
+  # original scripts which the generated script was source mapped from.
+  # The generated script location is the first element of the array.
+  type MappedLocation extends array of Location
+
   # ID for a breakpoint.
   type BreakpointId extends string
 
@@ -338,7 +349,7 @@ domain Debugger
   type PointDescription extends Recording.TimeStampedPoint
     properties
       # Location of the topmost frame, omitted if there are no frames on stack.
-      optional Location frame
+      optional MappedLocation frame
 
   # Description of a point where execution can pause after running forward or
   # backward through the recording.
@@ -541,9 +552,9 @@ domain Pause
       # Omitted if the function has no name.
       optional string functionName
       # For call frames, the location of the function being called.
-      optional Debugger.Location functionLocation
+      optional Debugger.MappedLocation functionLocation
       # Location in the source where this frame is paused at.
-      Debugger.Location location
+      Debugger.MappedLocation location
       # Scope chain for the call frame, from innermost to outermost.
       array of ScopeId scopeChain
       # <code>this</code> value of the call frame.
@@ -615,7 +626,7 @@ domain Pause
       # For Function objects, the names of the parameters.
       optional array of string functionParameterNames
       # For scripted Function objects, the location of the function.
-      optional Debugger.Location functionLocation
+      optional Debugger.MappedLocation functionLocation
       # For DOM Node objects, information about the node.
       optional DOM.Node node
       # For CSSRule objects, information about the rule.
@@ -1216,23 +1227,3 @@ domain Internal
       Recording.RecordingId recordingId
       # Resource which the recording is associated with.
       Resource resource
-
-  # List all resources associated with a recording.
-  command listRecordingResources
-    parameters
-      # ID of the recording.
-      Recording.RecordingId recordingId
-    returns
-      # All resources that have been associated with the recording.
-      array of Resource resources
-
-  # Download a resource associated with a recording.
-  command getRecordingResource
-    parameters
-      # ID of the recording.
-      Recording.RecordingId recordingId
-      # Resource to download.
-      Resource resource
-    returns
-      # Text contents of the resource.
-      string contents
