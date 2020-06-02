@@ -458,6 +458,22 @@
                     ]
                 },
                 {
+                    "name": "getMappedLocation",
+                    "description": "Get the mapped location for a script location.",
+                    "parameters": [
+                        {
+                            "name": "location",
+                            "$ref": "Location"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "mappedLocation",
+                            "$ref": "MappedLocation"
+                        }
+                    ]
+                },
+                {
                     "name": "setBreakpoint",
                     "description": "Set a breakpoint at a location.",
                     "parameters": [
@@ -849,7 +865,7 @@
                         {
                             "name": "point",
                             "description": "Point associated with the message. For messages added due to uncaught\nexceptions this is the point at which the exception was thrown. For\nother types of messages it is the point where the message was added.",
-                            "$ref": "Recording.TimeStampedPoint"
+                            "$ref": "Debugger.PointDescription"
                         },
                         {
                             "name": "pauseId",

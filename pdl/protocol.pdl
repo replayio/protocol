@@ -306,6 +306,13 @@ domain Debugger
   # The generated script location is the first element of the array.
   type MappedLocation extends array of Location
 
+  # Get the mapped location for a script location.
+  command getMappedLocation
+    parameters
+      Location location
+    returns
+      MappedLocation mappedLocation
+
   # ID for a breakpoint.
   type BreakpointId extends string
 
@@ -469,7 +476,7 @@ domain Console
       # Point associated with the message. For messages added due to uncaught
       # exceptions this is the point at which the exception was thrown. For
       # other types of messages it is the point where the message was added.
-      Recording.TimeStampedPoint point
+      Debugger.PointDescription point
       # Pause ID associated with the message arguments and stack.
       Pause.PauseId pauseId
       # Any arguments to the message.
