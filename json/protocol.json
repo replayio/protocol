@@ -402,6 +402,24 @@
                     "description": "Find all scripts in the recording. Does not return until the recording is\nfully processed. Before returning, <code>scriptParsed</code> events will be\nemitted for every script in the recording.\n\n<br><br>Scripts in a recording include both the generated scripts that ran\nwhile the page was executing, and original scripts referenced in source maps\nfor the generated script. Original scripts are only available when they have\nbeen associated with the recording via <code>Internal.addRecordingResource</code>."
                 },
                 {
+                    "name": "prettyPrintScript",
+                    "description": "Generate a new script by pretty printing another one.",
+                    "parameters": [
+                        {
+                            "name": "scriptId",
+                            "description": "ID of the script to pretty print.",
+                            "$ref": "ScriptId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "prettyScriptId",
+                            "description": "ID of the pretty printed script.",
+                            "$ref": "ScriptId"
+                        }
+                    ]
+                },
+                {
                     "name": "getScriptSource",
                     "description": "Get the source contents of a script.",
                     "parameters": [

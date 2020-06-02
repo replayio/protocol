@@ -246,6 +246,15 @@ domain Debugger
   # Unique ID for a script.
   type ScriptId extends string
 
+  # Generate a new script by pretty printing another one.
+  command prettyPrintScript
+    parameters
+      # ID of the script to pretty print.
+      ScriptId scriptId
+    returns
+      # ID of the pretty printed script.
+      ScriptId prettyScriptId
+
   # Get the source contents of a script.
   command getScriptSource
     parameters
