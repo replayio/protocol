@@ -869,6 +869,12 @@
                             "type": "string"
                         },
                         {
+                            "name": "scriptId",
+                            "description": "Any script associated with the message.",
+                            "optional": true,
+                            "$ref": "Debugger.ScriptId"
+                        },
+                        {
                             "name": "line",
                             "description": "Any 1-indexed line number associated with the message.",
                             "optional": true,
