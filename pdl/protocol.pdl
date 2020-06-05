@@ -1104,6 +1104,8 @@ domain Analysis
   # Apply the analysis to every point where an exception is thrown.
   command addExceptionPoints
     parameters
+      # Associated analysis.
+      AnalysisId analysisId
       # Associated session.
       Session.SessionId sessionId
 

@@ -2183,6 +2183,11 @@
                     "description": "Apply the analysis to every point where an exception is thrown.",
                     "parameters": [
                         {
+                            "name": "analysisId",
+                            "description": "Associated analysis.",
+                            "$ref": "AnalysisId"
+                        },
+                        {
                             "name": "sessionId",
                             "description": "Associated session.",
                             "$ref": "Session.SessionId"
