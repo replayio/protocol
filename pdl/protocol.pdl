@@ -794,6 +794,14 @@ domain Pause
       # <code>yield</code> are excluded.
       array of Debugger.PointDescription steps
 
+  # Return any value that is being thrown at this point.
+  command getThrownValue
+    returns
+      # If a value is being thrown, the thrown value.
+      optional Value thrownValue
+      # Any additional data associated with the thrown value.
+      PauseData data
+
 # The DOM domain is used to inspect the DOM at particular execution points.
 # Inspecting the DOM requires a <code>Pause.PauseId</code>, and DOM nodes
 # are identified by a <code>Pause.ObjectId</code>.
@@ -1092,6 +1100,12 @@ domain Analysis
       Session.SessionId sessionId
       # Type of event whose handler calls the analysis should be applied to.
       string eventType
+
+  # Apply the analysis to every point where an exception is thrown.
+  command addExceptionPoints
+    parameters
+      # Associated session.
+      Session.SessionId sessionId
 
   # Run the analysis. After this is called, <code>analysisResult</code> and/or
   # <code>analysisError</code> events will be emitted as results are gathered.

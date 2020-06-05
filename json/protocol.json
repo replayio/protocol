@@ -1552,6 +1552,23 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "getThrownValue",
+                    "description": "Return any value that is being thrown at this point.",
+                    "returns": [
+                        {
+                            "name": "thrownValue",
+                            "description": "If a value is being thrown, the thrown value.",
+                            "optional": true,
+                            "$ref": "Value"
+                        },
+                        {
+                            "name": "data",
+                            "description": "Any additional data associated with the thrown value.",
+                            "$ref": "PauseData"
+                        }
+                    ]
                 }
             ]
         },
@@ -2158,6 +2175,17 @@
                             "name": "eventType",
                             "description": "Type of event whose handler calls the analysis should be applied to.",
                             "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "addExceptionPoints",
+                    "description": "Apply the analysis to every point where an exception is thrown.",
+                    "parameters": [
+                        {
+                            "name": "sessionId",
+                            "description": "Associated session.",
+                            "$ref": "Session.SessionId"
                         }
                     ]
                 },
