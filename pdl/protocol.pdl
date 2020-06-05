@@ -794,12 +794,12 @@ domain Pause
       # <code>yield</code> are excluded.
       array of Debugger.PointDescription steps
 
-  # Return any value that is being thrown at this point.
-  command getThrownValue
+  # Get any exception that is being thrown at this point.
+  command getExceptionValue
     returns
-      # If a value is being thrown, the thrown value.
-      optional Value thrownValue
-      # Any additional data associated with the thrown value.
+      # If an exception is being thrown, the exception's value.
+      optional Value exception
+      # Any additional data associated with the exception.
       PauseData data
 
 # The DOM domain is used to inspect the DOM at particular execution points.

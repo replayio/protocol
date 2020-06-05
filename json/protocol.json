@@ -1554,18 +1554,18 @@
                     ]
                 },
                 {
-                    "name": "getThrownValue",
-                    "description": "Return any value that is being thrown at this point.",
+                    "name": "getExceptionValue",
+                    "description": "Get any exception that is being thrown at this point.",
                     "returns": [
                         {
-                            "name": "thrownValue",
-                            "description": "If a value is being thrown, the thrown value.",
+                            "name": "exception",
+                            "description": "If an exception is being thrown, the exception's value.",
                             "optional": true,
                             "$ref": "Value"
                         },
                         {
                             "name": "data",
-                            "description": "Any additional data associated with the thrown value.",
+                            "description": "Any additional data associated with the exception.",
                             "$ref": "PauseData"
                         }
                     ]
