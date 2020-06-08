@@ -2158,8 +2158,8 @@
                     ]
                 },
                 {
-                    "name": "addRandomFunctionEntryPoints",
-                    "description": "Apply the analysis to a random selection of function entry points.",
+                    "name": "addRandomPoints",
+                    "description": "Apply the analysis to a random selection of points.",
                     "parameters": [
                         {
                             "name": "analysisId",

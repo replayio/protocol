@@ -1091,8 +1091,8 @@ domain Analysis
       # If specified, later functions will be excluded.
       optional Debugger.ScriptLocation end
 
-  # Apply the analysis to a random selection of function entry points.
-  command addRandomFunctionEntryPoints
+  # Apply the analysis to a random selection of points.
+  command addRandomPoints
     parameters
       # Associated analysis.
       AnalysisId analysisId
