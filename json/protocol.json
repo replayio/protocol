@@ -2158,6 +2158,27 @@
                     ]
                 },
                 {
+                    "name": "addRandomFunctionEntryPoints",
+                    "description": "Apply the analysis to a random selection of function entry points.",
+                    "parameters": [
+                        {
+                            "name": "analysisId",
+                            "description": "Associated analysis.",
+                            "$ref": "AnalysisId"
+                        },
+                        {
+                            "name": "sessionId",
+                            "description": "Associated session.",
+                            "$ref": "Session.SessionId"
+                        },
+                        {
+                            "name": "numPoints",
+                            "description": "Maximum number of points to apply the analysis to.",
+                            "type": "integer"
+                        }
+                    ]
+                },
+                {
                     "name": "addEventHandlerEntryPoints",
                     "description": "Apply the analysis to the entry point of every handler for an event.",
                     "parameters": [

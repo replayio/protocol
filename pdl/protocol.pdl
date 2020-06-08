@@ -1091,6 +1091,16 @@ domain Analysis
       # If specified, later functions will be excluded.
       optional Debugger.ScriptLocation end
 
+  # Apply the analysis to a random selection of function entry points.
+  command addRandomFunctionEntryPoints
+    parameters
+      # Associated analysis.
+      AnalysisId analysisId
+      # Associated session.
+      Session.SessionId sessionId
+      # Maximum number of points to apply the analysis to.
+      integer numPoints
+
   # Apply the analysis to the entry point of every handler for an event.
   command addEventHandlerEntryPoints
     parameters
