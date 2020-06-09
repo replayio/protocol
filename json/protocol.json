@@ -1106,6 +1106,12 @@
                             "$ref": "ObjectId"
                         },
                         {
+                            "name": "callee",
+                            "description": "For <code>function</code> scopes, the called function.",
+                            "optional": true,
+                            "$ref": "ObjectId"
+                        },
+                        {
                             "name": "bindings",
                             "description": "For <code>function</code> and <code>block</code> scopes, the scope bindings.",
                             "optional": true,
