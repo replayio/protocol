@@ -65,9 +65,9 @@ domain Recording
       optional Graphics.ScreenShot lastScreen
 
   # Create a session for inspecting a recording. This command does not return
-  # until the recording's description and contents have been fully received.
-  # If the description/contents are incomplete, <code>uploadedData</code> events
-  # will be periodically emitted before the command returns.
+  # until the recording's contents have been fully received. If the contents
+  # are incomplete, <code>uploadedData</code> events will be periodically
+  # emitted before the command returns.
   command createSession
     parameters
       # Recording to load into the session.
@@ -90,14 +90,21 @@ domain Recording
       # Session to release.
       Session.SessionId sessionId
 
+  # Begin processing a recording, even if no sessions have been created for it.
+  # After calling this, sessions created for the recording may start in a
+  # partially or fully processed state and start being used immediately.
+  command processRecording
+    parameters
+      RecordingId recordingId
+
 # The Session domain defines methods for using recording sessions. In order to
 # inspect a recording, it must first be loaded into a session via
 # <code>Recording.createSession</code>.
 #
-# After the session is created, it is an unprocessed state. Commands sent using
-# the session to query information about the recording will only find
-# information about parts of the recording that have been processed. Processing
-# starts automatically after the session is created.
+# After the session is created, it may be in an unprocessed or partially
+# processed state. As documented, some commands do not return until the session
+# has fully processed the recording. Processing starts automatically after the
+# session is created.
 #
 # <br><br>All commands and events in this domain must include a <code>sessionId</code>.
 domain Session

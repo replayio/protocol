@@ -122,7 +122,7 @@
                 },
                 {
                     "name": "createSession",
-                    "description": "Create a session for inspecting a recording. This command does not return\nuntil the recording's description and contents have been fully received.\nIf the description/contents are incomplete, <code>uploadedData</code> events\nwill be periodically emitted before the command returns.",
+                    "description": "Create a session for inspecting a recording. This command does not return\nuntil the recording's contents have been fully received. If the contents\nare incomplete, <code>uploadedData</code> events will be periodically\nemitted before the command returns.",
                     "parameters": [
                         {
                             "name": "recordingId",
@@ -148,6 +148,16 @@
                             "$ref": "Session.SessionId"
                         }
                     ]
+                },
+                {
+                    "name": "processRecording",
+                    "description": "Begin processing a recording, even if no sessions have been created for it.\nAfter calling this, sessions created for the recording may start in a\npartially or fully processed state and start being used immediately.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "$ref": "RecordingId"
+                        }
+                    ]
                 }
             ],
             "events": [
@@ -171,7 +181,7 @@
         },
         {
             "domain": "Session",
-            "description": "The Session domain defines methods for using recording sessions. In order to\ninspect a recording, it must first be loaded into a session via\n<code>Recording.createSession</code>.\n\nAfter the session is created, it is an unprocessed state. Commands sent using\nthe session to query information about the recording will only find\ninformation about parts of the recording that have been processed. Processing\nstarts automatically after the session is created.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
+            "description": "The Session domain defines methods for using recording sessions. In order to\ninspect a recording, it must first be loaded into a session via\n<code>Recording.createSession</code>.\n\nAfter the session is created, it may be in an unprocessed or partially\nprocessed state. As documented, some commands do not return until the session\nhas fully processed the recording. Processing starts automatically after the\nsession is created.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
             "types": [
                 {
                     "id": "SessionId",
