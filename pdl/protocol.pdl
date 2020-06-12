@@ -519,6 +519,7 @@ domain Console
       trace
       warning
       error
+      assert
 
 # The Pause domain is used to inspect the state of the program when it is paused
 # at particular execution points.

@@ -948,7 +948,8 @@
                         "info",
                         "trace",
                         "warning",
-                        "error"
+                        "error",
+                        "assert"
                     ]
                 }
             ]
