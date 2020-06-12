@@ -1510,7 +1510,13 @@
                     "returns": [
                         {
                             "name": "frame",
+                            "description": "The topmost frame.",
                             "$ref": "Frame"
+                        },
+                        {
+                            "name": "data",
+                            "description": "Any data associated with the frame.",
+                            "$ref": "PauseData"
                         }
                     ]
                 },
@@ -1520,10 +1526,16 @@
                     "returns": [
                         {
                             "name": "frames",
+                            "description": "All frames on the stack.",
                             "type": "array",
                             "items": {
                                 "$ref": "Frame"
                             }
+                        },
+                        {
+                            "name": "data",
+                            "description": "Any data associated with the frames.",
+                            "$ref": "PauseData"
                         }
                     ]
                 },
@@ -1546,6 +1558,11 @@
                             "items": {
                                 "$ref": "Value"
                             }
+                        },
+                        {
+                            "name": "data",
+                            "description": "Any data associated with the argument values.",
+                            "$ref": "PauseData"
                         }
                     ]
                 },

@@ -776,12 +776,18 @@ domain Pause
   # Get the topmost frame on the stack.
   command getTopFrame
     returns
+      # The topmost frame.
       Frame frame
+      # Any data associated with the frame.
+      PauseData data
 
   # Get all frames on the stack.
   command getAllFrames
     returns
+      # All frames on the stack.
       array of Frame frames
+      # Any data associated with the frames.
+      PauseData data
 
   # Get the values of a frame's arguments.
   command getFrameArguments
@@ -791,6 +797,8 @@ domain Pause
     returns
       # Current values of each of the frame's arguments. Omitted for non-call frames.
       optional array of Value argumentValues
+      # Any data associated with the argument values.
+      PauseData data
 
   # Get the points of all steps that are executed by a frame.
   command getFrameSteps
