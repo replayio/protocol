@@ -151,7 +151,7 @@
                 },
                 {
                     "name": "processRecording",
-                    "description": "Begin processing a recording, even if no sessions have been created for it.\nAfter calling this, sessions created for the recording may start in a\npartially or fully processed state and start being used immediately.",
+                    "description": "Begin processing a recording, even if no sessions have been created for it.\nAfter calling this, sessions created for the recording (on this connection,\nor another) may start in a partially or fully processed state and start\nbeing used immediately.",
                     "parameters": [
                         {
                             "name": "recordingId",
@@ -1789,6 +1789,12 @@
                             "items": {
                                 "$ref": "Pause.ObjectId"
                             }
+                        },
+                        {
+                            "name": "documentURL",
+                            "description": "For document nodes, the <code>URL</code> property.",
+                            "optional": true,
+                            "type": "string"
                         }
                     ]
                 },

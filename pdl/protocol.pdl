@@ -91,8 +91,9 @@ domain Recording
       Session.SessionId sessionId
 
   # Begin processing a recording, even if no sessions have been created for it.
-  # After calling this, sessions created for the recording may start in a
-  # partially or fully processed state and start being used immediately.
+  # After calling this, sessions created for the recording (on this connection,
+  # or another) may start in a partially or fully processed state and start
+  # being used immediately.
   command processRecording
     parameters
       RecordingId recordingId
@@ -885,6 +886,8 @@ domain DOM
       optional Pause.ObjectId parentNode
       # IDs of all <code>node.childNodes</code>.
       optional array of Pause.ObjectId childNodes
+      # For document nodes, the <code>URL</code> property.
+      optional string documentURL
 
   # Description of an element attribute.
   type Attr extends object
