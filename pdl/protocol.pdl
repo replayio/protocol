@@ -516,6 +516,7 @@ domain Console
   type MessageLevel extends string
     enum
       info
+      trace
       warning
       error
 

@@ -946,6 +946,7 @@
                     "type": "string",
                     "enum": [
                         "info",
+                        "trace",
                         "warning",
                         "error"
                     ]
