@@ -958,6 +958,17 @@ domain DOM
   # <code>bottom</code> values in order.
   type Rect extends array of number
 
+  # Search the DOM for nodes containing a string.
+  command performSearch
+    parameters
+      # Text to search for.
+      string query
+    returns
+      # Nodes containing the query text.
+      array of Pause.ObjectId nodes
+      # Any data associated with the returned nodes.
+      Pause.PauseData data
+
 # The CSS domain is used to inspect the CSS state at particular execution points.
 #
 # <br><br>All commands and events in this domain must include both a <code>sessionId</code>

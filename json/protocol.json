@@ -1717,6 +1717,32 @@
                             "$ref": "Rect"
                         }
                     ]
+                },
+                {
+                    "name": "performSearch",
+                    "description": "Search the DOM for nodes containing a string.",
+                    "parameters": [
+                        {
+                            "name": "query",
+                            "description": "Text to search for.",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "nodes",
+                            "description": "Nodes containing the query text.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Pause.ObjectId"
+                            }
+                        },
+                        {
+                            "name": "data",
+                            "description": "Any data associated with the returned nodes.",
+                            "$ref": "Pause.PauseData"
+                        }
+                    ]
                 }
             ],
             "types": [
