@@ -1719,6 +1719,20 @@
                     ]
                 },
                 {
+                    "name": "getAllBoundingClientRects",
+                    "description": "Get the bounding client rect for all elements on the page.",
+                    "returns": [
+                        {
+                            "name": "elements",
+                            "description": "All elements on the page and their bounding client rects. These are\nare given in stacking order: elements earlier in the list will be drawn\nin front of later elements.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "NodeBounds"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "performSearch",
                     "description": "Search the DOM for nodes containing a string.",
                     "parameters": [
@@ -1731,7 +1745,7 @@
                     "returns": [
                         {
                             "name": "nodes",
-                            "description": "Nodes containing the query text.",
+                            "description": "Nodes whose name, attributes, or text content contains the query string.",
                             "type": "array",
                             "items": {
                                 "$ref": "Pause.ObjectId"
@@ -1917,6 +1931,23 @@
                     "items": {
                         "type": "number"
                     }
+                },
+                {
+                    "id": "NodeBounds",
+                    "description": "Describes the bounding client rect for a node.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "node",
+                            "description": "Node being described.",
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "rect",
+                            "description": "Bounding client rect for the node.",
+                            "$ref": "Rect"
+                        }
+                    ]
                 }
             ]
         },

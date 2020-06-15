@@ -953,10 +953,26 @@ domain DOM
       # Bounding client rect for the node.
       Rect rect
 
+  # Get the bounding client rect for all elements on the page.
+  command getAllBoundingClientRects
+    returns
+      # All elements on the page and their bounding client rects. These are
+      # are given in stacking order: elements earlier in the list will be drawn
+      # in front of later elements.
+      array of NodeBounds elements
+
   # Compact representation of a DOMRect. A rect has four elements, listing the
   # rect's <code>left</code>, <code>top</code>, <code>right</code>, and
   # <code>bottom</code> values in order.
   type Rect extends array of number
+
+  # Describes the bounding client rect for a node.
+  type NodeBounds extends object
+    properties
+      # Node being described.
+      Pause.ObjectId node
+      # Bounding client rect for the node.
+      Rect rect
 
   # Search the DOM for nodes containing a string.
   command performSearch
@@ -964,7 +980,7 @@ domain DOM
       # Text to search for.
       string query
     returns
-      # Nodes containing the query text.
+      # Nodes whose name, attributes, or text content contains the query string.
       array of Pause.ObjectId nodes
       # Any data associated with the returned nodes.
       Pause.PauseData data
