@@ -1642,8 +1642,8 @@
                     "description": "Load previews for an object and its transitive parents up to the\nroot document.",
                     "parameters": [
                         {
-                            "name": "object",
-                            "description": "Object to load the preview for.",
+                            "name": "node",
+                            "description": "Node to load the previews for.",
                             "$ref": "Pause.ObjectId"
                         }
                     ],

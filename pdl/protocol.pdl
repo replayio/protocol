@@ -849,8 +849,8 @@ domain DOM
   # root document.
   command getParentNodes
     parameters
-      # Object to load the preview for.
-      Pause.ObjectId object
+      # Node to load the previews for.
+      Pause.ObjectId node
     returns
       # Returned data, including previews for the object and its transitive parents.
       Pause.PauseData data
