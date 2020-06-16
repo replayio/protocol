@@ -325,6 +325,16 @@
                             "$ref": "ScreenShot"
                         }
                     ]
+                },
+                {
+                    "name": "getDevicePixelRatio",
+                    "description": "Get the value of <code>window.devicePixelRatio</code>. This is the ratio of\npixels in screen shots to pixels used by DOM/CSS data such as\n<code>DOM.getBoundingClientRect</code>.",
+                    "returns": [
+                        {
+                            "name": "ratio",
+                            "type": "number"
+                        }
+                    ]
                 }
             ],
             "events": [

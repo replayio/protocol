@@ -224,6 +224,13 @@ domain Graphics
       # Available screen shots for the graphics rendered at this point.
       array of ScreenShotDescription screenShots
 
+  # Get the value of <code>window.devicePixelRatio</code>. This is the ratio of
+  # pixels in screen shots to pixels used by DOM/CSS data such as
+  # <code>DOM.getBoundingClientRect</code>.
+  command getDevicePixelRatio
+    returns
+      number ratio
+
 # The Debugger domain defines methods for accessing JS scripts and navigating
 # around the recording using breakpoints, stepping, and so forth.
 #
