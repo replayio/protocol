@@ -850,12 +850,10 @@ domain DOM
   command getParentNodes
     parameters
       # Object to load the preview for.
-      ObjectId object
+      Pause.ObjectId object
     returns
-      # Returned data. This includes a preview for the object which does not
-      # have <code>overflow</code> set, and additional data for objects which
-      # it references.
-      PauseData data
+      # Returned data, including previews for the object and its transitive parents.
+      Pause.PauseData data
 
   # Call querySelector() on a node in the page.
   command querySelector

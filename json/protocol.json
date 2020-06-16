@@ -1644,14 +1644,14 @@
                         {
                             "name": "object",
                             "description": "Object to load the preview for.",
-                            "$ref": "ObjectId"
+                            "$ref": "Pause.ObjectId"
                         }
                     ],
                     "returns": [
                         {
                             "name": "data",
-                            "description": "Returned data. This includes a preview for the object which does not\nhave <code>overflow</code> set, and additional data for objects which\nit references.",
-                            "$ref": "PauseData"
+                            "description": "Returned data, including previews for the object and its transitive parents.",
+                            "$ref": "Pause.PauseData"
                         }
                     ]
                 },
