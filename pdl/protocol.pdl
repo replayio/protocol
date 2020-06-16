@@ -725,7 +725,8 @@ domain Pause
       # Any additional data associated with the returned/thrown value.
       PauseData data
 
-  # Evaluate an expression in the context of a call frame.
+  # Evaluate an expression in the context of a call frame. This command is
+  # effectful.
   command evaluateInFrame
     parameters
       # Frame to perform the evaluation in.
@@ -738,7 +739,7 @@ domain Pause
       # Result of the evaluation.
       Result result
 
-  # Evaluate an expression in a global context.
+  # Evaluate an expression in a global context. This command is effectful.
   command evaluateInGlobal
     parameters
       # Expression to evaluate.
@@ -749,7 +750,7 @@ domain Pause
       # Result of the evaluation.
       Result result
 
-  # Read a property from an object.
+  # Read a property from an object. This command is effectful.
   command getObjectProperty
     parameters
       # Object to get the property from.
@@ -760,7 +761,7 @@ domain Pause
       # Result of getting the property.
       Result result
 
-  # Call a function object.
+  # Call a function object. This command is effectful.
   command callFunction
     parameters
       # Function or other object to call.
@@ -773,7 +774,7 @@ domain Pause
       # Result of the call.
       Result result
 
-  # Read a property from an object, then call the result.
+  # Read a property from an object, then call the result. This command is effectful.
   command callObjectProperty
     parameters
       # Object to perform the call on.
@@ -1146,8 +1147,8 @@ domain Analysis
       optional string reducer
       # Whether effectful commands in the <code>Pause</code> domain might be
       # sent by the mapper function. An analysis which does not use effectful
-      # commands will run more efficiently. Effectful commands are
-      # <code>Pause.evaluateInFrame</code>, and <code>Pause.getObjectProperty</code>.
+      # commands will run more efficiently. See the <code>Pause</code> domain
+      # for which commands are effectful.
       boolean effectful
     returns
       # ID of the resulting analysis.

@@ -1399,7 +1399,7 @@
             "commands": [
                 {
                     "name": "evaluateInFrame",
-                    "description": "Evaluate an expression in the context of a call frame.",
+                    "description": "Evaluate an expression in the context of a call frame. This command is\neffectful.",
                     "parameters": [
                         {
                             "name": "frameId",
@@ -1431,7 +1431,7 @@
                 },
                 {
                     "name": "evaluateInGlobal",
-                    "description": "Evaluate an expression in a global context.",
+                    "description": "Evaluate an expression in a global context. This command is effectful.",
                     "parameters": [
                         {
                             "name": "expression",
@@ -1458,7 +1458,7 @@
                 },
                 {
                     "name": "getObjectProperty",
-                    "description": "Read a property from an object.",
+                    "description": "Read a property from an object. This command is effectful.",
                     "parameters": [
                         {
                             "name": "object",
@@ -1481,7 +1481,7 @@
                 },
                 {
                     "name": "callFunction",
-                    "description": "Call a function object.",
+                    "description": "Call a function object. This command is effectful.",
                     "parameters": [
                         {
                             "name": "object",
@@ -1512,7 +1512,7 @@
                 },
                 {
                     "name": "callObjectProperty",
-                    "description": "Read a property from an object, then call the result.",
+                    "description": "Read a property from an object, then call the result. This command is effectful.",
                     "parameters": [
                         {
                             "name": "object",
@@ -2279,7 +2279,7 @@
                         },
                         {
                             "name": "effectful",
-                            "description": "Whether effectful commands in the <code>Pause</code> domain might be\nsent by the mapper function. An analysis which does not use effectful\ncommands will run more efficiently. Effectful commands are\n<code>Pause.evaluateInFrame</code>, and <code>Pause.getObjectProperty</code>.",
+                            "description": "Whether effectful commands in the <code>Pause</code> domain might be\nsent by the mapper function. An analysis which does not use effectful\ncommands will run more efficiently. See the <code>Pause</code> domain\nfor which commands are effectful.",
                             "type": "boolean"
                         }
                     ],
