@@ -1480,6 +1480,68 @@
                     ]
                 },
                 {
+                    "name": "callFunction",
+                    "description": "Call a function object.",
+                    "parameters": [
+                        {
+                            "name": "object",
+                            "description": "Function or other object to call.",
+                            "$ref": "ObjectId"
+                        },
+                        {
+                            "name": "thisValue",
+                            "description": "<code>this</code> value to use for the call.",
+                            "$ref": "Value"
+                        },
+                        {
+                            "name": "argumentValues",
+                            "description": "Arguments to use for the call.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Value"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "description": "Result of the call.",
+                            "$ref": "Result"
+                        }
+                    ]
+                },
+                {
+                    "name": "callObjectProperty",
+                    "description": "Read a property from an object, then call the result.",
+                    "parameters": [
+                        {
+                            "name": "object",
+                            "description": "Object to perform the call on.",
+                            "$ref": "ObjectId"
+                        },
+                        {
+                            "name": "name",
+                            "description": "Property to call.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "argumentValues",
+                            "description": "Arguments to use for the call.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "Value"
+                            }
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "result",
+                            "description": "Result of the call.",
+                            "$ref": "Result"
+                        }
+                    ]
+                },
+                {
                     "name": "getObjectPreview",
                     "description": "Load a complete preview for an object.",
                     "parameters": [

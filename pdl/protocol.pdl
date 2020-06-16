@@ -760,6 +760,32 @@ domain Pause
       # Result of getting the property.
       Result result
 
+  # Call a function object.
+  command callFunction
+    parameters
+      # Function or other object to call.
+      ObjectId object
+      # <code>this</code> value to use for the call.
+      Value thisValue
+      # Arguments to use for the call.
+      array of Value argumentValues
+    returns
+      # Result of the call.
+      Result result
+
+  # Read a property from an object, then call the result.
+  command callObjectProperty
+    parameters
+      # Object to perform the call on.
+      ObjectId object
+      # Property to call.
+      string name
+      # Arguments to use for the call.
+      array of Value argumentValues
+    returns
+      # Result of the call.
+      Result result
+
   # Load a complete preview for an object.
   command getObjectPreview
     parameters
