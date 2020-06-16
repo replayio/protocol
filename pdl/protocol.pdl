@@ -845,6 +845,18 @@ domain DOM
       # Information about the document and related nodes.
       Pause.PauseData data
 
+  # Load previews for an object and its transitive parents up to the
+  # root document.
+  command getParentNodes
+    parameters
+      # Object to load the preview for.
+      ObjectId object
+    returns
+      # Returned data. This includes a preview for the object which does not
+      # have <code>overflow</code> set, and additional data for objects which
+      # it references.
+      PauseData data
+
   # Call querySelector() on a node in the page.
   command querySelector
     parameters
@@ -855,7 +867,8 @@ domain DOM
     returns
       # ID of the found node, omitted if none was found.
       optional Pause.ObjectId result
-      # Information about the returned node and related nodes.
+      # Information about the returned node and related nodes, including all
+      # parent nodes up to the root document.
       Pause.PauseData data
 
   # Get the event listeners attached to a node in the page.
@@ -989,7 +1002,8 @@ domain DOM
     returns
       # Nodes whose name, attributes, or text content contains the query string.
       array of Pause.ObjectId nodes
-      # Any data associated with the returned nodes.
+      # Any data associated with the returned nodes, including all parent nodes
+      # up to the root document.
       Pause.PauseData data
 
 # The CSS domain is used to inspect the CSS state at particular execution points.

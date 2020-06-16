@@ -1638,6 +1638,24 @@
                     ]
                 },
                 {
+                    "name": "getParentNodes",
+                    "description": "Load previews for an object and its transitive parents up to the\nroot document.",
+                    "parameters": [
+                        {
+                            "name": "object",
+                            "description": "Object to load the preview for.",
+                            "$ref": "ObjectId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "data",
+                            "description": "Returned data. This includes a preview for the object which does not\nhave <code>overflow</code> set, and additional data for objects which\nit references.",
+                            "$ref": "PauseData"
+                        }
+                    ]
+                },
+                {
                     "name": "querySelector",
                     "description": "Call querySelector() on a node in the page.",
                     "parameters": [
@@ -1661,7 +1679,7 @@
                         },
                         {
                             "name": "data",
-                            "description": "Information about the returned node and related nodes.",
+                            "description": "Information about the returned node and related nodes, including all\nparent nodes up to the root document.",
                             "$ref": "Pause.PauseData"
                         }
                     ]
@@ -1763,7 +1781,7 @@
                         },
                         {
                             "name": "data",
-                            "description": "Any data associated with the returned nodes.",
+                            "description": "Any data associated with the returned nodes, including all parent nodes\nup to the root document.",
                             "$ref": "Pause.PauseData"
                         }
                     ]
