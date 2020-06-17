@@ -419,25 +419,7 @@
             "commands": [
                 {
                     "name": "findScripts",
-                    "description": "Find all scripts in the recording. Does not return until the recording is\nfully processed. Before returning, <code>scriptParsed</code> events will be\nemitted for every script in the recording.\n\n<br><br>Scripts in a recording include both the generated scripts that ran\nwhile the page was executing, and original scripts referenced in source maps\nfor the generated script. Original scripts are only available when they have\nbeen associated with the recording via <code>Internal.addRecordingResource</code>."
-                },
-                {
-                    "name": "prettyPrintScript",
-                    "description": "Generate a new script by pretty printing another one.",
-                    "parameters": [
-                        {
-                            "name": "scriptId",
-                            "description": "ID of the script to pretty print.",
-                            "$ref": "ScriptId"
-                        }
-                    ],
-                    "returns": [
-                        {
-                            "name": "prettyScriptId",
-                            "description": "ID of the pretty printed script.",
-                            "$ref": "ScriptId"
-                        }
-                    ]
+                    "description": "Find all scripts in the recording. Does not return until the recording is\nfully processed. Before returning, <code>scriptParsed</code> events will be\nemitted for every script in the recording."
                 },
                 {
                     "name": "getScriptSource",
@@ -457,7 +439,7 @@
                         },
                         {
                             "name": "contentType",
-                            "description": "Content type of the source contents. For scripts originating from inline\n<code>script</code> tags this will be <code>text/html</code>, and the\nsource includes the associated HTML file's entire contents. For other\nscripts this is <code>text/javascript</code>.",
+                            "description": "Content type of the source contents.",
                             "$ref": "ContentType"
                         }
                     ]
@@ -711,16 +693,24 @@
                             "$ref": "ScriptId"
                         },
                         {
+                            "name": "kind",
+                            "description": "Kind of script.",
+                            "$ref": "ScriptKind"
+                        },
+                        {
                             "name": "url",
                             "description": "URL of the script. Omitted for dynamically generated scripts (from eval etc.).",
                             "optional": true,
                             "type": "string"
                         },
                         {
-                            "name": "generatedScriptId",
-                            "description": "If this is an original source, the ID of the script which was generated from\nthis one.",
+                            "name": "generatedScriptIds",
+                            "description": "If this is an original script, the IDs of the scripts which were generated from\nthis one.",
                             "optional": true,
-                            "$ref": "ScriptId"
+                            "type": "array",
+                            "items": {
+                                "$ref": "ScriptId"
+                            }
                         }
                     ]
                 }
@@ -730,6 +720,19 @@
                     "id": "ScriptId",
                     "description": "Unique ID for a script.",
                     "type": "string"
+                },
+                {
+                    "id": "ScriptKind",
+                    "description": "Kind of a script.\n<br>\n<br><code>inlineScript</code>: Inline contents of a <code>script</code> element.\n<br><code>scriptSource</code>: Script loaded via the <code>src</code> attribute\n  of a <code>script</code> element.\n<br><code>other</code>: An unspecified kind of script. This does not include any\n  original scripts.\n<br><code>html</code>: An entire HTML page containing one or more inline scripts.\n  This is an original script whose generated scripts are the inline scripts.\n<br><code>sourceMapped</code>: A source script specified by a source map.\n  This is an original script whose generated script is associated with the source map.\n  Source mapped scripts are only available when the source map and its sources have been\n  associated with the recording via <code>Internal.addRecordingResource</code>.\n<br><code>prettyPrinted</code>: An original script which was produced by pretty\n  printing the associated generated script. Pretty printed scripts will\n  automatically be generated from other scripts which appear to contain minified\n  code, including HTML page scripts.\n<br><br>",
+                    "type": "string",
+                    "enum": [
+                        "inlineScript",
+                        "scriptSource",
+                        "other",
+                        "html",
+                        "original",
+                        "prettyPrinted"
+                    ]
                 },
                 {
                     "id": "ContentType",

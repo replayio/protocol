@@ -240,11 +240,6 @@ domain Debugger
   # Find all scripts in the recording. Does not return until the recording is
   # fully processed. Before returning, <code>scriptParsed</code> events will be
   # emitted for every script in the recording.
-  #
-  # <br><br>Scripts in a recording include both the generated scripts that ran
-  # while the page was executing, and original scripts referenced in source maps
-  # for the generated script. Original scripts are only available when they have
-  # been associated with the recording via <code>Internal.addRecordingResource</code>.
   command findScripts
 
   # Describes a script that was successfully parsed.
@@ -252,23 +247,43 @@ domain Debugger
     parameters
       # ID for the script.
       ScriptId scriptId
+      # Kind of script.
+      ScriptKind kind
       # URL of the script. Omitted for dynamically generated scripts (from eval etc.).
       optional string url
-      # If this is an original source, the ID of the script which was generated from
+      # If this is an original script, the IDs of the scripts which were generated from
       # this one.
-      optional ScriptId generatedScriptId
+      optional array of ScriptId generatedScriptIds
 
   # Unique ID for a script.
   type ScriptId extends string
 
-  # Generate a new script by pretty printing another one.
-  command prettyPrintScript
-    parameters
-      # ID of the script to pretty print.
-      ScriptId scriptId
-    returns
-      # ID of the pretty printed script.
-      ScriptId prettyScriptId
+  # Kind of a script.
+  # <br>
+  # <br><code>inlineScript</code>: Inline contents of a <code>script</code> element.
+  # <br><code>scriptSource</code>: Script loaded via the <code>src</code> attribute
+  #   of a <code>script</code> element.
+  # <br><code>other</code>: An unspecified kind of script. This does not include any
+  #   original scripts.
+  # <br><code>html</code>: An entire HTML page containing one or more inline scripts.
+  #   This is an original script whose generated scripts are the inline scripts.
+  # <br><code>sourceMapped</code>: A source script specified by a source map.
+  #   This is an original script whose generated script is associated with the source map.
+  #   Source mapped scripts are only available when the source map and its sources have been
+  #   associated with the recording via <code>Internal.addRecordingResource</code>.
+  # <br><code>prettyPrinted</code>: An original script which was produced by pretty
+  #   printing the associated generated script. Pretty printed scripts will
+  #   automatically be generated from other scripts which appear to contain minified
+  #   code, including HTML page scripts.
+  # <br><br>
+  type ScriptKind extends string
+    enum
+      inlineScript
+      scriptSource
+      other
+      html
+      original
+      prettyPrinted
 
   # Get the source contents of a script.
   command getScriptSource
@@ -278,10 +293,7 @@ domain Debugger
     returns
       # Source contents of the script.
       string scriptSource
-      # Content type of the source contents. For scripts originating from inline
-      # <code>script</code> tags this will be <code>text/html</code>, and the
-      # source includes the associated HTML file's entire contents. For other
-      # scripts this is <code>text/javascript</code>.
+      # Content type of the source contents.
       ContentType contentType
 
   # Possible content types for script sources.
@@ -367,13 +379,9 @@ domain Debugger
   # <br><br>
   type PauseReason extends string
     enum
-      # Hit an endpoint of the recording.
       endpoint
-      # Hit a breakpoint.
       breakpoint
-      # Hit a debugger statement.
       debuggerStatement
-      # Finished a step.
       step
 
   # Description of an execution point.
