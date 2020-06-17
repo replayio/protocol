@@ -730,7 +730,7 @@
                         "scriptSource",
                         "other",
                         "html",
-                        "original",
+                        "sourceMapped",
                         "prettyPrinted"
                     ]
                 },

@@ -282,7 +282,7 @@ domain Debugger
       scriptSource
       other
       html
-      original
+      sourceMapped
       prettyPrinted
 
   # Get the source contents of a script.
