@@ -273,8 +273,9 @@ domain Debugger
   #   associated with the recording via <code>Internal.addRecordingResource</code>.
   # <br><code>prettyPrinted</code>: An original script which was produced by pretty
   #   printing the associated generated script. Pretty printed scripts will
-  #   automatically be generated from other scripts which appear to contain minified
-  #   code, including HTML page scripts.
+  #   automatically be created for other scripts which appear to contain minified
+  #   code, including HTML page scripts. <code>scriptParsed</code> events will be
+  #   emitted for a pretty printed script before the generated script.
   # <br><br>
   type ScriptKind extends string
     enum
