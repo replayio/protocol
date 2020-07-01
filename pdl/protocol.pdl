@@ -850,11 +850,7 @@ domain Pause
       # Frame to get steps for.
       FrameId frameId
     returns
-      # Execution points for all steps which the frame executes. In the case of
-      # async/generator frames, only steps that are executed while the current
-      # frame is on the stack are included: steps in the same logical frame that
-      # that are separated from the current point by an <code>await</code> or
-      # <code>yield</code> are excluded.
+      # Execution points for all steps which the frame executes.
       array of Debugger.PointDescription steps
 
   # Get any exception that is being thrown at this point.
