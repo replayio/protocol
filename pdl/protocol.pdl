@@ -626,6 +626,8 @@ domain Pause
       # For <code>function</code> scopes, the called function.
       optional ObjectId callee
       # For <code>function</code> and <code>block</code> scopes, the scope bindings.
+      # If original names are available from a source map for the scope's script,
+      # those names will be used instead of the generated script's names.
       optional array of NamedValue bindings
 
   # Possible types of a scope.
@@ -742,7 +744,10 @@ domain Pause
       FrameId frameId
       # Expression to evaluate.
       string expression
-      # Any extra bindings to add to the evaluation's scope.
+      # Any extra bindings to add to the evaluation's scope. If original names
+      # are available from a source map for the scope's script, additional
+      # bindings will be implicitly created for the values mapping to those
+      # original names.
       optional array of NamedValue bindings
     returns
       # Result of the evaluation.
