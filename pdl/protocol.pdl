@@ -1115,6 +1115,8 @@ domain CSS
     properties
       # URL of the style sheet.
       optional string href
+      # Whether this sheet is internal to the browser itself.
+      boolean isSystem
 
 # The Analysis domain is used to efficiently analyze the program state at many
 # execution points. Analysis specifications are based on the MapReduce

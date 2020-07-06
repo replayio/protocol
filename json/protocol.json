@@ -1138,7 +1138,7 @@
                         },
                         {
                             "name": "bindings",
-                            "description": "For <code>function</code> and <code>block</code> scopes, the scope bindings.",
+                            "description": "For <code>function</code> and <code>block</code> scopes, the scope bindings.\nIf original names are available from a source map for the scope's script,\nthose names will be used instead of the generated script's names.",
                             "optional": true,
                             "type": "array",
                             "items": {
@@ -1416,7 +1416,7 @@
                         },
                         {
                             "name": "bindings",
-                            "description": "Any extra bindings to add to the evaluation's scope.",
+                            "description": "Any extra bindings to add to the evaluation's scope. If original names\nare available from a source map for the scope's script, additional\nbindings will be implicitly created for the values mapping to those\noriginal names.",
                             "optional": true,
                             "type": "array",
                             "items": {
@@ -2207,6 +2207,11 @@
                             "description": "URL of the style sheet.",
                             "optional": true,
                             "type": "string"
+                        },
+                        {
+                            "name": "isSystem",
+                            "description": "Whether this sheet is internal to the browser itself.",
+                            "type": "boolean"
                         }
                     ]
                 }
