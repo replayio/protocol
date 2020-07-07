@@ -1138,12 +1138,25 @@
                         },
                         {
                             "name": "bindings",
-                            "description": "For <code>function</code> and <code>block</code> scopes, the scope bindings.\nIf original names are available from a source map for the scope's script,\nthose names will be used instead of the generated script's names.",
+                            "description": "For <code>function</code> and <code>block</code> scopes, the scope bindings.",
                             "optional": true,
                             "type": "array",
                             "items": {
-                                "$ref": "NamedValue"
+                                "$ref": "ScopeValue"
                             }
+                        }
+                    ]
+                },
+                {
+                    "id": "ScopeValue",
+                    "description": "The value of a variable within a scope.",
+                    "$ref": "NamedValue",
+                    "properties": [
+                        {
+                            "name": "originalName",
+                            "description": "Any original name for this variable specified by a source map for the\nscope's script.",
+                            "optional": true,
+                            "type": "string"
                         }
                     ]
                 },
@@ -2079,7 +2092,7 @@
                     "returns": [
                         {
                             "name": "rules",
-                            "description": "IDs of all style rules being applied to the node.",
+                            "description": "IDs of all style rules being applied to the node. This only includes\nrules that apply directly to this node, and not rules that apply to\nparent nodes and are inherited by this node.",
                             "type": "array",
                             "items": {
                                 "$ref": "Pause.ObjectId"
