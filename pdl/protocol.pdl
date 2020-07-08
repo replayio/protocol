@@ -1072,14 +1072,22 @@ domain CSS
     parameters
       Pause.ObjectId node
     returns
-      # IDs of all style rules being applied to the node. This only includes
-      # rules that apply directly to this node, and not rules that apply to
-      # parent nodes and are inherited by this node. Rules are ordered by
+      # All style rules being applied to the node. This includes rules that
+      # apply directly to this node or to one of its pseudo-elements.
+      # Rules are grouped by their pseudo-element (if any) and are ordered by
       # precedence, with higher priority rules (higher specificity, or later
       # appearance in style sheets) given first.
-      array of Pause.ObjectId rules
+      array of AppliedRule rules
       # Information about the rules and related objects.
       Pause.PauseData data
+
+  # Information about a rule applied to a node.
+  type AppliedRule extends object
+    properties
+      # ID of the rule being applied to the node.
+      Pause.ObjectId rule
+      # Pseudo-element of the node the rule is applied to, if any.
+      optional string pseudoElement
 
   # Description of a CSSRule's contents which is attached to its
   # associated <code>Pause.ObjectPreview.rule</code>.

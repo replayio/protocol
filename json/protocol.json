@@ -2092,10 +2092,10 @@
                     "returns": [
                         {
                             "name": "rules",
-                            "description": "IDs of all style rules being applied to the node. This only includes\nrules that apply directly to this node, and not rules that apply to\nparent nodes and are inherited by this node. Rules are ordered by\nprecedence, with higher priority rules (higher specificity, or later\nappearance in style sheets) given first.",
+                            "description": "All style rules being applied to the node. This includes rules that\napply directly to this node or to one of its pseudo-elements.\nRules are grouped by their pseudo-element (if any) and are ordered by\nprecedence, with higher priority rules (higher specificity, or later\nappearance in style sheets) given first.",
                             "type": "array",
                             "items": {
-                                "$ref": "Pause.ObjectId"
+                                "$ref": "AppliedRule"
                             }
                         },
                         {
@@ -2120,6 +2120,24 @@
                         {
                             "name": "value",
                             "description": "Value of the style.",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "id": "AppliedRule",
+                    "description": "Information about a rule applied to a node.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "rule",
+                            "description": "ID of the rule being applied to the node.",
+                            "$ref": "Pause.ObjectId"
+                        },
+                        {
+                            "name": "pseudoElement",
+                            "description": "Pseudo-element of the node the rule is applied to, if any.",
+                            "optional": true,
                             "type": "string"
                         }
                     ]
