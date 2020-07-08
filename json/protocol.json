@@ -190,7 +190,7 @@
                         {
                             "name": "sessionId",
                             "description": "Session which died.",
-                            "$ref": "Session.sessionId"
+                            "$ref": "Session.SessionId"
                         },
                         {
                             "name": "code",
