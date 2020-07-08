@@ -1074,7 +1074,9 @@ domain CSS
     returns
       # IDs of all style rules being applied to the node. This only includes
       # rules that apply directly to this node, and not rules that apply to
-      # parent nodes and are inherited by this node.
+      # parent nodes and are inherited by this node. Rules are ordered by
+      # precedence, with higher priority rules (higher specificity, or later
+      # appearance in style sheets) given first.
       array of Pause.ObjectId rules
       # Information about the rules and related objects.
       Pause.PauseData data

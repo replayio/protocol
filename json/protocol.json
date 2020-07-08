@@ -2092,7 +2092,7 @@
                     "returns": [
                         {
                             "name": "rules",
-                            "description": "IDs of all style rules being applied to the node. This only includes\nrules that apply directly to this node, and not rules that apply to\nparent nodes and are inherited by this node.",
+                            "description": "IDs of all style rules being applied to the node. This only includes\nrules that apply directly to this node, and not rules that apply to\nparent nodes and are inherited by this node. Rules are ordered by\nprecedence, with higher priority rules (higher specificity, or later\nappearance in style sheets) given first.",
                             "type": "array",
                             "items": {
                                 "$ref": "Pause.ObjectId"
