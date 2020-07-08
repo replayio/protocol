@@ -91,7 +91,7 @@ domain Recording
   event sessionError
     parameters
       # Session which died.
-      Session.sessionId sessionId
+      Session.SessionId sessionId
       # Numeric code for the error.
       integer code
       # Description of the error.
