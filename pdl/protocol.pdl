@@ -83,7 +83,9 @@ domain Recording
       # Recording being described.
       RecordingId recordingId
       # How many bytes of recording data have been received by the cloud service.
-      integer byteCount
+      integer uploaded
+      # Total size of the recording in bytes, if known.
+      optional integer length
 
   # Emitted when a session has died due to a server side problem.
   event sessionError

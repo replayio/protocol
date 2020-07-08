@@ -171,8 +171,14 @@
                             "$ref": "RecordingId"
                         },
                         {
-                            "name": "byteCount",
+                            "name": "uploaded",
                             "description": "How many bytes of recording data have been received by the cloud service.",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "length",
+                            "description": "Total size of the recording in bytes, if known.",
+                            "optional": true,
                             "type": "integer"
                         }
                     ]
