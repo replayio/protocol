@@ -67,7 +67,8 @@ domain Recording
   # Create a session for inspecting a recording. This command does not return
   # until the recording's contents have been fully received. If the contents
   # are incomplete, <code>uploadedData</code> events will be periodically
-  # emitted before the command returns.
+  # emitted before the command returns. After creating, a <code>sessionError</code>
+  # events may be emitted later if the session dies unexpectedly.
   command createSession
     parameters
       # Recording to load into the session.
@@ -83,6 +84,16 @@ domain Recording
       RecordingId recordingId
       # How many bytes of recording data have been received by the cloud service.
       integer byteCount
+
+  # Emitted when a session has died due to a server side problem.
+  event sessionError
+    parameters
+      # Session which died.
+      Session.sessionId sessionId
+      # Numeric code for the error.
+      integer code
+      # Description of the error.
+      string message
 
   # Release a session and allow its resources to be reclaimed.
   command releaseSession
