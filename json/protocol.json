@@ -2375,6 +2375,12 @@
                             "name": "location",
                             "description": "Location to apply the analysis to.",
                             "$ref": "Debugger.Location"
+                        },
+                        {
+                            "name": "onStackFrame",
+                            "description": "If specified, the analysis will only be applied to matching points which\nexecute while this point's frame is on the stack.",
+                            "optional": true,
+                            "$ref": "Recording.ExecutionPoint"
                         }
                     ]
                 },

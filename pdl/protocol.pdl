@@ -1213,6 +1213,9 @@ domain Analysis
       Session.SessionId sessionId
       # Location to apply the analysis to.
       Debugger.Location location
+      # If specified, the analysis will only be applied to matching points which
+      # execute while this point's frame is on the stack.
+      optional Recording.ExecutionPoint onStackFrame
 
   # Apply the analysis to every function entry point in a region of a script.
   command addFunctionEntryPoints
