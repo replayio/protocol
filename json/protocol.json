@@ -2718,6 +2718,26 @@
                             "type": "object"
                         }
                     ]
+                },
+                {
+                    "name": "echo",
+                    "description": "For testing network issues.",
+                    "parameters": [
+                        {
+                            "name": "str",
+                            "type": "string"
+                        },
+                        {
+                            "name": "count",
+                            "type": "integer"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "str",
+                            "type": "string"
+                        }
+                    ]
                 }
             ],
             "types": [

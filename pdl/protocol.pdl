@@ -1417,3 +1417,11 @@ domain Internal
   command getAssertionFilters
     returns
       optional object filters
+
+  # For testing network issues.
+  command echo
+    parameters
+      string str
+      integer count
+    returns
+      string str
