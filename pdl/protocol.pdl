@@ -1116,6 +1116,8 @@ domain CSS
       optional integer startLine
       # Start column in the parent style sheet (0-indexed).
       optional integer startColumn
+      # If the parent style sheet is source mapped, the original location of the rule.
+      optional OriginalStyleSheetLocation originalLocation
       # For <code>CSSStyleRule</code> objects, the value of <code>rule.selectorText</code>.
       optional string selectorText
       # For <code>CSSStyleRule</code> objects, the ID of the rule's style declaration.
@@ -1147,6 +1149,16 @@ domain CSS
       optional string href
       # Whether this sheet is internal to the browser itself.
       boolean isSystem
+
+  # Location of a rule within an original style sheet.
+  type OriginalStyleSheetLocation extends object
+    properties
+      # URL of the original style sheet.
+      string href
+      # Start line in the style sheet (1-indexed).
+      integer startLine
+      # Start column in the style sheet (0-indexed).
+      integer startColumn
 
 # The Analysis domain is used to efficiently analyze the program state at many
 # execution points. Analysis specifications are based on the MapReduce

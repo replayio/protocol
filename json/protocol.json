@@ -2203,6 +2203,12 @@
                             "type": "integer"
                         },
                         {
+                            "name": "originalLocation",
+                            "description": "If the parent style sheet is source mapped, the original location of the rule.",
+                            "optional": true,
+                            "$ref": "OriginalStyleSheetLocation"
+                        },
+                        {
                             "name": "selectorText",
                             "description": "For <code>CSSStyleRule</code> objects, the value of <code>rule.selectorText</code>.",
                             "optional": true,
@@ -2270,6 +2276,28 @@
                             "name": "isSystem",
                             "description": "Whether this sheet is internal to the browser itself.",
                             "type": "boolean"
+                        }
+                    ]
+                },
+                {
+                    "id": "OriginalStyleSheetLocation",
+                    "description": "Location of a rule within an original style sheet.",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "href",
+                            "description": "URL of the original style sheet.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "startLine",
+                            "description": "Start line in the style sheet (1-indexed).",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "startColumn",
+                            "description": "Start column in the style sheet (0-indexed).",
+                            "type": "integer"
                         }
                     ]
                 }
