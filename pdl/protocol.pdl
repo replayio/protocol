@@ -1439,9 +1439,17 @@ domain Internal
       string str
 
   # Get the function ID / offset to use for a script location.
-  command convertLocation
+  command convertLocationToFunctionOffset
     parameters
       Debugger.Location location
     returns
       string functionId
       int offset
+
+  # Get the location to use for a function ID / offset.
+  command convertFunctionOffsetToLocation
+    parameters
+      string functionId
+      optional int offset
+    returns
+      Debugger.Location location
