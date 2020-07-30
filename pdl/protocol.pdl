@@ -1437,3 +1437,11 @@ domain Internal
       integer count
     returns
       string str
+
+  # Get the function ID / offset to use for a script location.
+  command convertLocation
+    parameters
+      Debugger.Location location
+    returns
+      string functionId
+      int offset

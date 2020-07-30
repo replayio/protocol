@@ -2766,6 +2766,26 @@
                             "type": "string"
                         }
                     ]
+                },
+                {
+                    "name": "convertLocation",
+                    "description": "Get the function ID / offset to use for a script location.",
+                    "parameters": [
+                        {
+                            "name": "location",
+                            "$ref": "Debugger.Location"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "functionId",
+                            "type": "string"
+                        },
+                        {
+                            "name": "offset",
+                            "$ref": "int"
+                        }
+                    ]
                 }
             ],
             "types": [
