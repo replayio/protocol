@@ -2597,24 +2597,8 @@
         },
         {
             "domain": "Internal",
-            "description": "The Internal domain is for use by Web Replay's own tools and other software.\nWhile use of this domain is not restricted, it won't be very helpful for other\nusers.",
+            "description": "The Internal domain is for use in software that is used to create recordings\nand for internal/diagnostic use cases. While use of this domain is not\nrestricted, it won't be very helpful for other users.",
             "commands": [
-                {
-                    "name": "log",
-                    "description": "Add text to the server side log for this connection.",
-                    "parameters": [
-                        {
-                            "name": "text",
-                            "description": "Text to log. This must not contain identifying information about the\nuser or website being visited.",
-                            "type": "string"
-                        },
-                        {
-                            "name": "time",
-                            "description": "Timestamp from Date.now() to associate with this logged text.",
-                            "type": "integer"
-                        }
-                    ]
-                },
                 {
                     "name": "createRecording",
                     "description": "Create a new recording.",

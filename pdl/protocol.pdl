@@ -1338,19 +1338,10 @@ domain Analysis
       AnalysisKey key
       AnalysisValue value
 
-# The Internal domain is for use by Web Replay's own tools and other software.
-# While use of this domain is not restricted, it won't be very helpful for other
-# users.
+# The Internal domain is for use in software that is used to create recordings
+# and for internal/diagnostic use cases. While use of this domain is not
+# restricted, it won't be very helpful for other users.
 domain Internal
-
-  # Add text to the server side log for this connection.
-  command log
-    parameters
-      # Text to log. This must not contain identifying information about the
-      # user or website being visited.
-      string text
-      # Timestamp from Date.now() to associate with this logged text.
-      integer time
 
   # Create a new recording.
   command createRecording
