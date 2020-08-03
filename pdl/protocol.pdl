@@ -669,8 +669,8 @@ domain Pause
   # Description of some or all of an object's contents.
   type ObjectPreview extends object
     properties
-      # Whether there are additional contents not in this preview.
-      boolean overflow
+      # Set if there are additional contents not in this preview.
+      optional boolean overflow
       # ID of the prototype, if there is one.
       optional ObjectId prototypeId
       # Descriptors of the object's own properties.
@@ -851,7 +851,7 @@ domain Pause
   # Get all frames on the stack.
   command getAllFrames
     returns
-      # All frames on the stack.
+      # All frames on the stack, ordered from top to bottom.
       array of Frame frames
       # Any data associated with the frames.
       PauseData data

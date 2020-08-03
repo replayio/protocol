@@ -1228,7 +1228,8 @@
                     "properties": [
                         {
                             "name": "overflow",
-                            "description": "Whether there are additional contents not in this preview.",
+                            "description": "Set if there are additional contents not in this preview.",
+                            "optional": true,
                             "type": "boolean"
                         },
                         {
@@ -1642,7 +1643,7 @@
                     "returns": [
                         {
                             "name": "frames",
-                            "description": "All frames on the stack.",
+                            "description": "All frames on the stack, ordered from top to bottom.",
                             "type": "array",
                             "items": {
                                 "$ref": "Frame"
