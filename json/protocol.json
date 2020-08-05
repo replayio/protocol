@@ -121,6 +121,111 @@
                     ]
                 },
                 {
+                    "name": "getMetadata",
+                    "description": "Get an entry in a recording's metadata key/value store.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "Associated recording ID.",
+                            "$ref": "RecordingId"
+                        },
+                        {
+                            "name": "key",
+                            "description": "Key for the metadata being accessed.",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "value",
+                            "description": "Any value associated with the recording and key.",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "setMetadata",
+                    "description": "Set an entry in a recording's metadata.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "Associated recording ID.",
+                            "$ref": "RecordingId"
+                        },
+                        {
+                            "name": "key",
+                            "description": "Key for the entry being set.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "newValue",
+                            "description": "Value to associate with the recording and key, omitted to delete the\nkey's entry.",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "oldValue",
+                            "description": "Expected current value for the key's entry.",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "updated",
+                            "description": "Whether the assignment was performed. The assignment will not be\nperformed if the <code>oldValue</code> parameter did not match the\ncurrent value of the key's entry.",
+                            "type": "boolean"
+                        },
+                        {
+                            "name": "currentValue",
+                            "description": "Current value of the key's entry. If the update was performed, this\nequals the <code>newValue</code> parameter. Otherwise, this will <b>not</b>\nequal the <code>oldValue</code> parameter.",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "metadataStartListening",
+                    "description": "Listen for changes to an entry in a recording's metadata. When listening,\n<code>metadataChange</code> events will be emitted whenever the entry's\nvalue changes.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "Associated recording ID.",
+                            "$ref": "RecordingId"
+                        },
+                        {
+                            "name": "key",
+                            "description": "Key for the metadata entry to listen to.",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "value",
+                            "description": "Current value for the entry, as for <code>getMetadata</code>.",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "metadataStopListening",
+                    "description": "Stop listening for changes to an entry in a recording's metadata.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "Associated recording ID.",
+                            "$ref": "RecordingId"
+                        },
+                        {
+                            "name": "key",
+                            "description": "Key for the metadata entry to listen to.",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
                     "name": "createSession",
                     "description": "Create a session for inspecting a recording. This command does not return\nuntil the recording's contents have been fully received. If the contents\nare incomplete, <code>uploadedData</code> events will be periodically\nemitted before the command returns. After creating, a <code>sessionError</code>\nevents may be emitted later if the session dies unexpectedly.",
                     "parameters": [
@@ -161,6 +266,28 @@
                 }
             ],
             "events": [
+                {
+                    "name": "metadataChange",
+                    "description": "Describes a change to an entry in a recording's metadata.",
+                    "parameters": [
+                        {
+                            "name": "recordingId",
+                            "description": "Associated recording ID.",
+                            "$ref": "RecordingId"
+                        },
+                        {
+                            "name": "key",
+                            "description": "Key for the metadata entry which changed.",
+                            "type": "string"
+                        },
+                        {
+                            "name": "newValue",
+                            "description": "New value of the metadata entry.",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ]
+                },
                 {
                     "name": "uploadedData",
                     "description": "Describes how much of a recording's data has been uploaded to the cloud service.",

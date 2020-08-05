@@ -64,6 +64,70 @@ domain Recording
       # Painted graphics at the end of the recording.
       optional Graphics.ScreenShot lastScreen
 
+  # Get an entry in a recording's metadata key/value store.
+  command getMetadata
+    parameters
+      # Associated recording ID.
+      RecordingId recordingId
+      # Key for the metadata being accessed.
+      string key
+    returns
+      # Any value associated with the recording and key.
+      optional string value
+
+  # Set an entry in a recording's metadata.
+  command setMetadata
+    parameters
+      # Associated recording ID.
+      RecordingId recordingId
+      # Key for the entry being set.
+      string key
+      # Value to associate with the recording and key, omitted to delete the
+      # key's entry.
+      optional string newValue
+      # Expected current value for the key's entry.
+      optional string oldValue
+    returns
+      # Whether the assignment was performed. The assignment will not be
+      # performed if the <code>oldValue</code> parameter did not match the
+      # current value of the key's entry.
+      boolean updated
+      # Current value of the key's entry. If the update was performed, this
+      # equals the <code>newValue</code> parameter. Otherwise, this will <b>not</b>
+      # equal the <code>oldValue</code> parameter.
+      optional string currentValue
+
+  # Listen for changes to an entry in a recording's metadata. When listening,
+  # <code>metadataChange</code> events will be emitted whenever the entry's
+  # value changes.
+  command metadataStartListening
+    parameters
+      # Associated recording ID.
+      RecordingId recordingId
+      # Key for the metadata entry to listen to.
+      string key
+    returns
+      # Current value for the entry, as for <code>getMetadata</code>.
+      optional string value
+
+  # Stop listening for changes to an entry in a recording's metadata.
+  command metadataStopListening
+    parameters
+      # Associated recording ID.
+      RecordingId recordingId
+      # Key for the metadata entry to listen to.
+      string key
+
+  # Describes a change to an entry in a recording's metadata.
+  event metadataChange
+    parameters
+      # Associated recording ID.
+      RecordingId recordingId
+      # Key for the metadata entry which changed.
+      string key
+      # New value of the metadata entry.
+      optional string newValue
+
   # Create a session for inspecting a recording. This command does not return
   # until the recording's contents have been fully received. If the contents
   # are incomplete, <code>uploadedData</code> events will be periodically
