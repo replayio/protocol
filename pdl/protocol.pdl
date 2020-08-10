@@ -231,9 +231,8 @@ domain Session
     returns
       # Identifier for the new pause.
       Pause.PauseId pauseId
-      # IDs of all frames on the stack. Omitted if there are no
-      # frames on the stack at this point.
-      optional array of Pause.FrameId stack
+      # Stack contents, omitted if there are no frames on the stack at this point.
+      optional Pause.CallStack stack
       # Data describing the frames on the stack and the in scope
       # variables of the topmost frame.
       Pause.PauseData data
@@ -593,9 +592,9 @@ domain Console
       Pause.PauseId pauseId
       # Any arguments to the message.
       optional array of Pause.Value argumentValues
-      # Stack contents, omitted if there are no frames on the stack
-      # at the message's point.
-      optional array of Pause.FrameId stack
+      # Stack contents for the pause, omitted if there are no frames on the
+      # stack at the message's point.
+      optional Pause.CallStack stack
       # Data describing the message arguments and frames on the stack.
       Pause.PauseData data
 
@@ -631,6 +630,10 @@ domain Pause
 
   # Identifier for a call frame in a pause.
   type FrameId extends string
+
+  # Description of the entire call stack: the IDs of all frames, in order
+  # starting with the topmost (currently executing) frame.
+  type CallStack extends array of FrameId
 
   # Identifier for a scope in a pause.
   type ScopeId extends string
@@ -907,16 +910,16 @@ domain Pause
   # Get the topmost frame on the stack.
   command getTopFrame
     returns
-      # The topmost frame.
-      Frame frame
+      # ID of the topmost frame.
+      FrameId frame
       # Any data associated with the frame.
       PauseData data
 
   # Get all frames on the stack.
   command getAllFrames
     returns
-      # All frames on the stack, ordered from top to bottom.
-      array of Frame frames
+      # IDs of all frames on the stack.
+      CallStack frames
       # Any data associated with the frames.
       PauseData data
 
