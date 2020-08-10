@@ -380,12 +380,9 @@
                         },
                         {
                             "name": "stack",
-                            "description": "IDs of all frames on the stack. Omitted if there are no\nframes on the stack at this point.",
+                            "description": "Stack contents, omitted if there are no frames on the stack at this point.",
                             "optional": true,
-                            "type": "array",
-                            "items": {
-                                "$ref": "Pause.FrameId"
-                            }
+                            "$ref": "Pause.CallStack"
                         },
                         {
                             "name": "data",
@@ -1084,12 +1081,9 @@
                         },
                         {
                             "name": "stack",
-                            "description": "Stack contents, omitted if there are no frames on the stack\nat the message's point.",
+                            "description": "Stack contents for the pause, omitted if there are no frames on the\nstack at the message's point.",
                             "optional": true,
-                            "type": "array",
-                            "items": {
-                                "$ref": "Pause.FrameId"
-                            }
+                            "$ref": "Pause.CallStack"
                         },
                         {
                             "name": "data",
@@ -1134,6 +1128,14 @@
                     "id": "FrameId",
                     "description": "Identifier for a call frame in a pause.",
                     "type": "string"
+                },
+                {
+                    "id": "CallStack",
+                    "description": "Description of the entire call stack: the IDs of all frames, in order\nstarting with the topmost (currently executing) frame.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "FrameId"
+                    }
                 },
                 {
                     "id": "ScopeId",
@@ -1754,8 +1756,8 @@
                     "returns": [
                         {
                             "name": "frame",
-                            "description": "The topmost frame.",
-                            "$ref": "Frame"
+                            "description": "ID of the topmost frame.",
+                            "$ref": "FrameId"
                         },
                         {
                             "name": "data",
@@ -1770,11 +1772,8 @@
                     "returns": [
                         {
                             "name": "frames",
-                            "description": "All frames on the stack, ordered from top to bottom.",
-                            "type": "array",
-                            "items": {
-                                "$ref": "Frame"
-                            }
+                            "description": "IDs of all frames on the stack.",
+                            "$ref": "CallStack"
                         },
                         {
                             "name": "data",
