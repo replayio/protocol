@@ -707,8 +707,8 @@ domain Pause
       optional boolean functionLexical
       # For <code>global</code> and <code>with</code> scopes, the underlying object.
       optional ObjectId object
-      # For <code>function</code> scopes, the called function.
-      optional ObjectId callee
+      # For <code>function</code> scopes, the name of the called function.
+      optional string functionName
       # For <code>function</code> and <code>block</code> scopes, the scope bindings.
       optional array of NamedValue bindings
 
