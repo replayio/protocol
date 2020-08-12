@@ -1242,6 +1242,15 @@
                             }
                         },
                         {
+                            "name": "originalScopeChain",
+                            "description": "Alternate scope chain determined from any source map for the frame's\nscript. This can be structured differently and include different names\nthan the normal scope chain.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "ScopeId"
+                            }
+                        },
+                        {
                             "name": "this",
                             "description": "<code>this</code> value of the call frame.",
                             "$ref": "Value"
@@ -1298,21 +1307,8 @@
                             "optional": true,
                             "type": "array",
                             "items": {
-                                "$ref": "ScopeValue"
+                                "$ref": "NamedValue"
                             }
-                        }
-                    ]
-                },
-                {
-                    "id": "ScopeValue",
-                    "description": "The value of a variable within a scope.",
-                    "$ref": "NamedValue",
-                    "properties": [
-                        {
-                            "name": "originalName",
-                            "description": "Any original name for this variable specified by a source map for the\nscope's script.",
-                            "optional": true,
-                            "type": "string"
                         }
                     ]
                 },
@@ -1586,12 +1582,18 @@
                         },
                         {
                             "name": "bindings",
-                            "description": "Any extra bindings to add to the evaluation's scope. If original names\nare available from a source map for the scope's script, additional\nbindings will be implicitly created for the values mapping to those\noriginal names.",
+                            "description": "Any extra bindings to add to the evaluation's scope.",
                             "optional": true,
                             "type": "array",
                             "items": {
                                 "$ref": "NamedValue"
                             }
+                        },
+                        {
+                            "name": "useOriginalScopes",
+                            "description": "Whether to perform the evaluation in the context of the original\nscope chain for the frame.",
+                            "optional": true,
+                            "type": "boolean"
                         }
                     ],
                     "returns": [

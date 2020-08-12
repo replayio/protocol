@@ -681,6 +681,10 @@ domain Pause
       Debugger.MappedLocation location
       # Scope chain for the call frame, from innermost to outermost.
       array of ScopeId scopeChain
+      # Alternate scope chain determined from any source map for the frame's
+      # script. This can be structured differently and include different names
+      # than the normal scope chain.
+      optional array of ScopeId originalScopeChain
       # <code>this</code> value of the call frame.
       Value this
 
@@ -706,14 +710,7 @@ domain Pause
       # For <code>function</code> scopes, the called function.
       optional ObjectId callee
       # For <code>function</code> and <code>block</code> scopes, the scope bindings.
-      optional array of ScopeValue bindings
-
-  # The value of a variable within a scope.
-  type ScopeValue extends NamedValue
-    properties
-      # Any original name for this variable specified by a source map for the
-      # scope's script.
-      optional string originalName
+      optional array of NamedValue bindings
 
   # Possible types of a scope.
   type ScopeType extends string
@@ -829,11 +826,11 @@ domain Pause
       FrameId frameId
       # Expression to evaluate.
       string expression
-      # Any extra bindings to add to the evaluation's scope. If original names
-      # are available from a source map for the scope's script, additional
-      # bindings will be implicitly created for the values mapping to those
-      # original names.
+      # Any extra bindings to add to the evaluation's scope.
       optional array of NamedValue bindings
+      # Whether to perform the evaluation in the context of the original
+      # scope chain for the frame.
+      optional boolean useOriginalScopes
     returns
       # Result of the evaluation.
       Result result
