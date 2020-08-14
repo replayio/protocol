@@ -117,6 +117,15 @@
                             "description": "Painted graphics at the end of the recording.",
                             "optional": true,
                             "$ref": "Graphics.ScreenShot"
+                        },
+                        {
+                            "name": "commandLineArguments",
+                            "description": "Any command line arguments associated with the recording.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     ]
                 },
@@ -2796,6 +2805,15 @@
                             "description": "Raw graphics data for the end of the recording.",
                             "optional": true,
                             "type": "string"
+                        },
+                        {
+                            "name": "commandLineArguments",
+                            "description": "Any command line arguments associated with the recording.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     ]
                 },

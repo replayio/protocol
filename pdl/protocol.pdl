@@ -63,6 +63,8 @@ domain Recording
       integer length
       # Painted graphics at the end of the recording.
       optional Graphics.ScreenShot lastScreen
+      # Any command line arguments associated with the recording.
+      optional array of string commandLineArguments
 
   # Get an entry in a recording's metadata key/value store.
   command getMetadata
@@ -1444,6 +1446,8 @@ domain Internal
       optional Graphics.MimeType lastScreenMimeType
       # Raw graphics data for the end of the recording.
       optional string lastScreenData
+      # Any command line arguments associated with the recording.
+      optional array of string commandLineArguments
 
   # Information about a file based resource. Currently, resources are used for
   # source maps and original sources.
