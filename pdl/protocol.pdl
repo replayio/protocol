@@ -1031,9 +1031,12 @@ domain DOM
       optional PseudoType pseudoType
       # For element nodes, ID of any inline style declaration.
       optional Pause.ObjectId style
-      # ID of any <code>node.parentNode</code>.
+      # ID of any <code>node.parentNode</code>. For the document node in an
+      # <code>iframe</code>, this will be the <code>iframe</code> element itself
+      # instead of null.
       optional Pause.ObjectId parentNode
-      # IDs of all <code>node.childNodes</code>.
+      # IDs of all <code>node.childNodes</code>. For <code>iframe</code> elements
+      # this will additionally contain the document element of that frame.
       optional array of Pause.ObjectId childNodes
       # For document nodes, the <code>URL</code> property.
       optional string documentURL

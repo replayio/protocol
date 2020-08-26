@@ -2107,13 +2107,13 @@
                         },
                         {
                             "name": "parentNode",
-                            "description": "ID of any <code>node.parentNode</code>.",
+                            "description": "ID of any <code>node.parentNode</code>. For the document node in an\n<code>iframe</code>, this will be the <code>iframe</code> element itself\ninstead of null.",
                             "optional": true,
                             "$ref": "Pause.ObjectId"
                         },
                         {
                             "name": "childNodes",
-                            "description": "IDs of all <code>node.childNodes</code>.",
+                            "description": "IDs of all <code>node.childNodes</code>. For <code>iframe</code> elements\nthis will additionally contain the document element of that frame.",
                             "optional": true,
                             "type": "array",
                             "items": {
