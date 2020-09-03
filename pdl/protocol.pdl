@@ -269,6 +269,8 @@ domain Graphics
       Recording.ExecutionPoint point
       # Encoding format for the returned screen.
       MimeType mimeType
+      # If specified, the returned screen will be scaled to the specified height.
+      optional integer resizeHeight
     returns
       # Screen shot of the rendered graphics.
       ScreenShot screen
