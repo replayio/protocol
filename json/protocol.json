@@ -476,6 +476,12 @@
                             "name": "mimeType",
                             "description": "Encoding format for the returned screen.",
                             "$ref": "MimeType"
+                        },
+                        {
+                            "name": "resizeHeight",
+                            "description": "If specified, the returned screen will be scaled to the specified height.",
+                            "optional": true,
+                            "type": "integer"
                         }
                     ],
                     "returns": [
