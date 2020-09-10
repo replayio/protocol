@@ -1517,3 +1517,8 @@ domain Internal
       optional int offset
     returns
       Debugger.Location location
+
+  # Mark a session which was created for an automated test.
+  command labelTestSession
+    parameters
+      Session.SessionId sessionId

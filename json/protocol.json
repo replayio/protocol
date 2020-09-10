@@ -2944,6 +2944,16 @@
                             "$ref": "Debugger.Location"
                         }
                     ]
+                },
+                {
+                    "name": "labelTestSession",
+                    "description": "Mark a session which was created for an automated test.",
+                    "parameters": [
+                        {
+                            "name": "sessionId",
+                            "$ref": "Session.SessionId"
+                        }
+                    ]
                 }
             ],
             "types": [
