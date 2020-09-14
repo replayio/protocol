@@ -2954,6 +2954,25 @@
                             "$ref": "Session.SessionId"
                         }
                     ]
+                },
+                {
+                    "name": "getRecordings",
+                    "description": "Get the user's recordings",
+                    "parameters": [
+                        {
+                            "name": "authId",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "recordings",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
                 }
             ],
             "types": [
