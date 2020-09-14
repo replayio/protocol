@@ -1522,3 +1522,10 @@ domain Internal
   command labelTestSession
     parameters
       Session.SessionId sessionId
+
+  # Get the user's recordings
+  command getRecordings
+    parameters
+      string authId
+    returns
+      array of string recordings
