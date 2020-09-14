@@ -1528,4 +1528,4 @@ domain Internal
     parameters
       string authId
     returns
-      array of string recordings
+      array of object recordings
