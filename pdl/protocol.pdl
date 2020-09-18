@@ -1518,6 +1518,13 @@ domain Internal
     returns
       Debugger.Location location
 
+  # Get the most complete contents known for an HTML file.
+  command getHTMLSource
+    parameters
+      string url
+    returns
+      string contents
+
   # Mark a session which was created for an automated test.
   command labelTestSession
     parameters
