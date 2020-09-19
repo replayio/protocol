@@ -259,7 +259,7 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
             domainImports.add(`${command.name}Result`);
             const namespacedCommand = addNamespace ? `${domain.domain}_${command.name}` : command.name;
             commandDeclarations += convertDescription(command, "  ");
-            commandDeclarations += `  sendCommand(command: "${domain.domain}.${command.name}", parameters: ${namespacedCommand}Parameters, sessionId: ${namespacedSessionId}): ${namespacedCommand}Result;\n\n`;
+            commandDeclarations += `  sendCommand(command: "${domain.domain}.${command.name}", parameters: ${namespacedCommand}Parameters, sessionId: ${namespacedSessionId}): Promise<${namespacedCommand}Result>;\n\n`;
         }
     }
 
