@@ -237,7 +237,7 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
         await fs.promises.writeFile(path.join(__dirname, `ts/protocol/${domain.domain}.ts`), convertedDomain);
     }
 
-    // generate the typing for the protocol client
+    // generate the typing for the generic protocol client
     const imports = new Map<string, Set<string>>();
     let eventDeclarations = "";
     let commandDeclarations = "";
@@ -264,11 +264,59 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
     }
 
     imports.get("Session")!.add("SessionId");
-
     let ts = convertImports(imports, "../protocol");
-    ts += "\nexport declare class ProtocolClient {\n\n";
-    ts += eventDeclarations + "\n";
+    ts += "\nexport interface GenericProtocolClient {\n\n";
+    ts += eventDeclarations;
+    ts += "  removeEventListener(event: string): void;\n\n"
     ts += commandDeclarations;
     ts += "}\n";
-    await fs.promises.writeFile(path.join(__dirname, "ts/client/index.d.ts"), ts);
+
+    await fs.promises.writeFile(path.join(__dirname, "ts/client/generic.ts"), ts);
+
+
+    // generate the non-generic protocol client
+    imports.clear();
+    ts = "import { GenericProtocolClient } from \"./generic\";\n\n";
+    ts += "export class ProtocolClient {\n";
+    ts += "  constructor(\n";
+    ts += "    private readonly genericClient: GenericProtocolClient\n";
+    ts += "  ) {}\n\n";
+
+    for (const domain of protocol.domains) {
+
+        const domainImports = new Set<string>();
+        imports.set(domain.domain, domainImports);
+
+        let methods = "";
+
+        for (const event of domain.events || []) {
+            domainImports.add(`${event.name}`);
+            const namespacedEvent = addNamespace ? `${domain.domain}_${event.name}` : event.name;
+            const uppercaseEvent = event.name.charAt(0).toUpperCase() + event.name.slice(1);
+            methods += "\n" + convertDescription(event, "    ");
+            methods += `    add${uppercaseEvent}Listener: (listener: (parameters: ${namespacedEvent}) => void) =>\n`;
+            methods += `      this.genericClient.addEventListener("${domain.domain}.${event.name}", listener),\n\n`;
+            methods += `    remove${uppercaseEvent}Listener: () =>\n`;
+            methods += `      this.genericClient.removeEventListener("${domain.domain}.${event.name}"),\n`;
+        }
+
+        for (const command of domain.commands || []) {
+            domainImports.add(`${command.name}Parameters`);
+            const namespacedCommand = addNamespace ? `${domain.domain}_${command.name}` : command.name;
+            methods += "\n" + convertDescription(command, "    ");
+            methods += `    ${command.name}: (parameters: ${namespacedCommand}Parameters, sessionId: ${namespacedSessionId}) =>\n`;
+            methods += `      this.genericClient.sendCommand("${domain.domain}.${command.name}", parameters, sessionId),\n`;
+        }
+
+        ts += convertDescription(domain, "  ");
+        ts += `  ${domain.domain} = {\n`;
+        ts += methods;
+        ts += "  }\n\n";
+    }
+
+    imports.get("Session")!.add("SessionId");
+    ts = convertImports(imports, "../protocol") + ts;
+    ts += "}\n";
+
+    await fs.promises.writeFile(path.join(__dirname, "ts/client/client.ts"), ts);
 })();
