@@ -174,6 +174,8 @@ import {
   convertLocationToFunctionOffsetResult,
   convertFunctionOffsetToLocationParameters,
   convertFunctionOffsetToLocationResult,
+  getHTMLSourceParameters,
+  getHTMLSourceResult,
   labelTestSessionParameters,
   labelTestSessionResult,
   getRecordingsParameters,
@@ -647,6 +649,11 @@ export interface GenericProtocolClient {
    * Get the location to use for a function ID / offset.
    */
   sendCommand(command: "Internal.convertFunctionOffsetToLocation", parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId): Promise<convertFunctionOffsetToLocationResult>;
+
+  /**
+   * Get the most complete contents known for an HTML file.
+   */
+  sendCommand(command: "Internal.getHTMLSource", parameters: getHTMLSourceParameters, sessionId: SessionId): Promise<getHTMLSourceResult>;
 
   /**
    * Mark a session which was created for an automated test.

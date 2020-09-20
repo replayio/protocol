@@ -681,6 +681,12 @@ var ProtocolClient = /** @class */ (function () {
                 return _this.genericClient.sendCommand("Internal.convertFunctionOffsetToLocation", parameters, sessionId);
             },
             /**
+             * Get the most complete contents known for an HTML file.
+             */
+            getHTMLSource: function (parameters, sessionId) {
+                return _this.genericClient.sendCommand("Internal.getHTMLSource", parameters, sessionId);
+            },
+            /**
              * Mark a session which was created for an automated test.
              */
             labelTestSession: function (parameters, sessionId) {

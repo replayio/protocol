@@ -7,7 +7,7 @@ import { evaluateInFrameParameters, evaluateInFrameResult, evaluateInGlobalParam
 import { getDocumentParameters, getDocumentResult, getParentNodesParameters, getParentNodesResult, querySelectorParameters, querySelectorResult, getEventListenersParameters, getEventListenersResult, getBoxModelParameters, getBoxModelResult, getBoundingClientRectParameters, getBoundingClientRectResult, getAllBoundingClientRectsParameters, getAllBoundingClientRectsResult, performSearchParameters, performSearchResult } from "../protocol/DOM";
 import { getComputedStyleParameters, getComputedStyleResult, getAppliedRulesParameters, getAppliedRulesResult } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, createAnalysisResult, addLocationParameters, addLocationResult, addFunctionEntryPointsParameters, addFunctionEntryPointsResult, addRandomPointsParameters, addRandomPointsResult, addEventHandlerEntryPointsParameters, addEventHandlerEntryPointsResult, addExceptionPointsParameters, addExceptionPointsResult, runAnalysisParameters, runAnalysisResult, releaseAnalysisParameters, releaseAnalysisResult, findAnalysisPointsParameters, findAnalysisPointsResult } from "../protocol/Analysis";
-import { createRecordingParameters, createRecordingResult, addRecordingDataParameters, addRecordingDataResult, addRecordingDescriptionParameters, addRecordingDescriptionResult, hasResourceParameters, hasResourceResult, addResourceParameters, addResourceResult, addRecordingResourceParameters, addRecordingResourceResult, getAssertionFiltersParameters, getAssertionFiltersResult, echoParameters, echoResult, convertLocationToFunctionOffsetParameters, convertLocationToFunctionOffsetResult, convertFunctionOffsetToLocationParameters, convertFunctionOffsetToLocationResult, labelTestSessionParameters, labelTestSessionResult, getRecordingsParameters, getRecordingsResult } from "../protocol/Internal";
+import { createRecordingParameters, createRecordingResult, addRecordingDataParameters, addRecordingDataResult, addRecordingDescriptionParameters, addRecordingDescriptionResult, hasResourceParameters, hasResourceResult, addResourceParameters, addResourceResult, addRecordingResourceParameters, addRecordingResourceResult, getAssertionFiltersParameters, getAssertionFiltersResult, echoParameters, echoResult, convertLocationToFunctionOffsetParameters, convertLocationToFunctionOffsetResult, convertFunctionOffsetToLocationParameters, convertFunctionOffsetToLocationResult, getHTMLSourceParameters, getHTMLSourceResult, labelTestSessionParameters, labelTestSessionResult, getRecordingsParameters, getRecordingsResult } from "../protocol/Internal";
 export interface GenericProtocolClient {
     /**
      * Describes a change to an entry in a recording's metadata.
@@ -390,6 +390,10 @@ export interface GenericProtocolClient {
      * Get the location to use for a function ID / offset.
      */
     sendCommand(command: "Internal.convertFunctionOffsetToLocation", parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId): Promise<convertFunctionOffsetToLocationResult>;
+    /**
+     * Get the most complete contents known for an HTML file.
+     */
+    sendCommand(command: "Internal.getHTMLSource", parameters: getHTMLSourceParameters, sessionId: SessionId): Promise<getHTMLSourceResult>;
     /**
      * Mark a session which was created for an automated test.
      */

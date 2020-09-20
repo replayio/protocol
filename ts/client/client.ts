@@ -102,6 +102,7 @@ import {
   echoParameters,
   convertLocationToFunctionOffsetParameters,
   convertFunctionOffsetToLocationParameters,
+  getHTMLSourceParameters,
   labelTestSessionParameters,
   getRecordingsParameters
 } from "../protocol/Internal";
@@ -796,6 +797,12 @@ export class ProtocolClient {
      */
     convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId) =>
       this.genericClient.sendCommand("Internal.convertFunctionOffsetToLocation", parameters, sessionId),
+
+    /**
+     * Get the most complete contents known for an HTML file.
+     */
+    getHTMLSource: (parameters: getHTMLSourceParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Internal.getHTMLSource", parameters, sessionId),
 
     /**
      * Mark a session which was created for an automated test.

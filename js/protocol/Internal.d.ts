@@ -136,6 +136,12 @@ export interface convertFunctionOffsetToLocationParameters {
 export interface convertFunctionOffsetToLocationResult {
     location: Location;
 }
+export interface getHTMLSourceParameters {
+    url: string;
+}
+export interface getHTMLSourceResult {
+    contents: string;
+}
 export interface labelTestSessionParameters {
     sessionId: SessionId;
 }

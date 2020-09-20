@@ -7,7 +7,7 @@ import { evaluateInFrameParameters, evaluateInGlobalParameters, getObjectPropert
 import { getDocumentParameters, getParentNodesParameters, querySelectorParameters, getEventListenersParameters, getBoxModelParameters, getBoundingClientRectParameters, getAllBoundingClientRectsParameters, performSearchParameters } from "../protocol/DOM";
 import { getComputedStyleParameters, getAppliedRulesParameters } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, addLocationParameters, addFunctionEntryPointsParameters, addRandomPointsParameters, addEventHandlerEntryPointsParameters, addExceptionPointsParameters, runAnalysisParameters, releaseAnalysisParameters, findAnalysisPointsParameters } from "../protocol/Analysis";
-import { createRecordingParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
+import { createRecordingParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getHTMLSourceParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
 import { GenericProtocolClient } from "./generic";
 export declare class ProtocolClient {
     private readonly genericClient;
@@ -495,6 +495,10 @@ export declare class ProtocolClient {
          * Get the location to use for a function ID / offset.
          */
         convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").convertFunctionOffsetToLocationResult>;
+        /**
+         * Get the most complete contents known for an HTML file.
+         */
+        getHTMLSource: (parameters: getHTMLSourceParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").getHTMLSourceResult>;
         /**
          * Mark a session which was created for an automated test.
          */
