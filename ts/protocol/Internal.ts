@@ -187,14 +187,14 @@ export interface convertLocationToFunctionOffsetResult {
 
   functionId: string;
 
-  offset: BigInt;
+  offset: number;
 }
 
 export interface convertFunctionOffsetToLocationParameters {
 
   functionId: string;
 
-  offset?: BigInt;
+  offset?: number;
 }
 
 export interface convertFunctionOffsetToLocationResult {
