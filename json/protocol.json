@@ -2920,7 +2920,7 @@
                         },
                         {
                             "name": "offset",
-                            "$ref": "int"
+                            "type": "integer"
                         }
                     ]
                 },
@@ -2935,7 +2935,7 @@
                         {
                             "name": "offset",
                             "optional": true,
-                            "$ref": "int"
+                            "type": "integer"
                         }
                     ],
                     "returns": [
