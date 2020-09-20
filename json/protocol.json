@@ -2946,6 +2946,22 @@
                     ]
                 },
                 {
+                    "name": "getHTMLSource",
+                    "description": "Get the most complete contents known for an HTML file.",
+                    "parameters": [
+                        {
+                            "name": "url",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "contents",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
                     "name": "labelTestSession",
                     "description": "Mark a session which was created for an automated test.",
                     "parameters": [
