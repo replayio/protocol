@@ -117,10 +117,6 @@ function convertFlatType(
             return addNamespace ? `${domainName}_${typeName}` : typeName;
         }
 
-        if (type.$ref === "int") {
-            return "BigInt";
-        }
-
         return type.$ref;
 
     } else if ((type.type === "number") || (type.type === "boolean") || (type.type === "any")) {
