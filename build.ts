@@ -237,6 +237,10 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
         await fs.promises.writeFile(path.join(__dirname, `ts/protocol/${domain.domain}.ts`), convertedDomain);
     }
 
+    let ts = protocol.domains.map(domain => `export * from "./${domain.domain}";\n`).join("");
+    await fs.promises.writeFile(path.join(__dirname, "ts/protocol/index.ts"), ts);
+
+
     // generate the typing for the generic protocol client
     const imports = new Map<string, Set<string>>();
     let eventDeclarations = "";
@@ -264,7 +268,7 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
     }
 
     imports.get("Session")!.add("SessionId");
-    let ts = convertImports(imports, "../protocol");
+    ts = convertImports(imports, "../protocol");
     ts += "\nexport interface GenericProtocolClient {\n\n";
     ts += eventDeclarations;
     ts += "  removeEventListener(event: string): void;\n\n"
