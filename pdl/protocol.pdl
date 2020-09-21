@@ -1518,6 +1518,17 @@ domain Internal
     returns
       Debugger.Location location
 
+  # Get the offsets at which execution should pause when stepping around within
+  # a frame for a function.
+  command getStepOffsets
+    parameters
+      string functionId
+    returns
+      # Offsets at which execution should stop when stepping. This is a
+      # subset of the breakpoint locations in the function, and may be
+      # omitted if execution should stop at all breakpoint locations.
+      optional array of integer offsets
+
   # Get the most complete contents known for an HTML file.
   command getHTMLSource
     parameters

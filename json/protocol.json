@@ -2946,6 +2946,27 @@
                     ]
                 },
                 {
+                    "name": "getStepOffsets",
+                    "description": "Get the offsets at which execution should pause when stepping around within\na frame for a function.",
+                    "parameters": [
+                        {
+                            "name": "functionId",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "offsets",
+                            "description": "Offsets at which execution should stop when stepping. This is a\nsubset of the breakpoint locations in the function, and may be\nomitted if execution should stop at all breakpoint locations.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "getHTMLSource",
                     "description": "Get the most complete contents known for an HTML file.",
                     "parameters": [
