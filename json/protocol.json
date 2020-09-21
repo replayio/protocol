@@ -2739,6 +2739,90 @@
             ]
         },
         {
+            "domain": "Host",
+            "description": "The Host domain includes commands that are sent by the record/replay driver\nto its host VM. Protocol clients should not use this domain.",
+            "commands": [
+                {
+                    "name": "convertLocationToFunctionOffset",
+                    "description": "Get the function ID / offset to use for a script location.",
+                    "parameters": [
+                        {
+                            "name": "location",
+                            "$ref": "Debugger.Location"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "functionId",
+                            "type": "string"
+                        },
+                        {
+                            "name": "offset",
+                            "type": "integer"
+                        }
+                    ]
+                },
+                {
+                    "name": "convertFunctionOffsetToLocation",
+                    "description": "Get the location to use for a function ID / offset.",
+                    "parameters": [
+                        {
+                            "name": "functionId",
+                            "type": "string"
+                        },
+                        {
+                            "name": "offset",
+                            "optional": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "location",
+                            "$ref": "Debugger.Location"
+                        }
+                    ]
+                },
+                {
+                    "name": "getStepOffsets",
+                    "description": "Get the offsets at which execution should pause when stepping around within\na frame for a function.",
+                    "parameters": [
+                        {
+                            "name": "functionId",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "offsets",
+                            "description": "Offsets at which execution should stop when stepping. This is a\nsubset of the breakpoint locations in the function, and may be\nomitted if execution should stop at all breakpoint locations.",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getHTMLSource",
+                    "description": "Get the most complete contents known for an HTML file.",
+                    "parameters": [
+                        {
+                            "name": "url",
+                            "type": "string"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "contents",
+                            "type": "string"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "domain": "Internal",
             "description": "The Internal domain is for use in software that is used to create recordings\nand for internal/diagnostic use cases. While use of this domain is not\nrestricted, it won't be very helpful for other users.",
             "commands": [
@@ -2900,84 +2984,6 @@
                     "returns": [
                         {
                             "name": "str",
-                            "type": "string"
-                        }
-                    ]
-                },
-                {
-                    "name": "convertLocationToFunctionOffset",
-                    "description": "Get the function ID / offset to use for a script location.",
-                    "parameters": [
-                        {
-                            "name": "location",
-                            "$ref": "Debugger.Location"
-                        }
-                    ],
-                    "returns": [
-                        {
-                            "name": "functionId",
-                            "type": "string"
-                        },
-                        {
-                            "name": "offset",
-                            "type": "integer"
-                        }
-                    ]
-                },
-                {
-                    "name": "convertFunctionOffsetToLocation",
-                    "description": "Get the location to use for a function ID / offset.",
-                    "parameters": [
-                        {
-                            "name": "functionId",
-                            "type": "string"
-                        },
-                        {
-                            "name": "offset",
-                            "optional": true,
-                            "type": "integer"
-                        }
-                    ],
-                    "returns": [
-                        {
-                            "name": "location",
-                            "$ref": "Debugger.Location"
-                        }
-                    ]
-                },
-                {
-                    "name": "getStepOffsets",
-                    "description": "Get the offsets at which execution should pause when stepping around within\na frame for a function.",
-                    "parameters": [
-                        {
-                            "name": "functionId",
-                            "type": "string"
-                        }
-                    ],
-                    "returns": [
-                        {
-                            "name": "offsets",
-                            "description": "Offsets at which execution should stop when stepping. This is a\nsubset of the breakpoint locations in the function, and may be\nomitted if execution should stop at all breakpoint locations.",
-                            "optional": true,
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "getHTMLSource",
-                    "description": "Get the most complete contents known for an HTML file.",
-                    "parameters": [
-                        {
-                            "name": "url",
-                            "type": "string"
-                        }
-                    ],
-                    "returns": [
-                        {
-                            "name": "contents",
                             "type": "string"
                         }
                     ]

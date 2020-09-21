@@ -1409,6 +1409,44 @@ domain Analysis
       AnalysisKey key
       AnalysisValue value
 
+# The Host domain includes commands that are sent by the record/replay driver
+# to its host VM. Protocol clients should not use this domain.
+domain Host
+
+  # Get the function ID / offset to use for a script location.
+  command convertLocationToFunctionOffset
+    parameters
+      Debugger.Location location
+    returns
+      string functionId
+      integer offset
+
+  # Get the location to use for a function ID / offset.
+  command convertFunctionOffsetToLocation
+    parameters
+      string functionId
+      optional integer offset
+    returns
+      Debugger.Location location
+
+  # Get the offsets at which execution should pause when stepping around within
+  # a frame for a function.
+  command getStepOffsets
+    parameters
+      string functionId
+    returns
+      # Offsets at which execution should stop when stepping. This is a
+      # subset of the breakpoint locations in the function, and may be
+      # omitted if execution should stop at all breakpoint locations.
+      optional array of integer offsets
+
+  # Get the most complete contents known for an HTML file.
+  command getHTMLSource
+    parameters
+      string url
+    returns
+      string contents
+
 # The Internal domain is for use in software that is used to create recordings
 # and for internal/diagnostic use cases. While use of this domain is not
 # restricted, it won't be very helpful for other users.
@@ -1501,40 +1539,6 @@ domain Internal
       integer count
     returns
       string str
-
-  # Get the function ID / offset to use for a script location.
-  command convertLocationToFunctionOffset
-    parameters
-      Debugger.Location location
-    returns
-      string functionId
-      integer offset
-
-  # Get the location to use for a function ID / offset.
-  command convertFunctionOffsetToLocation
-    parameters
-      string functionId
-      optional integer offset
-    returns
-      Debugger.Location location
-
-  # Get the offsets at which execution should pause when stepping around within
-  # a frame for a function.
-  command getStepOffsets
-    parameters
-      string functionId
-    returns
-      # Offsets at which execution should stop when stepping. This is a
-      # subset of the breakpoint locations in the function, and may be
-      # omitted if execution should stop at all breakpoint locations.
-      optional array of integer offsets
-
-  # Get the most complete contents known for an HTML file.
-  command getHTMLSource
-    parameters
-      string url
-    returns
-      string contents
 
   # Mark a session which was created for an automated test.
   command labelTestSession
