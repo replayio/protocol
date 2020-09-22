@@ -2744,7 +2744,7 @@
             "commands": [
                 {
                     "name": "convertLocationToFunctionOffset",
-                    "description": "Get the function ID / offset to use for a script location.",
+                    "description": "Get the function ID / offset to use for a script location, if there is one.",
                     "parameters": [
                         {
                             "name": "location",
@@ -2754,10 +2754,12 @@
                     "returns": [
                         {
                             "name": "functionId",
+                            "optional": true,
                             "type": "string"
                         },
                         {
                             "name": "offset",
+                            "optional": true,
                             "type": "integer"
                         }
                     ]
@@ -2817,6 +2819,98 @@
                         {
                             "name": "contents",
                             "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "getFunctionsInRange",
+                    "description": "Get the IDs of all functions in a range within a script.",
+                    "parameters": [
+                        {
+                            "name": "scriptId",
+                            "$ref": "Debugger.ScriptId"
+                        },
+                        {
+                            "name": "begin",
+                            "optional": true,
+                            "$ref": "Debugger.ScriptLocation"
+                        },
+                        {
+                            "name": "end",
+                            "optional": true,
+                            "$ref": "Debugger.ScriptLocation"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "functions",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getSourceMapURL",
+                    "description": "Get any source map URL associated with a script.",
+                    "parameters": [
+                        {
+                            "name": "scriptId",
+                            "$ref": "Debugger.ScriptId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "url",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "getCurrentMessageContents",
+                    "description": "This command might be sent from within an OnConsoleMessage() call to get\ncontents of the new message. Properties in the result have the same meaning\nas for <code>Console.Message</code>.",
+                    "returns": [
+                        {
+                            "name": "source",
+                            "$ref": "Console.MessageSource"
+                        },
+                        {
+                            "name": "level",
+                            "$ref": "Console.MessageLevel"
+                        },
+                        {
+                            "name": "text",
+                            "type": "string"
+                        },
+                        {
+                            "name": "url",
+                            "optional": true,
+                            "type": "string"
+                        },
+                        {
+                            "name": "scriptId",
+                            "optional": true,
+                            "$ref": "Debugger.ScriptId"
+                        },
+                        {
+                            "name": "line",
+                            "optional": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "column",
+                            "optional": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "argumentValues",
+                            "optional": true,
+                            "type": "array",
+                            "items": {
+                                "$ref": "Pause.Value"
+                            }
                         }
                     ]
                 }

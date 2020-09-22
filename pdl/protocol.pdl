@@ -1413,13 +1413,13 @@ domain Analysis
 # to its host VM. Protocol clients should not use this domain.
 domain Host
 
-  # Get the function ID / offset to use for a script location.
+  # Get the function ID / offset to use for a script location, if there is one.
   command convertLocationToFunctionOffset
     parameters
       Debugger.Location location
     returns
-      string functionId
-      integer offset
+      optional string functionId
+      optional integer offset
 
   # Get the location to use for a function ID / offset.
   command convertFunctionOffsetToLocation
@@ -1446,6 +1446,36 @@ domain Host
       string url
     returns
       string contents
+
+  # Get the IDs of all functions in a range within a script.
+  command getFunctionsInRange
+    parameters
+      Debugger.ScriptId scriptId
+      optional Debugger.ScriptLocation begin
+      optional Debugger.ScriptLocation end
+    returns
+      array of string functions
+
+  # Get any source map URL associated with a script.
+  command getSourceMapURL
+    parameters
+      Debugger.ScriptId scriptId
+    returns
+      optional string url
+
+  # This command might be sent from within an OnConsoleMessage() call to get
+  # contents of the new message. Properties in the result have the same meaning
+  # as for <code>Console.Message</code>.
+  command getCurrentMessageContents
+    returns
+      Console.MessageSource source
+      Console.MessageLevel level
+      string text
+      optional string url
+      optional Debugger.ScriptId scriptId
+      optional integer line
+      optional integer column
+      optional array of Pause.Value argumentValues
 
 # The Internal domain is for use in software that is used to create recordings
 # and for internal/diagnostic use cases. While use of this domain is not
