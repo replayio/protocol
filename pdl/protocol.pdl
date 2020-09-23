@@ -1477,6 +1477,20 @@ domain Host
       optional integer column
       optional array of Pause.Value argumentValues
 
+  # Count the number of stack frames on the stack. This is equivalent to using
+  # the size of the stack returned by <code>Pause.getAllFrames</code>, but can
+  # be implemented more efficiently.
+  command countStackFrames
+    returns
+      integer count
+
+  # If the topmost frame on the stack is a generator frame which can be popped
+  # and pushed on the stack repeatedly, return a unique ID for the frame which
+  # will be consistent across each of those pops and pushes.
+  command currentGeneratorId
+    returns
+      optional integer id
+
 # The Internal domain is for use in software that is used to create recordings
 # and for internal/diagnostic use cases. While use of this domain is not
 # restricted, it won't be very helpful for other users.

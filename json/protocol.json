@@ -2913,6 +2913,27 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "countStackFrames",
+                    "description": "Count the number of stack frames on the stack. This is equivalent to using\nthe size of the stack returned by <code>Pause.getAllFrames</code>, but can\nbe implemented more efficiently.",
+                    "returns": [
+                        {
+                            "name": "count",
+                            "type": "integer"
+                        }
+                    ]
+                },
+                {
+                    "name": "currentGeneratorId",
+                    "description": "If the topmost frame on the stack is a generator frame which can be popped\nand pushed on the stack repeatedly, return a unique ID for the frame which\nwill be consistent across each of those pops and pushes.",
+                    "returns": [
+                        {
+                            "name": "id",
+                            "optional": true,
+                            "type": "integer"
+                        }
+                    ]
                 }
             ]
         },
