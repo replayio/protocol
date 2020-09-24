@@ -2934,6 +2934,25 @@
                             "type": "integer"
                         }
                     ]
+                },
+                {
+                    "name": "getObjectPreviewRequiredProperties",
+                    "description": "When generating previews whose contents might overflow, this can be used to\nspecify property and getter names which must be included in the resulting\npreview.",
+                    "parameters": [
+                        {
+                            "name": "object",
+                            "$ref": "Pause.ObjectId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "properties",
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
                 }
             ]
         },

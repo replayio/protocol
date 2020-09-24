@@ -1491,6 +1491,15 @@ domain Host
     returns
       optional integer id
 
+  # When generating previews whose contents might overflow, this can be used to
+  # specify property and getter names which must be included in the resulting
+  # preview.
+  command getObjectPreviewRequiredProperties
+    parameters
+      Pause.ObjectId object
+    returns
+      array of string properties
+
 # The Internal domain is for use in software that is used to create recordings
 # and for internal/diagnostic use cases. While use of this domain is not
 # restricted, it won't be very helpful for other users.
