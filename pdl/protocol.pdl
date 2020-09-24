@@ -1457,9 +1457,16 @@ domain Host
       array of string functions
 
   # Get any source map URL associated with a script.
-  command getSourceMapURL
+  command getScriptSourceMapURL
     parameters
       Debugger.ScriptId scriptId
+    returns
+      optional string url
+
+  # Get any source map URL associated with a style sheet.
+  command getSheetSourceMapURL
+    parameters
+      Pause.ObjectId sheet
     returns
       optional string url
 

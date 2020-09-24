@@ -2852,12 +2852,29 @@
                     ]
                 },
                 {
-                    "name": "getSourceMapURL",
+                    "name": "getScriptSourceMapURL",
                     "description": "Get any source map URL associated with a script.",
                     "parameters": [
                         {
                             "name": "scriptId",
                             "$ref": "Debugger.ScriptId"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "name": "url",
+                            "optional": true,
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "name": "getSheetSourceMapURL",
+                    "description": "Get any source map URL associated with a style sheet.",
+                    "parameters": [
+                        {
+                            "name": "sheet",
+                            "$ref": "Pause.ObjectId"
                         }
                     ],
                     "returns": [
