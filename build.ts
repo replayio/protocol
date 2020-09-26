@@ -242,6 +242,7 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
     let eventDeclarations = "";
     let commandDeclarations = "";
     const namespacedSessionId = addNamespace ? "Session_SessionId" : "SessionId";
+    const namespacedPauseId = addNamespace ? "Pause_PauseId" : "PauseId";
     for (const domain of protocol.domains) {
 
         const domainImports = new Set<string>();
@@ -259,11 +260,12 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
             domainImports.add(`${command.name}Result`);
             const namespacedCommand = addNamespace ? `${domain.domain}_${command.name}` : command.name;
             commandDeclarations += convertDescription(command, "  ");
-            commandDeclarations += `  sendCommand(command: "${domain.domain}.${command.name}", parameters: ${namespacedCommand}Parameters, sessionId: ${namespacedSessionId}): Promise<${namespacedCommand}Result>;\n\n`;
+            commandDeclarations += `  sendCommand(command: "${domain.domain}.${command.name}", parameters: ${namespacedCommand}Parameters, sessionId?: ${namespacedSessionId}, pauseId?: ${namespacedPauseId}): Promise<${namespacedCommand}Result>;\n\n`;
         }
     }
 
     imports.get("Session")!.add("SessionId");
+    imports.get("Pause")!.add("PauseId");
     ts = convertImports(imports, "../protocol");
     ts += "\nexport interface GenericProtocolClient {\n\n";
     ts += eventDeclarations;
@@ -304,8 +306,8 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
             domainImports.add(`${command.name}Parameters`);
             const namespacedCommand = addNamespace ? `${domain.domain}_${command.name}` : command.name;
             methods += "\n" + convertDescription(command, "    ");
-            methods += `    ${command.name}: (parameters: ${namespacedCommand}Parameters, sessionId: ${namespacedSessionId}) =>\n`;
-            methods += `      this.genericClient.sendCommand("${domain.domain}.${command.name}", parameters, sessionId),\n`;
+            methods += `    ${command.name}: (parameters: ${namespacedCommand}Parameters, sessionId?: ${namespacedSessionId}, pauseId?: ${namespacedPauseId}) =>\n`;
+            methods += `      this.genericClient.sendCommand("${domain.domain}.${command.name}", parameters, sessionId, pauseId),\n`;
         }
 
         ts += convertDescription(domain, "  ");
@@ -315,6 +317,7 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
     }
 
     imports.get("Session")!.add("SessionId");
+    imports.get("Pause")!.add("PauseId");
     ts = convertImports(imports, "../protocol") + ts;
     ts += "}\n";
 

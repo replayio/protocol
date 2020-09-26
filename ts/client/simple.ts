@@ -68,10 +68,10 @@ export const SimpleProtocolClient: SimpleProtocolClientConstructor = class {
     this.eventListeners.delete(event);
   }
 
-  async sendCommand(method: string, params: any, sessionId: string): Promise<any> {
+  async sendCommand(method: string, params: any, sessionId?: string, pauseId?: string): Promise<any> {
     await this.opened.promise;
     const id = this.nextMessageId++;
-    this.socket.send(JSON.stringify({ id, method, params, sessionId }));
+    this.socket.send(JSON.stringify({ id, method, params, sessionId, pauseId }));
     const waiter = defer();
     this.pendingMessages.set(id, waiter);
     return waiter.promise;
