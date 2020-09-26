@@ -39,34 +39,34 @@ var ProtocolClient = /** @class */ (function () {
             /**
              * Get a description of a recording.
              */
-            getDescription: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Recording.getDescription", parameters, sessionId);
+            getDescription: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Recording.getDescription", parameters, sessionId, pauseId);
             },
             /**
              * Get an entry in a recording's metadata key/value store.
              */
-            getMetadata: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Recording.getMetadata", parameters, sessionId);
+            getMetadata: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Recording.getMetadata", parameters, sessionId, pauseId);
             },
             /**
              * Set an entry in a recording's metadata.
              */
-            setMetadata: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Recording.setMetadata", parameters, sessionId);
+            setMetadata: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Recording.setMetadata", parameters, sessionId, pauseId);
             },
             /**
              * Listen for changes to an entry in a recording's metadata. When listening,
              * <code>metadataChange</code> events will be emitted whenever the entry's
              * value changes.
              */
-            metadataStartListening: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Recording.metadataStartListening", parameters, sessionId);
+            metadataStartListening: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Recording.metadataStartListening", parameters, sessionId, pauseId);
             },
             /**
              * Stop listening for changes to an entry in a recording's metadata.
              */
-            metadataStopListening: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Recording.metadataStopListening", parameters, sessionId);
+            metadataStopListening: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Recording.metadataStopListening", parameters, sessionId, pauseId);
             },
             /**
              * Create a session for inspecting a recording. This command does not return
@@ -75,14 +75,14 @@ var ProtocolClient = /** @class */ (function () {
              * emitted before the command returns. After creating, a <code>sessionError</code>
              * events may be emitted later if the session dies unexpectedly.
              */
-            createSession: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Recording.createSession", parameters, sessionId);
+            createSession: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Recording.createSession", parameters, sessionId, pauseId);
             },
             /**
              * Release a session and allow its resources to be reclaimed.
              */
-            releaseSession: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Recording.releaseSession", parameters, sessionId);
+            releaseSession: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Recording.releaseSession", parameters, sessionId, pauseId);
             },
             /**
              * Begin processing a recording, even if no sessions have been created for it.
@@ -90,8 +90,8 @@ var ProtocolClient = /** @class */ (function () {
              * or another) may start in a partially or fully processed state and start
              * being used immediately.
              */
-            processRecording: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Recording.processRecording", parameters, sessionId);
+            processRecording: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Recording.processRecording", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -139,8 +139,8 @@ var ProtocolClient = /** @class */ (function () {
              * <code>missingRegions</code> and <code>unprocessedRegions</code> events will
              * be periodically emitted.
              */
-            ensureProcessed: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Session.ensureProcessed", parameters, sessionId);
+            ensureProcessed: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Session.ensureProcessed", parameters, sessionId, pauseId);
             },
             /**
              * Find all points in the recording at which a mouse move or click occurred.
@@ -148,26 +148,26 @@ var ProtocolClient = /** @class */ (function () {
              * <code>mouseEvents</code> events will be periodically emitted. The union
              * of all these events describes all mouse events in the recording.
              */
-            findMouseEvents: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Session.findMouseEvents", parameters, sessionId);
+            findMouseEvents: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Session.findMouseEvents", parameters, sessionId, pauseId);
             },
             /**
              * Get the last execution point in the recording.
              */
-            getEndpoint: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Session.getEndpoint", parameters, sessionId);
+            getEndpoint: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Session.getEndpoint", parameters, sessionId, pauseId);
             },
             /**
              * Create a pause describing the state at an execution point.
              */
-            createPause: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Session.createPause", parameters, sessionId);
+            createPause: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Session.createPause", parameters, sessionId, pauseId);
             },
             /**
              * Release a pause and allow its resources to be reclaimed.
              */
-            releasePause: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Session.releasePause", parameters, sessionId);
+            releasePause: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Session.releasePause", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -192,22 +192,22 @@ var ProtocolClient = /** @class */ (function () {
              * <code>paintPoints</code> events will be periodically emitted. The union
              * of all these events describes all paint points in the recording.
              */
-            findPaints: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Graphics.findPaints", parameters, sessionId);
+            findPaints: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Graphics.findPaints", parameters, sessionId, pauseId);
             },
             /**
              * Get the graphics at a point where a paint occurred.
              */
-            getPaintContents: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Graphics.getPaintContents", parameters, sessionId);
+            getPaintContents: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Graphics.getPaintContents", parameters, sessionId, pauseId);
             },
             /**
              * Get the value of <code>window.devicePixelRatio</code>. This is the ratio of
              * pixels in screen shots to pixels used by DOM/CSS data such as
              * <code>DOM.getBoundingClientRect</code>.
              */
-            getDevicePixelRatio: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Graphics.getDevicePixelRatio", parameters, sessionId);
+            getDevicePixelRatio: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Graphics.getDevicePixelRatio", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -231,90 +231,90 @@ var ProtocolClient = /** @class */ (function () {
              * fully processed. Before returning, <code>scriptParsed</code> events will be
              * emitted for every script in the recording.
              */
-            findScripts: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.findScripts", parameters, sessionId);
+            findScripts: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.findScripts", parameters, sessionId, pauseId);
             },
             /**
              * Get the source contents of a script.
              */
-            getScriptSource: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.getScriptSource", parameters, sessionId);
+            getScriptSource: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.getScriptSource", parameters, sessionId, pauseId);
             },
             /**
              * Get a compact representation of the locations where breakpoints can be set
              * in a region of a script.
              */
-            getPossibleBreakpoints: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.getPossibleBreakpoints", parameters, sessionId);
+            getPossibleBreakpoints: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.getPossibleBreakpoints", parameters, sessionId, pauseId);
             },
             /**
              * Get the mapped location for a script location.
              */
-            getMappedLocation: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.getMappedLocation", parameters, sessionId);
+            getMappedLocation: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.getMappedLocation", parameters, sessionId, pauseId);
             },
             /**
              * Set a breakpoint at a location.
              */
-            setBreakpoint: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.setBreakpoint", parameters, sessionId);
+            setBreakpoint: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.setBreakpoint", parameters, sessionId, pauseId);
             },
             /**
              * Remove a breakpoint.
              */
-            removeBreakpoint: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.removeBreakpoint", parameters, sessionId);
+            removeBreakpoint: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.removeBreakpoint", parameters, sessionId, pauseId);
             },
             /**
              * Find where to pause when running forward from a point.
              */
-            findResumeTarget: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.findResumeTarget", parameters, sessionId);
+            findResumeTarget: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.findResumeTarget", parameters, sessionId, pauseId);
             },
             /**
              * Find where to pause when rewinding from a point.
              */
-            findRewindTarget: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.findRewindTarget", parameters, sessionId);
+            findRewindTarget: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.findRewindTarget", parameters, sessionId, pauseId);
             },
             /**
              * Find where to pause when reverse-stepping from a point.
              */
-            findReverseStepOverTarget: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.findReverseStepOverTarget", parameters, sessionId);
+            findReverseStepOverTarget: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.findReverseStepOverTarget", parameters, sessionId, pauseId);
             },
             /**
              * Find where to pause when stepping from a point.
              */
-            findStepOverTarget: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.findStepOverTarget", parameters, sessionId);
+            findStepOverTarget: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.findStepOverTarget", parameters, sessionId, pauseId);
             },
             /**
              * Find where to pause when stepping from a point and stopping at the entry of
              * any encountered call.
              */
-            findStepInTarget: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.findStepInTarget", parameters, sessionId);
+            findStepInTarget: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.findStepInTarget", parameters, sessionId, pauseId);
             },
             /**
              * Find where to pause when stepping out from a frame to the caller.
              */
-            findStepOutTarget: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.findStepOutTarget", parameters, sessionId);
+            findStepOutTarget: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.findStepOutTarget", parameters, sessionId, pauseId);
             },
             /**
              * Blackbox a script or a region in it. Resume commands like
              * <code>findResumeTarget</code> will not return execution points in
              * blackboxed regions of a script.
              */
-            blackboxScript: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.blackboxScript", parameters, sessionId);
+            blackboxScript: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.blackboxScript", parameters, sessionId, pauseId);
             },
             /**
              * Unblackbox a script or a region in it.
              */
-            unblackboxScript: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Debugger.unblackboxScript", parameters, sessionId);
+            unblackboxScript: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.unblackboxScript", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -337,8 +337,8 @@ var ProtocolClient = /** @class */ (function () {
              * fully processed. Before returning, <code>newMessage</code> events will be
              * emitted for every console message in the recording.
              */
-            findMessages: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Console.findMessages", parameters, sessionId);
+            findMessages: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Console.findMessages", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -353,74 +353,74 @@ var ProtocolClient = /** @class */ (function () {
              * Evaluate an expression in the context of a call frame. This command is
              * effectful.
              */
-            evaluateInFrame: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.evaluateInFrame", parameters, sessionId);
+            evaluateInFrame: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.evaluateInFrame", parameters, sessionId, pauseId);
             },
             /**
              * Evaluate an expression in a global context. This command is effectful.
              */
-            evaluateInGlobal: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.evaluateInGlobal", parameters, sessionId);
+            evaluateInGlobal: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.evaluateInGlobal", parameters, sessionId, pauseId);
             },
             /**
              * Read a property from an object. This command is effectful.
              */
-            getObjectProperty: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.getObjectProperty", parameters, sessionId);
+            getObjectProperty: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.getObjectProperty", parameters, sessionId, pauseId);
             },
             /**
              * Call a function object. This command is effectful.
              */
-            callFunction: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.callFunction", parameters, sessionId);
+            callFunction: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.callFunction", parameters, sessionId, pauseId);
             },
             /**
              * Read a property from an object, then call the result. This command is effectful.
              */
-            callObjectProperty: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.callObjectProperty", parameters, sessionId);
+            callObjectProperty: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.callObjectProperty", parameters, sessionId, pauseId);
             },
             /**
              * Load a complete preview for an object.
              */
-            getObjectPreview: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.getObjectPreview", parameters, sessionId);
+            getObjectPreview: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.getObjectPreview", parameters, sessionId, pauseId);
             },
             /**
              * Load a scope's contents.
              */
-            getScope: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.getScope", parameters, sessionId);
+            getScope: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.getScope", parameters, sessionId, pauseId);
             },
             /**
              * Get the topmost frame on the stack.
              */
-            getTopFrame: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.getTopFrame", parameters, sessionId);
+            getTopFrame: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.getTopFrame", parameters, sessionId, pauseId);
             },
             /**
              * Get all frames on the stack.
              */
-            getAllFrames: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.getAllFrames", parameters, sessionId);
+            getAllFrames: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.getAllFrames", parameters, sessionId, pauseId);
             },
             /**
              * Get the values of a frame's arguments.
              */
-            getFrameArguments: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.getFrameArguments", parameters, sessionId);
+            getFrameArguments: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.getFrameArguments", parameters, sessionId, pauseId);
             },
             /**
              * Get the points of all steps that are executed by a frame.
              */
-            getFrameSteps: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.getFrameSteps", parameters, sessionId);
+            getFrameSteps: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.getFrameSteps", parameters, sessionId, pauseId);
             },
             /**
              * Get any exception that is being thrown at this point.
              */
-            getExceptionValue: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Pause.getExceptionValue", parameters, sessionId);
+            getExceptionValue: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Pause.getExceptionValue", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -435,51 +435,51 @@ var ProtocolClient = /** @class */ (function () {
             /**
              * Get the page's root document.
              */
-            getDocument: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("DOM.getDocument", parameters, sessionId);
+            getDocument: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("DOM.getDocument", parameters, sessionId, pauseId);
             },
             /**
              * Load previews for an object and its transitive parents up to the
              * root document.
              */
-            getParentNodes: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("DOM.getParentNodes", parameters, sessionId);
+            getParentNodes: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("DOM.getParentNodes", parameters, sessionId, pauseId);
             },
             /**
              * Call querySelector() on a node in the page.
              */
-            querySelector: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("DOM.querySelector", parameters, sessionId);
+            querySelector: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("DOM.querySelector", parameters, sessionId, pauseId);
             },
             /**
              * Get the event listeners attached to a node in the page.
              */
-            getEventListeners: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("DOM.getEventListeners", parameters, sessionId);
+            getEventListeners: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("DOM.getEventListeners", parameters, sessionId, pauseId);
             },
             /**
              * Get boxes for a node.
              */
-            getBoxModel: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("DOM.getBoxModel", parameters, sessionId);
+            getBoxModel: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("DOM.getBoxModel", parameters, sessionId, pauseId);
             },
             /**
              * Get the bounding client rect for a node.
              */
-            getBoundingClientRect: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("DOM.getBoundingClientRect", parameters, sessionId);
+            getBoundingClientRect: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("DOM.getBoundingClientRect", parameters, sessionId, pauseId);
             },
             /**
              * Get the bounding client rect for all elements on the page.
              */
-            getAllBoundingClientRects: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("DOM.getAllBoundingClientRects", parameters, sessionId);
+            getAllBoundingClientRects: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("DOM.getAllBoundingClientRects", parameters, sessionId, pauseId);
             },
             /**
              * Search the DOM for nodes containing a string.
              */
-            performSearch: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("DOM.performSearch", parameters, sessionId);
+            performSearch: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("DOM.performSearch", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -492,14 +492,14 @@ var ProtocolClient = /** @class */ (function () {
             /**
              * Get the styles computed for a node.
              */
-            getComputedStyle: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("CSS.getComputedStyle", parameters, sessionId);
+            getComputedStyle: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("CSS.getComputedStyle", parameters, sessionId, pauseId);
             },
             /**
              * Get the style rules being applied to a node.
              */
-            getAppliedRules: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("CSS.getAppliedRules", parameters, sessionId);
+            getAppliedRules: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("CSS.getAppliedRules", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -550,38 +550,38 @@ var ProtocolClient = /** @class */ (function () {
             /**
              * Start specifying a new analysis.
              */
-            createAnalysis: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Analysis.createAnalysis", parameters, sessionId);
+            createAnalysis: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Analysis.createAnalysis", parameters, sessionId, pauseId);
             },
             /**
              * Apply the analysis to every point where a script location executes.
              */
-            addLocation: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Analysis.addLocation", parameters, sessionId);
+            addLocation: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Analysis.addLocation", parameters, sessionId, pauseId);
             },
             /**
              * Apply the analysis to every function entry point in a region of a script.
              */
-            addFunctionEntryPoints: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Analysis.addFunctionEntryPoints", parameters, sessionId);
+            addFunctionEntryPoints: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Analysis.addFunctionEntryPoints", parameters, sessionId, pauseId);
             },
             /**
              * Apply the analysis to a random selection of points.
              */
-            addRandomPoints: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Analysis.addRandomPoints", parameters, sessionId);
+            addRandomPoints: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Analysis.addRandomPoints", parameters, sessionId, pauseId);
             },
             /**
              * Apply the analysis to the entry point of every handler for an event.
              */
-            addEventHandlerEntryPoints: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Analysis.addEventHandlerEntryPoints", parameters, sessionId);
+            addEventHandlerEntryPoints: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Analysis.addEventHandlerEntryPoints", parameters, sessionId, pauseId);
             },
             /**
              * Apply the analysis to every point where an exception is thrown.
              */
-            addExceptionPoints: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Analysis.addExceptionPoints", parameters, sessionId);
+            addExceptionPoints: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Analysis.addExceptionPoints", parameters, sessionId, pauseId);
             },
             /**
              * Run the analysis. After this is called, <code>analysisResult</code> and/or
@@ -589,16 +589,16 @@ var ProtocolClient = /** @class */ (function () {
              * Does not return until the analysis has finished and all events have been
              * emitted.
              */
-            runAnalysis: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Analysis.runAnalysis", parameters, sessionId);
+            runAnalysis: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Analysis.runAnalysis", parameters, sessionId, pauseId);
             },
             /**
              * Release an analysis and its server side resources. If the analysis is
              * running, it will be canceled, preventing further <code>analysisResult</code>
              * and <code>analysisError</code> events from being emitted.
              */
-            releaseAnalysis: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Analysis.releaseAnalysis", parameters, sessionId);
+            releaseAnalysis: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Analysis.releaseAnalysis", parameters, sessionId, pauseId);
             },
             /**
              * Find the set of execution points at which an analysis will run. After this
@@ -606,8 +606,89 @@ var ProtocolClient = /** @class */ (function () {
              * are found. Does not return until events for all points have been emitted.
              * Can only be used after the analysis has started running.
              */
-            findAnalysisPoints: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Analysis.findAnalysisPoints", parameters, sessionId);
+            findAnalysisPoints: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Analysis.findAnalysisPoints", parameters, sessionId, pauseId);
+            },
+        };
+        /**
+         * The Host domain includes commands that are sent by the record/replay driver
+         * to its host VM. Protocol clients should not use this domain.
+         */
+        this.Host = {
+            /**
+             * Get the function ID / offset to use for a script location, if there is one.
+             */
+            convertLocationToFunctionOffset: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.convertLocationToFunctionOffset", parameters, sessionId, pauseId);
+            },
+            /**
+             * Get the location to use for a function ID / offset.
+             */
+            convertFunctionOffsetToLocation: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.convertFunctionOffsetToLocation", parameters, sessionId, pauseId);
+            },
+            /**
+             * Get the offsets at which execution should pause when stepping around within
+             * a frame for a function.
+             */
+            getStepOffsets: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.getStepOffsets", parameters, sessionId, pauseId);
+            },
+            /**
+             * Get the most complete contents known for an HTML file.
+             */
+            getHTMLSource: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.getHTMLSource", parameters, sessionId, pauseId);
+            },
+            /**
+             * Get the IDs of all functions in a range within a script.
+             */
+            getFunctionsInRange: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.getFunctionsInRange", parameters, sessionId, pauseId);
+            },
+            /**
+             * Get any source map URL associated with a script.
+             */
+            getScriptSourceMapURL: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.getScriptSourceMapURL", parameters, sessionId, pauseId);
+            },
+            /**
+             * Get any source map URL associated with a style sheet.
+             */
+            getSheetSourceMapURL: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.getSheetSourceMapURL", parameters, sessionId, pauseId);
+            },
+            /**
+             * This command might be sent from within an OnConsoleMessage() call to get
+             * contents of the new message. Properties in the result have the same meaning
+             * as for <code>Console.Message</code>.
+             */
+            getCurrentMessageContents: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.getCurrentMessageContents", parameters, sessionId, pauseId);
+            },
+            /**
+             * Count the number of stack frames on the stack. This is equivalent to using
+             * the size of the stack returned by <code>Pause.getAllFrames</code>, but can
+             * be implemented more efficiently.
+             */
+            countStackFrames: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.countStackFrames", parameters, sessionId, pauseId);
+            },
+            /**
+             * If the topmost frame on the stack is a generator frame which can be popped
+             * and pushed on the stack repeatedly, return a unique ID for the frame which
+             * will be consistent across each of those pops and pushes.
+             */
+            currentGeneratorId: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.currentGeneratorId", parameters, sessionId, pauseId);
+            },
+            /**
+             * When generating previews whose contents might overflow, this can be used to
+             * specify property and getter names which must be included in the resulting
+             * preview.
+             */
+            getObjectPreviewRequiredProperties: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Host.getObjectPreviewRequiredProperties", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -619,8 +700,8 @@ var ProtocolClient = /** @class */ (function () {
             /**
              * Create a new recording.
              */
-            createRecording: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.createRecording", parameters, sessionId);
+            createRecording: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.createRecording", parameters, sessionId, pauseId);
             },
             /**
              * Add data to a recording. The next message sent after this must be a binary
@@ -628,75 +709,57 @@ var ProtocolClient = /** @class */ (function () {
              * explicitly finished; replay sessions created for a recording will include
              * all data which was successfully uploaded.
              */
-            addRecordingData: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.addRecordingData", parameters, sessionId);
+            addRecordingData: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.addRecordingData", parameters, sessionId, pauseId);
             },
             /**
              * Add metadata about a recording.
              */
-            addRecordingDescription: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.addRecordingDescription", parameters, sessionId);
+            addRecordingDescription: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.addRecordingDescription", parameters, sessionId, pauseId);
             },
             /**
              * Determine whether a resource is known to the cloud service.
              */
-            hasResource: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.hasResource", parameters, sessionId);
+            hasResource: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.hasResource", parameters, sessionId, pauseId);
             },
             /**
              * Upload a resource's contents to the cloud service.
              */
-            addResource: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.addResource", parameters, sessionId);
+            addResource: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.addResource", parameters, sessionId, pauseId);
             },
             /**
              * Associate a resource with a recording.
              */
-            addRecordingResource: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.addRecordingResource", parameters, sessionId);
+            addRecordingResource: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.addRecordingResource", parameters, sessionId, pauseId);
             },
             /**
              * Get filters for where to add more detailed assertions when recording that
              * behavior is consistent with the replay. These are used when analyzing crashes.
              */
-            getAssertionFilters: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.getAssertionFilters", parameters, sessionId);
+            getAssertionFilters: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.getAssertionFilters", parameters, sessionId, pauseId);
             },
             /**
              * For testing network issues.
              */
-            echo: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.echo", parameters, sessionId);
-            },
-            /**
-             * Get the function ID / offset to use for a script location.
-             */
-            convertLocationToFunctionOffset: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.convertLocationToFunctionOffset", parameters, sessionId);
-            },
-            /**
-             * Get the location to use for a function ID / offset.
-             */
-            convertFunctionOffsetToLocation: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.convertFunctionOffsetToLocation", parameters, sessionId);
-            },
-            /**
-             * Get the most complete contents known for an HTML file.
-             */
-            getHTMLSource: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.getHTMLSource", parameters, sessionId);
+            echo: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.echo", parameters, sessionId, pauseId);
             },
             /**
              * Mark a session which was created for an automated test.
              */
-            labelTestSession: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.labelTestSession", parameters, sessionId);
+            labelTestSession: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.labelTestSession", parameters, sessionId, pauseId);
             },
             /**
              * Get the user's recordings
              */
-            getRecordings: function (parameters, sessionId) {
-                return _this.genericClient.sendCommand("Internal.getRecordings", parameters, sessionId);
+            getRecordings: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.getRecordings", parameters, sessionId, pauseId);
             },
         };
     }

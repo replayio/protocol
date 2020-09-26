@@ -1,6 +1,5 @@
 import { BuildId, RecordingId, TimeStamp } from "./Recording";
 import { MimeType } from "./Graphics";
-import { Location } from "./Debugger";
 import { SessionId } from "./Session";
 /**
  * Information about a file based resource. Currently, resources are used for
@@ -121,26 +120,6 @@ export interface echoParameters {
 }
 export interface echoResult {
     str: string;
-}
-export interface convertLocationToFunctionOffsetParameters {
-    location: Location;
-}
-export interface convertLocationToFunctionOffsetResult {
-    functionId: string;
-    offset: number;
-}
-export interface convertFunctionOffsetToLocationParameters {
-    functionId: string;
-    offset?: number;
-}
-export interface convertFunctionOffsetToLocationResult {
-    location: Location;
-}
-export interface getHTMLSourceParameters {
-    url: string;
-}
-export interface getHTMLSourceResult {
-    contents: string;
 }
 export interface labelTestSessionParameters {
     sessionId: SessionId;

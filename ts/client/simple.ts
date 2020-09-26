@@ -3,7 +3,18 @@
 // Simple protocol client for use in writing standalone applications.
 
 import { GenericProtocolClient } from "./generic";
-import WebSocket from "ws";
+
+/**
+ * This interface is designed to be compatible with both `WebSocket`
+ * as implemented in browsers as well as the `ws` package from npm.
+ */
+interface WebSocket {
+  onopen: ((ev: any) => any) | null;
+  onerror: ((err: any) => any) | null;
+  onclose: ((ev: any) => any) | null;
+  onmessage: ((ev: any) => void) | null;
+  send(msg: string): void;
+}
 
 interface SocketCallbacks {
   onClose(code: number, reason: string): void;
@@ -15,7 +26,7 @@ type EventListener = (ev: any) => void;
 interface Deferred {
   promise: Promise<any>;
   resolve(arg?: any): void;
-  reject(err: Error): void;
+  reject(err: any): void;
 }
 
 // SimpleProtocolClient implements the GenericProtocolClient interface.
@@ -24,7 +35,7 @@ interface Deferred {
 // So we're using a trick to tell Typescript to use the GenericProtocolClient
 // type for the SimpleProtocolClient class.
 interface SimpleProtocolClientConstructor {
-  new (address: string, callbacks: SocketCallbacks, log: (msg: string) => void): GenericProtocolClient;
+  new (webSocket: WebSocket, callbacks: SocketCallbacks, log: (msg: string) => void): GenericProtocolClient;
 }
 
 export const SimpleProtocolClient: SimpleProtocolClientConstructor = class {
@@ -35,15 +46,15 @@ export const SimpleProtocolClient: SimpleProtocolClientConstructor = class {
   private pendingMessages = new Map<number, Deferred>();
   private nextMessageId = 1;
 
-  constructor(address: string, callbacks: SocketCallbacks, private log: (msg: string) => void) {
-    this.socket = new WebSocket(address);
+  constructor(webSocket: WebSocket, callbacks: SocketCallbacks, private log: (msg: string) => void) {
+    this.socket = webSocket;
 
     this.opened = defer();
-    this.socket.on("open", () => this.opened.resolve());
+    this.socket.onopen = () => this.opened.resolve();
 
-    this.socket.on("close", callbacks.onClose);
-    this.socket.on("error", callbacks.onError);
-    this.socket.on("message", (msg: string) => this.onMessage(JSON.parse(msg)));
+    this.socket.onclose = ({ code, reason }) => callbacks.onClose(code, reason);
+    this.socket.onerror = callbacks.onError;
+    this.socket.onmessage = (ev: { data: string }) => this.onMessage(JSON.parse(ev.data));
   }
 
   addEventListener(event: string, listener: EventListener): void {
@@ -57,10 +68,10 @@ export const SimpleProtocolClient: SimpleProtocolClientConstructor = class {
     this.eventListeners.delete(event);
   }
 
-  async sendCommand(method: string, params: any, sessionId: string): Promise<any> {
+  async sendCommand(method: string, params: any, sessionId?: string, pauseId?: string): Promise<any> {
     await this.opened.promise;
     const id = this.nextMessageId++;
-    this.socket.send(JSON.stringify({ id, method, params, sessionId }));
+    this.socket.send(JSON.stringify({ id, method, params, sessionId, pauseId }));
     const waiter = defer();
     this.pendingMessages.set(id, waiter);
     return waiter.promise;

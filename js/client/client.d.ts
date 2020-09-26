@@ -1,5 +1,5 @@
 import { metadataChange, uploadedData, sessionError, getDescriptionParameters, getMetadataParameters, setMetadataParameters, metadataStartListeningParameters, metadataStopListeningParameters, createSessionParameters, releaseSessionParameters, processRecordingParameters } from "../protocol/Recording";
-import { missingRegions, unprocessedRegions, mouseEvents, ensureProcessedParameters, findMouseEventsParameters, getEndpointParameters, createPauseParameters, releasePauseParameters, SessionId } from "../protocol/Session";
+import { missingRegions, unprocessedRegions, mouseEvents, ensureProcessedParameters, findMouseEventsParameters, getEndpointParameters, createPauseParameters, releasePauseParameters } from "../protocol/Session";
 import { paintPoints, findPaintsParameters, getPaintContentsParameters, getDevicePixelRatioParameters } from "../protocol/Graphics";
 import { scriptParsed, findScriptsParameters, getScriptSourceParameters, getPossibleBreakpointsParameters, getMappedLocationParameters, setBreakpointParameters, removeBreakpointParameters, findResumeTargetParameters, findRewindTargetParameters, findReverseStepOverTargetParameters, findStepOverTargetParameters, findStepInTargetParameters, findStepOutTargetParameters, blackboxScriptParameters, unblackboxScriptParameters } from "../protocol/Debugger";
 import { newMessage, findMessagesParameters } from "../protocol/Console";
@@ -7,7 +7,8 @@ import { evaluateInFrameParameters, evaluateInGlobalParameters, getObjectPropert
 import { getDocumentParameters, getParentNodesParameters, querySelectorParameters, getEventListenersParameters, getBoxModelParameters, getBoundingClientRectParameters, getAllBoundingClientRectsParameters, performSearchParameters } from "../protocol/DOM";
 import { getComputedStyleParameters, getAppliedRulesParameters } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, addLocationParameters, addFunctionEntryPointsParameters, addRandomPointsParameters, addEventHandlerEntryPointsParameters, addExceptionPointsParameters, runAnalysisParameters, releaseAnalysisParameters, findAnalysisPointsParameters } from "../protocol/Analysis";
-import { createRecordingParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getHTMLSourceParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
+import { convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getStepOffsetsParameters, getHTMLSourceParameters, getFunctionsInRangeParameters, getScriptSourceMapURLParameters, getSheetSourceMapURLParameters, getCurrentMessageContentsParameters, countStackFramesParameters, currentGeneratorIdParameters, getObjectPreviewRequiredPropertiesParameters } from "../protocol/Host";
+import { createRecordingParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
 import { GenericProtocolClient } from "./generic";
 export declare class ProtocolClient {
     private readonly genericClient;
@@ -34,25 +35,25 @@ export declare class ProtocolClient {
         /**
          * Get a description of a recording.
          */
-        getDescription: (parameters: getDescriptionParameters, sessionId: SessionId) => Promise<import("../protocol/Recording").getDescriptionResult>;
+        getDescription: (parameters: getDescriptionParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Recording").getDescriptionResult>;
         /**
          * Get an entry in a recording's metadata key/value store.
          */
-        getMetadata: (parameters: getMetadataParameters, sessionId: SessionId) => Promise<import("../protocol/Recording").getMetadataResult>;
+        getMetadata: (parameters: getMetadataParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Recording").getMetadataResult>;
         /**
          * Set an entry in a recording's metadata.
          */
-        setMetadata: (parameters: setMetadataParameters, sessionId: SessionId) => Promise<import("../protocol/Recording").setMetadataResult>;
+        setMetadata: (parameters: setMetadataParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Recording").setMetadataResult>;
         /**
          * Listen for changes to an entry in a recording's metadata. When listening,
          * <code>metadataChange</code> events will be emitted whenever the entry's
          * value changes.
          */
-        metadataStartListening: (parameters: metadataStartListeningParameters, sessionId: SessionId) => Promise<import("../protocol/Recording").metadataStartListeningResult>;
+        metadataStartListening: (parameters: metadataStartListeningParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Recording").metadataStartListeningResult>;
         /**
          * Stop listening for changes to an entry in a recording's metadata.
          */
-        metadataStopListening: (parameters: metadataStopListeningParameters, sessionId: SessionId) => Promise<import("../protocol/Recording").metadataStopListeningResult>;
+        metadataStopListening: (parameters: metadataStopListeningParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Recording").metadataStopListeningResult>;
         /**
          * Create a session for inspecting a recording. This command does not return
          * until the recording's contents have been fully received. If the contents
@@ -60,18 +61,18 @@ export declare class ProtocolClient {
          * emitted before the command returns. After creating, a <code>sessionError</code>
          * events may be emitted later if the session dies unexpectedly.
          */
-        createSession: (parameters: createSessionParameters, sessionId: SessionId) => Promise<import("../protocol/Recording").createSessionResult>;
+        createSession: (parameters: createSessionParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Recording").createSessionResult>;
         /**
          * Release a session and allow its resources to be reclaimed.
          */
-        releaseSession: (parameters: releaseSessionParameters, sessionId: SessionId) => Promise<import("../protocol/Recording").releaseSessionResult>;
+        releaseSession: (parameters: releaseSessionParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Recording").releaseSessionResult>;
         /**
          * Begin processing a recording, even if no sessions have been created for it.
          * After calling this, sessions created for the recording (on this connection,
          * or another) may start in a partially or fully processed state and start
          * being used immediately.
          */
-        processRecording: (parameters: processRecordingParameters, sessionId: SessionId) => Promise<import("../protocol/Recording").processRecordingResult>;
+        processRecording: (parameters: processRecordingParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Recording").processRecordingResult>;
     };
     /**
      * The Session domain defines methods for using recording sessions. In order to
@@ -106,26 +107,26 @@ export declare class ProtocolClient {
          * <code>missingRegions</code> and <code>unprocessedRegions</code> events will
          * be periodically emitted.
          */
-        ensureProcessed: (parameters: ensureProcessedParameters, sessionId: SessionId) => Promise<import("../protocol/Session").ensureProcessedResult>;
+        ensureProcessed: (parameters: ensureProcessedParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Session").ensureProcessedResult>;
         /**
          * Find all points in the recording at which a mouse move or click occurred.
          * Does not return until the recording is fully processed. Before returning,
          * <code>mouseEvents</code> events will be periodically emitted. The union
          * of all these events describes all mouse events in the recording.
          */
-        findMouseEvents: (parameters: findMouseEventsParameters, sessionId: SessionId) => Promise<import("../protocol/Session").findMouseEventsResult>;
+        findMouseEvents: (parameters: findMouseEventsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Session").findMouseEventsResult>;
         /**
          * Get the last execution point in the recording.
          */
-        getEndpoint: (parameters: getEndpointParameters, sessionId: SessionId) => Promise<import("../protocol/Session").getEndpointResult>;
+        getEndpoint: (parameters: getEndpointParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Session").getEndpointResult>;
         /**
          * Create a pause describing the state at an execution point.
          */
-        createPause: (parameters: createPauseParameters, sessionId: SessionId) => Promise<import("../protocol/Session").createPauseResult>;
+        createPause: (parameters: createPauseParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Session").createPauseResult>;
         /**
          * Release a pause and allow its resources to be reclaimed.
          */
-        releasePause: (parameters: releasePauseParameters, sessionId: SessionId) => Promise<import("../protocol/Session").releasePauseResult>;
+        releasePause: (parameters: releasePauseParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Session").releasePauseResult>;
     };
     /**
      * The Graphics domain defines methods for accessing a recording's graphics data.
@@ -145,17 +146,17 @@ export declare class ProtocolClient {
          * <code>paintPoints</code> events will be periodically emitted. The union
          * of all these events describes all paint points in the recording.
          */
-        findPaints: (parameters: findPaintsParameters, sessionId: SessionId) => Promise<import("../protocol/Graphics").findPaintsResult>;
+        findPaints: (parameters: findPaintsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Graphics").findPaintsResult>;
         /**
          * Get the graphics at a point where a paint occurred.
          */
-        getPaintContents: (parameters: getPaintContentsParameters, sessionId: SessionId) => Promise<import("../protocol/Graphics").getPaintContentsResult>;
+        getPaintContents: (parameters: getPaintContentsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Graphics").getPaintContentsResult>;
         /**
          * Get the value of <code>window.devicePixelRatio</code>. This is the ratio of
          * pixels in screen shots to pixels used by DOM/CSS data such as
          * <code>DOM.getBoundingClientRect</code>.
          */
-        getDevicePixelRatio: (parameters: getDevicePixelRatioParameters, sessionId: SessionId) => Promise<import("../protocol/Graphics").getDevicePixelRatioResult>;
+        getDevicePixelRatio: (parameters: getDevicePixelRatioParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Graphics").getDevicePixelRatioResult>;
     };
     /**
      * The Debugger domain defines methods for accessing JS scripts and navigating
@@ -174,63 +175,63 @@ export declare class ProtocolClient {
          * fully processed. Before returning, <code>scriptParsed</code> events will be
          * emitted for every script in the recording.
          */
-        findScripts: (parameters: findScriptsParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").findScriptsResult>;
+        findScripts: (parameters: findScriptsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").findScriptsResult>;
         /**
          * Get the source contents of a script.
          */
-        getScriptSource: (parameters: getScriptSourceParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").getScriptSourceResult>;
+        getScriptSource: (parameters: getScriptSourceParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").getScriptSourceResult>;
         /**
          * Get a compact representation of the locations where breakpoints can be set
          * in a region of a script.
          */
-        getPossibleBreakpoints: (parameters: getPossibleBreakpointsParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").getPossibleBreakpointsResult>;
+        getPossibleBreakpoints: (parameters: getPossibleBreakpointsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").getPossibleBreakpointsResult>;
         /**
          * Get the mapped location for a script location.
          */
-        getMappedLocation: (parameters: getMappedLocationParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").getMappedLocationResult>;
+        getMappedLocation: (parameters: getMappedLocationParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").getMappedLocationResult>;
         /**
          * Set a breakpoint at a location.
          */
-        setBreakpoint: (parameters: setBreakpointParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").setBreakpointResult>;
+        setBreakpoint: (parameters: setBreakpointParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").setBreakpointResult>;
         /**
          * Remove a breakpoint.
          */
-        removeBreakpoint: (parameters: removeBreakpointParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").removeBreakpointResult>;
+        removeBreakpoint: (parameters: removeBreakpointParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").removeBreakpointResult>;
         /**
          * Find where to pause when running forward from a point.
          */
-        findResumeTarget: (parameters: findResumeTargetParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").findResumeTargetResult>;
+        findResumeTarget: (parameters: findResumeTargetParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").findResumeTargetResult>;
         /**
          * Find where to pause when rewinding from a point.
          */
-        findRewindTarget: (parameters: findRewindTargetParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").findRewindTargetResult>;
+        findRewindTarget: (parameters: findRewindTargetParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").findRewindTargetResult>;
         /**
          * Find where to pause when reverse-stepping from a point.
          */
-        findReverseStepOverTarget: (parameters: findReverseStepOverTargetParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").findReverseStepOverTargetResult>;
+        findReverseStepOverTarget: (parameters: findReverseStepOverTargetParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").findReverseStepOverTargetResult>;
         /**
          * Find where to pause when stepping from a point.
          */
-        findStepOverTarget: (parameters: findStepOverTargetParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").findStepOverTargetResult>;
+        findStepOverTarget: (parameters: findStepOverTargetParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").findStepOverTargetResult>;
         /**
          * Find where to pause when stepping from a point and stopping at the entry of
          * any encountered call.
          */
-        findStepInTarget: (parameters: findStepInTargetParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").findStepInTargetResult>;
+        findStepInTarget: (parameters: findStepInTargetParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").findStepInTargetResult>;
         /**
          * Find where to pause when stepping out from a frame to the caller.
          */
-        findStepOutTarget: (parameters: findStepOutTargetParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").findStepOutTargetResult>;
+        findStepOutTarget: (parameters: findStepOutTargetParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").findStepOutTargetResult>;
         /**
          * Blackbox a script or a region in it. Resume commands like
          * <code>findResumeTarget</code> will not return execution points in
          * blackboxed regions of a script.
          */
-        blackboxScript: (parameters: blackboxScriptParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").blackboxScriptResult>;
+        blackboxScript: (parameters: blackboxScriptParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").blackboxScriptResult>;
         /**
          * Unblackbox a script or a region in it.
          */
-        unblackboxScript: (parameters: unblackboxScriptParameters, sessionId: SessionId) => Promise<import("../protocol/Debugger").unblackboxScriptResult>;
+        unblackboxScript: (parameters: unblackboxScriptParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Debugger").unblackboxScriptResult>;
     };
     /**
      * The Console domain defines methods for accessing messages reported to the console.
@@ -248,7 +249,7 @@ export declare class ProtocolClient {
          * fully processed. Before returning, <code>newMessage</code> events will be
          * emitted for every console message in the recording.
          */
-        findMessages: (parameters: findMessagesParameters, sessionId: SessionId) => Promise<import("../protocol/Console").findMessagesResult>;
+        findMessages: (parameters: findMessagesParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Console").findMessagesResult>;
     };
     /**
      * The Pause domain is used to inspect the state of the program when it is paused
@@ -262,51 +263,51 @@ export declare class ProtocolClient {
          * Evaluate an expression in the context of a call frame. This command is
          * effectful.
          */
-        evaluateInFrame: (parameters: evaluateInFrameParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").evaluateInFrameResult>;
+        evaluateInFrame: (parameters: evaluateInFrameParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").evaluateInFrameResult>;
         /**
          * Evaluate an expression in a global context. This command is effectful.
          */
-        evaluateInGlobal: (parameters: evaluateInGlobalParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").evaluateInGlobalResult>;
+        evaluateInGlobal: (parameters: evaluateInGlobalParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").evaluateInGlobalResult>;
         /**
          * Read a property from an object. This command is effectful.
          */
-        getObjectProperty: (parameters: getObjectPropertyParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").getObjectPropertyResult>;
+        getObjectProperty: (parameters: getObjectPropertyParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").getObjectPropertyResult>;
         /**
          * Call a function object. This command is effectful.
          */
-        callFunction: (parameters: callFunctionParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").callFunctionResult>;
+        callFunction: (parameters: callFunctionParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").callFunctionResult>;
         /**
          * Read a property from an object, then call the result. This command is effectful.
          */
-        callObjectProperty: (parameters: callObjectPropertyParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").callObjectPropertyResult>;
+        callObjectProperty: (parameters: callObjectPropertyParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").callObjectPropertyResult>;
         /**
          * Load a complete preview for an object.
          */
-        getObjectPreview: (parameters: getObjectPreviewParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").getObjectPreviewResult>;
+        getObjectPreview: (parameters: getObjectPreviewParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").getObjectPreviewResult>;
         /**
          * Load a scope's contents.
          */
-        getScope: (parameters: getScopeParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").getScopeResult>;
+        getScope: (parameters: getScopeParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").getScopeResult>;
         /**
          * Get the topmost frame on the stack.
          */
-        getTopFrame: (parameters: getTopFrameParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").getTopFrameResult>;
+        getTopFrame: (parameters: getTopFrameParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").getTopFrameResult>;
         /**
          * Get all frames on the stack.
          */
-        getAllFrames: (parameters: getAllFramesParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").getAllFramesResult>;
+        getAllFrames: (parameters: getAllFramesParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").getAllFramesResult>;
         /**
          * Get the values of a frame's arguments.
          */
-        getFrameArguments: (parameters: getFrameArgumentsParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").getFrameArgumentsResult>;
+        getFrameArguments: (parameters: getFrameArgumentsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").getFrameArgumentsResult>;
         /**
          * Get the points of all steps that are executed by a frame.
          */
-        getFrameSteps: (parameters: getFrameStepsParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").getFrameStepsResult>;
+        getFrameSteps: (parameters: getFrameStepsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").getFrameStepsResult>;
         /**
          * Get any exception that is being thrown at this point.
          */
-        getExceptionValue: (parameters: getExceptionValueParameters, sessionId: SessionId) => Promise<import("../protocol/Pause").getExceptionValueResult>;
+        getExceptionValue: (parameters: getExceptionValueParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").getExceptionValueResult>;
     };
     /**
      * The DOM domain is used to inspect the DOM at particular execution points.
@@ -320,36 +321,36 @@ export declare class ProtocolClient {
         /**
          * Get the page's root document.
          */
-        getDocument: (parameters: getDocumentParameters, sessionId: SessionId) => Promise<import("../protocol/DOM").getDocumentResult>;
+        getDocument: (parameters: getDocumentParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/DOM").getDocumentResult>;
         /**
          * Load previews for an object and its transitive parents up to the
          * root document.
          */
-        getParentNodes: (parameters: getParentNodesParameters, sessionId: SessionId) => Promise<import("../protocol/DOM").getParentNodesResult>;
+        getParentNodes: (parameters: getParentNodesParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/DOM").getParentNodesResult>;
         /**
          * Call querySelector() on a node in the page.
          */
-        querySelector: (parameters: querySelectorParameters, sessionId: SessionId) => Promise<import("../protocol/DOM").querySelectorResult>;
+        querySelector: (parameters: querySelectorParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/DOM").querySelectorResult>;
         /**
          * Get the event listeners attached to a node in the page.
          */
-        getEventListeners: (parameters: getEventListenersParameters, sessionId: SessionId) => Promise<import("../protocol/DOM").getEventListenersResult>;
+        getEventListeners: (parameters: getEventListenersParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/DOM").getEventListenersResult>;
         /**
          * Get boxes for a node.
          */
-        getBoxModel: (parameters: getBoxModelParameters, sessionId: SessionId) => Promise<import("../protocol/DOM").getBoxModelResult>;
+        getBoxModel: (parameters: getBoxModelParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/DOM").getBoxModelResult>;
         /**
          * Get the bounding client rect for a node.
          */
-        getBoundingClientRect: (parameters: getBoundingClientRectParameters, sessionId: SessionId) => Promise<import("../protocol/DOM").getBoundingClientRectResult>;
+        getBoundingClientRect: (parameters: getBoundingClientRectParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/DOM").getBoundingClientRectResult>;
         /**
          * Get the bounding client rect for all elements on the page.
          */
-        getAllBoundingClientRects: (parameters: getAllBoundingClientRectsParameters, sessionId: SessionId) => Promise<import("../protocol/DOM").getAllBoundingClientRectsResult>;
+        getAllBoundingClientRects: (parameters: getAllBoundingClientRectsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/DOM").getAllBoundingClientRectsResult>;
         /**
          * Search the DOM for nodes containing a string.
          */
-        performSearch: (parameters: performSearchParameters, sessionId: SessionId) => Promise<import("../protocol/DOM").performSearchResult>;
+        performSearch: (parameters: performSearchParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/DOM").performSearchResult>;
     };
     /**
      * The CSS domain is used to inspect the CSS state at particular execution points.
@@ -361,11 +362,11 @@ export declare class ProtocolClient {
         /**
          * Get the styles computed for a node.
          */
-        getComputedStyle: (parameters: getComputedStyleParameters, sessionId: SessionId) => Promise<import("../protocol/CSS").getComputedStyleResult>;
+        getComputedStyle: (parameters: getComputedStyleParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/CSS").getComputedStyleResult>;
         /**
          * Get the style rules being applied to a node.
          */
-        getAppliedRules: (parameters: getAppliedRulesParameters, sessionId: SessionId) => Promise<import("../protocol/CSS").getAppliedRulesResult>;
+        getAppliedRules: (parameters: getAppliedRulesParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/CSS").getAppliedRulesResult>;
     };
     /**
      * The Analysis domain is used to efficiently analyze the program state at many
@@ -403,47 +404,106 @@ export declare class ProtocolClient {
         /**
          * Start specifying a new analysis.
          */
-        createAnalysis: (parameters: createAnalysisParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").createAnalysisResult>;
+        createAnalysis: (parameters: createAnalysisParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").createAnalysisResult>;
         /**
          * Apply the analysis to every point where a script location executes.
          */
-        addLocation: (parameters: addLocationParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").addLocationResult>;
+        addLocation: (parameters: addLocationParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").addLocationResult>;
         /**
          * Apply the analysis to every function entry point in a region of a script.
          */
-        addFunctionEntryPoints: (parameters: addFunctionEntryPointsParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").addFunctionEntryPointsResult>;
+        addFunctionEntryPoints: (parameters: addFunctionEntryPointsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").addFunctionEntryPointsResult>;
         /**
          * Apply the analysis to a random selection of points.
          */
-        addRandomPoints: (parameters: addRandomPointsParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").addRandomPointsResult>;
+        addRandomPoints: (parameters: addRandomPointsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").addRandomPointsResult>;
         /**
          * Apply the analysis to the entry point of every handler for an event.
          */
-        addEventHandlerEntryPoints: (parameters: addEventHandlerEntryPointsParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").addEventHandlerEntryPointsResult>;
+        addEventHandlerEntryPoints: (parameters: addEventHandlerEntryPointsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").addEventHandlerEntryPointsResult>;
         /**
          * Apply the analysis to every point where an exception is thrown.
          */
-        addExceptionPoints: (parameters: addExceptionPointsParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").addExceptionPointsResult>;
+        addExceptionPoints: (parameters: addExceptionPointsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").addExceptionPointsResult>;
         /**
          * Run the analysis. After this is called, <code>analysisResult</code> and/or
          * <code>analysisError</code> events will be emitted as results are gathered.
          * Does not return until the analysis has finished and all events have been
          * emitted.
          */
-        runAnalysis: (parameters: runAnalysisParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").runAnalysisResult>;
+        runAnalysis: (parameters: runAnalysisParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").runAnalysisResult>;
         /**
          * Release an analysis and its server side resources. If the analysis is
          * running, it will be canceled, preventing further <code>analysisResult</code>
          * and <code>analysisError</code> events from being emitted.
          */
-        releaseAnalysis: (parameters: releaseAnalysisParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").releaseAnalysisResult>;
+        releaseAnalysis: (parameters: releaseAnalysisParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").releaseAnalysisResult>;
         /**
          * Find the set of execution points at which an analysis will run. After this
          * is called, <code>analysisPoints</code> events will be emitted as the points
          * are found. Does not return until events for all points have been emitted.
          * Can only be used after the analysis has started running.
          */
-        findAnalysisPoints: (parameters: findAnalysisPointsParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").findAnalysisPointsResult>;
+        findAnalysisPoints: (parameters: findAnalysisPointsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").findAnalysisPointsResult>;
+    };
+    /**
+     * The Host domain includes commands that are sent by the record/replay driver
+     * to its host VM. Protocol clients should not use this domain.
+     */
+    Host: {
+        /**
+         * Get the function ID / offset to use for a script location, if there is one.
+         */
+        convertLocationToFunctionOffset: (parameters: convertLocationToFunctionOffsetParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").convertLocationToFunctionOffsetResult>;
+        /**
+         * Get the location to use for a function ID / offset.
+         */
+        convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").convertFunctionOffsetToLocationResult>;
+        /**
+         * Get the offsets at which execution should pause when stepping around within
+         * a frame for a function.
+         */
+        getStepOffsets: (parameters: getStepOffsetsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getStepOffsetsResult>;
+        /**
+         * Get the most complete contents known for an HTML file.
+         */
+        getHTMLSource: (parameters: getHTMLSourceParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getHTMLSourceResult>;
+        /**
+         * Get the IDs of all functions in a range within a script.
+         */
+        getFunctionsInRange: (parameters: getFunctionsInRangeParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getFunctionsInRangeResult>;
+        /**
+         * Get any source map URL associated with a script.
+         */
+        getScriptSourceMapURL: (parameters: getScriptSourceMapURLParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getScriptSourceMapURLResult>;
+        /**
+         * Get any source map URL associated with a style sheet.
+         */
+        getSheetSourceMapURL: (parameters: getSheetSourceMapURLParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getSheetSourceMapURLResult>;
+        /**
+         * This command might be sent from within an OnConsoleMessage() call to get
+         * contents of the new message. Properties in the result have the same meaning
+         * as for <code>Console.Message</code>.
+         */
+        getCurrentMessageContents: (parameters: getCurrentMessageContentsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getCurrentMessageContentsResult>;
+        /**
+         * Count the number of stack frames on the stack. This is equivalent to using
+         * the size of the stack returned by <code>Pause.getAllFrames</code>, but can
+         * be implemented more efficiently.
+         */
+        countStackFrames: (parameters: countStackFramesParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").countStackFramesResult>;
+        /**
+         * If the topmost frame on the stack is a generator frame which can be popped
+         * and pushed on the stack repeatedly, return a unique ID for the frame which
+         * will be consistent across each of those pops and pushes.
+         */
+        currentGeneratorId: (parameters: currentGeneratorIdParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").currentGeneratorIdResult>;
+        /**
+         * When generating previews whose contents might overflow, this can be used to
+         * specify property and getter names which must be included in the resulting
+         * preview.
+         */
+        getObjectPreviewRequiredProperties: (parameters: getObjectPreviewRequiredPropertiesParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getObjectPreviewRequiredPropertiesResult>;
     };
     /**
      * The Internal domain is for use in software that is used to create recordings
@@ -454,58 +514,46 @@ export declare class ProtocolClient {
         /**
          * Create a new recording.
          */
-        createRecording: (parameters: createRecordingParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").createRecordingResult>;
+        createRecording: (parameters: createRecordingParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").createRecordingResult>;
         /**
          * Add data to a recording. The next message sent after this must be a binary
          * message with the data described by this message. Uploaded recordings are not
          * explicitly finished; replay sessions created for a recording will include
          * all data which was successfully uploaded.
          */
-        addRecordingData: (parameters: addRecordingDataParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").addRecordingDataResult>;
+        addRecordingData: (parameters: addRecordingDataParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").addRecordingDataResult>;
         /**
          * Add metadata about a recording.
          */
-        addRecordingDescription: (parameters: addRecordingDescriptionParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").addRecordingDescriptionResult>;
+        addRecordingDescription: (parameters: addRecordingDescriptionParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").addRecordingDescriptionResult>;
         /**
          * Determine whether a resource is known to the cloud service.
          */
-        hasResource: (parameters: hasResourceParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").hasResourceResult>;
+        hasResource: (parameters: hasResourceParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").hasResourceResult>;
         /**
          * Upload a resource's contents to the cloud service.
          */
-        addResource: (parameters: addResourceParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").addResourceResult>;
+        addResource: (parameters: addResourceParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").addResourceResult>;
         /**
          * Associate a resource with a recording.
          */
-        addRecordingResource: (parameters: addRecordingResourceParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").addRecordingResourceResult>;
+        addRecordingResource: (parameters: addRecordingResourceParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").addRecordingResourceResult>;
         /**
          * Get filters for where to add more detailed assertions when recording that
          * behavior is consistent with the replay. These are used when analyzing crashes.
          */
-        getAssertionFilters: (parameters: getAssertionFiltersParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").getAssertionFiltersResult>;
+        getAssertionFilters: (parameters: getAssertionFiltersParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").getAssertionFiltersResult>;
         /**
          * For testing network issues.
          */
-        echo: (parameters: echoParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").echoResult>;
-        /**
-         * Get the function ID / offset to use for a script location.
-         */
-        convertLocationToFunctionOffset: (parameters: convertLocationToFunctionOffsetParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").convertLocationToFunctionOffsetResult>;
-        /**
-         * Get the location to use for a function ID / offset.
-         */
-        convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").convertFunctionOffsetToLocationResult>;
-        /**
-         * Get the most complete contents known for an HTML file.
-         */
-        getHTMLSource: (parameters: getHTMLSourceParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").getHTMLSourceResult>;
+        echo: (parameters: echoParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").echoResult>;
         /**
          * Mark a session which was created for an automated test.
          */
-        labelTestSession: (parameters: labelTestSessionParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").labelTestSessionResult>;
+        labelTestSession: (parameters: labelTestSessionParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").labelTestSessionResult>;
         /**
          * Get the user's recordings
          */
-        getRecordings: (parameters: getRecordingsParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").getRecordingsResult>;
+        getRecordings: (parameters: getRecordingsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").getRecordingsResult>;
     };
 }

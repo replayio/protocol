@@ -36,25 +36,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleProtocolClient = void 0;
-var ws_1 = __importDefault(require("ws"));
 exports.SimpleProtocolClient = /** @class */ (function () {
-    function class_1(address, callbacks, log) {
+    function class_1(webSocket, callbacks, log) {
         var _this = this;
         this.log = log;
         this.eventListeners = new Map();
         this.pendingMessages = new Map();
         this.nextMessageId = 1;
-        this.socket = new ws_1.default(address);
+        this.socket = webSocket;
         this.opened = defer();
-        this.socket.on("open", function () { return _this.opened.resolve(); });
-        this.socket.on("close", callbacks.onClose);
-        this.socket.on("error", callbacks.onError);
-        this.socket.on("message", function (msg) { return _this.onMessage(JSON.parse(msg)); });
+        this.socket.onopen = function () { return _this.opened.resolve(); };
+        this.socket.onclose = function (_a) {
+            var code = _a.code, reason = _a.reason;
+            return callbacks.onClose(code, reason);
+        };
+        this.socket.onerror = callbacks.onError;
+        this.socket.onmessage = function (ev) { return _this.onMessage(JSON.parse(ev.data)); };
     }
     class_1.prototype.addEventListener = function (event, listener) {
         if (this.eventListeners.has(event)) {
@@ -65,7 +64,7 @@ exports.SimpleProtocolClient = /** @class */ (function () {
     class_1.prototype.removeEventListener = function (event) {
         this.eventListeners.delete(event);
     };
-    class_1.prototype.sendCommand = function (method, params, sessionId) {
+    class_1.prototype.sendCommand = function (method, params, sessionId, pauseId) {
         return __awaiter(this, void 0, void 0, function () {
             var id, waiter;
             return __generator(this, function (_a) {
@@ -74,7 +73,7 @@ exports.SimpleProtocolClient = /** @class */ (function () {
                     case 1:
                         _a.sent();
                         id = this.nextMessageId++;
-                        this.socket.send(JSON.stringify({ id: id, method: method, params: params, sessionId: sessionId }));
+                        this.socket.send(JSON.stringify({ id: id, method: method, params: params, sessionId: sessionId, pauseId: pauseId }));
                         waiter = defer();
                         this.pendingMessages.set(id, waiter);
                         return [2 /*return*/, waiter.promise];
