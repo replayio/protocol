@@ -12,6 +12,7 @@
   "bugs": {
     "url": "https://github.com/RecordReplay/protocol/issues"
   },
+  "main": "js/index.js",
   "scripts": {
     "build-json": "./build.sh",
     "build-ts": "ts-node build",
