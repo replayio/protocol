@@ -92,6 +92,19 @@ import {
   findAnalysisPointsParameters
 } from "../protocol/Analysis";
 import {
+  convertLocationToFunctionOffsetParameters,
+  convertFunctionOffsetToLocationParameters,
+  getStepOffsetsParameters,
+  getHTMLSourceParameters,
+  getFunctionsInRangeParameters,
+  getScriptSourceMapURLParameters,
+  getSheetSourceMapURLParameters,
+  getCurrentMessageContentsParameters,
+  countStackFramesParameters,
+  currentGeneratorIdParameters,
+  getObjectPreviewRequiredPropertiesParameters
+} from "../protocol/Host";
+import {
   createRecordingParameters,
   addRecordingDataParameters,
   addRecordingDescriptionParameters,
@@ -100,9 +113,6 @@ import {
   addRecordingResourceParameters,
   getAssertionFiltersParameters,
   echoParameters,
-  convertLocationToFunctionOffsetParameters,
-  convertFunctionOffsetToLocationParameters,
-  getHTMLSourceParameters,
   labelTestSessionParameters,
   getRecordingsParameters
 } from "../protocol/Internal";
@@ -728,6 +738,88 @@ export class ProtocolClient {
   }
 
   /**
+   * The Host domain includes commands that are sent by the record/replay driver
+   * to its host VM. Protocol clients should not use this domain.
+   */
+  Host = {
+
+    /**
+     * Get the function ID / offset to use for a script location, if there is one.
+     */
+    convertLocationToFunctionOffset: (parameters: convertLocationToFunctionOffsetParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.convertLocationToFunctionOffset", parameters, sessionId),
+
+    /**
+     * Get the location to use for a function ID / offset.
+     */
+    convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.convertFunctionOffsetToLocation", parameters, sessionId),
+
+    /**
+     * Get the offsets at which execution should pause when stepping around within
+     * a frame for a function.
+     */
+    getStepOffsets: (parameters: getStepOffsetsParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.getStepOffsets", parameters, sessionId),
+
+    /**
+     * Get the most complete contents known for an HTML file.
+     */
+    getHTMLSource: (parameters: getHTMLSourceParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.getHTMLSource", parameters, sessionId),
+
+    /**
+     * Get the IDs of all functions in a range within a script.
+     */
+    getFunctionsInRange: (parameters: getFunctionsInRangeParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.getFunctionsInRange", parameters, sessionId),
+
+    /**
+     * Get any source map URL associated with a script.
+     */
+    getScriptSourceMapURL: (parameters: getScriptSourceMapURLParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.getScriptSourceMapURL", parameters, sessionId),
+
+    /**
+     * Get any source map URL associated with a style sheet.
+     */
+    getSheetSourceMapURL: (parameters: getSheetSourceMapURLParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.getSheetSourceMapURL", parameters, sessionId),
+
+    /**
+     * This command might be sent from within an OnConsoleMessage() call to get
+     * contents of the new message. Properties in the result have the same meaning
+     * as for <code>Console.Message</code>.
+     */
+    getCurrentMessageContents: (parameters: getCurrentMessageContentsParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.getCurrentMessageContents", parameters, sessionId),
+
+    /**
+     * Count the number of stack frames on the stack. This is equivalent to using
+     * the size of the stack returned by <code>Pause.getAllFrames</code>, but can
+     * be implemented more efficiently.
+     */
+    countStackFrames: (parameters: countStackFramesParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.countStackFrames", parameters, sessionId),
+
+    /**
+     * If the topmost frame on the stack is a generator frame which can be popped
+     * and pushed on the stack repeatedly, return a unique ID for the frame which
+     * will be consistent across each of those pops and pushes.
+     */
+    currentGeneratorId: (parameters: currentGeneratorIdParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.currentGeneratorId", parameters, sessionId),
+
+    /**
+     * When generating previews whose contents might overflow, this can be used to
+     * specify property and getter names which must be included in the resulting
+     * preview.
+     */
+    getObjectPreviewRequiredProperties: (parameters: getObjectPreviewRequiredPropertiesParameters, sessionId: SessionId) =>
+      this.genericClient.sendCommand("Host.getObjectPreviewRequiredProperties", parameters, sessionId),
+  }
+
+  /**
    * The Internal domain is for use in software that is used to create recordings
    * and for internal/diagnostic use cases. While use of this domain is not
    * restricted, it won't be very helpful for other users.
@@ -785,24 +877,6 @@ export class ProtocolClient {
      */
     echo: (parameters: echoParameters, sessionId: SessionId) =>
       this.genericClient.sendCommand("Internal.echo", parameters, sessionId),
-
-    /**
-     * Get the function ID / offset to use for a script location.
-     */
-    convertLocationToFunctionOffset: (parameters: convertLocationToFunctionOffsetParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.convertLocationToFunctionOffset", parameters, sessionId),
-
-    /**
-     * Get the location to use for a function ID / offset.
-     */
-    convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.convertFunctionOffsetToLocation", parameters, sessionId),
-
-    /**
-     * Get the most complete contents known for an HTML file.
-     */
-    getHTMLSource: (parameters: getHTMLSourceParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.getHTMLSource", parameters, sessionId),
 
     /**
      * Mark a session which was created for an automated test.

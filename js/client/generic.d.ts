@@ -7,7 +7,8 @@ import { evaluateInFrameParameters, evaluateInFrameResult, evaluateInGlobalParam
 import { getDocumentParameters, getDocumentResult, getParentNodesParameters, getParentNodesResult, querySelectorParameters, querySelectorResult, getEventListenersParameters, getEventListenersResult, getBoxModelParameters, getBoxModelResult, getBoundingClientRectParameters, getBoundingClientRectResult, getAllBoundingClientRectsParameters, getAllBoundingClientRectsResult, performSearchParameters, performSearchResult } from "../protocol/DOM";
 import { getComputedStyleParameters, getComputedStyleResult, getAppliedRulesParameters, getAppliedRulesResult } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, createAnalysisResult, addLocationParameters, addLocationResult, addFunctionEntryPointsParameters, addFunctionEntryPointsResult, addRandomPointsParameters, addRandomPointsResult, addEventHandlerEntryPointsParameters, addEventHandlerEntryPointsResult, addExceptionPointsParameters, addExceptionPointsResult, runAnalysisParameters, runAnalysisResult, releaseAnalysisParameters, releaseAnalysisResult, findAnalysisPointsParameters, findAnalysisPointsResult } from "../protocol/Analysis";
-import { createRecordingParameters, createRecordingResult, addRecordingDataParameters, addRecordingDataResult, addRecordingDescriptionParameters, addRecordingDescriptionResult, hasResourceParameters, hasResourceResult, addResourceParameters, addResourceResult, addRecordingResourceParameters, addRecordingResourceResult, getAssertionFiltersParameters, getAssertionFiltersResult, echoParameters, echoResult, convertLocationToFunctionOffsetParameters, convertLocationToFunctionOffsetResult, convertFunctionOffsetToLocationParameters, convertFunctionOffsetToLocationResult, getHTMLSourceParameters, getHTMLSourceResult, labelTestSessionParameters, labelTestSessionResult, getRecordingsParameters, getRecordingsResult } from "../protocol/Internal";
+import { convertLocationToFunctionOffsetParameters, convertLocationToFunctionOffsetResult, convertFunctionOffsetToLocationParameters, convertFunctionOffsetToLocationResult, getStepOffsetsParameters, getStepOffsetsResult, getHTMLSourceParameters, getHTMLSourceResult, getFunctionsInRangeParameters, getFunctionsInRangeResult, getScriptSourceMapURLParameters, getScriptSourceMapURLResult, getSheetSourceMapURLParameters, getSheetSourceMapURLResult, getCurrentMessageContentsParameters, getCurrentMessageContentsResult, countStackFramesParameters, countStackFramesResult, currentGeneratorIdParameters, currentGeneratorIdResult, getObjectPreviewRequiredPropertiesParameters, getObjectPreviewRequiredPropertiesResult } from "../protocol/Host";
+import { createRecordingParameters, createRecordingResult, addRecordingDataParameters, addRecordingDataResult, addRecordingDescriptionParameters, addRecordingDescriptionResult, hasResourceParameters, hasResourceResult, addResourceParameters, addResourceResult, addRecordingResourceParameters, addRecordingResourceResult, getAssertionFiltersParameters, getAssertionFiltersResult, echoParameters, echoResult, labelTestSessionParameters, labelTestSessionResult, getRecordingsParameters, getRecordingsResult } from "../protocol/Internal";
 export interface GenericProtocolClient {
     /**
      * Describes a change to an entry in a recording's metadata.
@@ -347,6 +348,59 @@ export interface GenericProtocolClient {
      */
     sendCommand(command: "Analysis.findAnalysisPoints", parameters: findAnalysisPointsParameters, sessionId: SessionId): Promise<findAnalysisPointsResult>;
     /**
+     * Get the function ID / offset to use for a script location, if there is one.
+     */
+    sendCommand(command: "Host.convertLocationToFunctionOffset", parameters: convertLocationToFunctionOffsetParameters, sessionId: SessionId): Promise<convertLocationToFunctionOffsetResult>;
+    /**
+     * Get the location to use for a function ID / offset.
+     */
+    sendCommand(command: "Host.convertFunctionOffsetToLocation", parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId): Promise<convertFunctionOffsetToLocationResult>;
+    /**
+     * Get the offsets at which execution should pause when stepping around within
+     * a frame for a function.
+     */
+    sendCommand(command: "Host.getStepOffsets", parameters: getStepOffsetsParameters, sessionId: SessionId): Promise<getStepOffsetsResult>;
+    /**
+     * Get the most complete contents known for an HTML file.
+     */
+    sendCommand(command: "Host.getHTMLSource", parameters: getHTMLSourceParameters, sessionId: SessionId): Promise<getHTMLSourceResult>;
+    /**
+     * Get the IDs of all functions in a range within a script.
+     */
+    sendCommand(command: "Host.getFunctionsInRange", parameters: getFunctionsInRangeParameters, sessionId: SessionId): Promise<getFunctionsInRangeResult>;
+    /**
+     * Get any source map URL associated with a script.
+     */
+    sendCommand(command: "Host.getScriptSourceMapURL", parameters: getScriptSourceMapURLParameters, sessionId: SessionId): Promise<getScriptSourceMapURLResult>;
+    /**
+     * Get any source map URL associated with a style sheet.
+     */
+    sendCommand(command: "Host.getSheetSourceMapURL", parameters: getSheetSourceMapURLParameters, sessionId: SessionId): Promise<getSheetSourceMapURLResult>;
+    /**
+     * This command might be sent from within an OnConsoleMessage() call to get
+     * contents of the new message. Properties in the result have the same meaning
+     * as for <code>Console.Message</code>.
+     */
+    sendCommand(command: "Host.getCurrentMessageContents", parameters: getCurrentMessageContentsParameters, sessionId: SessionId): Promise<getCurrentMessageContentsResult>;
+    /**
+     * Count the number of stack frames on the stack. This is equivalent to using
+     * the size of the stack returned by <code>Pause.getAllFrames</code>, but can
+     * be implemented more efficiently.
+     */
+    sendCommand(command: "Host.countStackFrames", parameters: countStackFramesParameters, sessionId: SessionId): Promise<countStackFramesResult>;
+    /**
+     * If the topmost frame on the stack is a generator frame which can be popped
+     * and pushed on the stack repeatedly, return a unique ID for the frame which
+     * will be consistent across each of those pops and pushes.
+     */
+    sendCommand(command: "Host.currentGeneratorId", parameters: currentGeneratorIdParameters, sessionId: SessionId): Promise<currentGeneratorIdResult>;
+    /**
+     * When generating previews whose contents might overflow, this can be used to
+     * specify property and getter names which must be included in the resulting
+     * preview.
+     */
+    sendCommand(command: "Host.getObjectPreviewRequiredProperties", parameters: getObjectPreviewRequiredPropertiesParameters, sessionId: SessionId): Promise<getObjectPreviewRequiredPropertiesResult>;
+    /**
      * Create a new recording.
      */
     sendCommand(command: "Internal.createRecording", parameters: createRecordingParameters, sessionId: SessionId): Promise<createRecordingResult>;
@@ -382,18 +436,6 @@ export interface GenericProtocolClient {
      * For testing network issues.
      */
     sendCommand(command: "Internal.echo", parameters: echoParameters, sessionId: SessionId): Promise<echoResult>;
-    /**
-     * Get the function ID / offset to use for a script location.
-     */
-    sendCommand(command: "Internal.convertLocationToFunctionOffset", parameters: convertLocationToFunctionOffsetParameters, sessionId: SessionId): Promise<convertLocationToFunctionOffsetResult>;
-    /**
-     * Get the location to use for a function ID / offset.
-     */
-    sendCommand(command: "Internal.convertFunctionOffsetToLocation", parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId): Promise<convertFunctionOffsetToLocationResult>;
-    /**
-     * Get the most complete contents known for an HTML file.
-     */
-    sendCommand(command: "Internal.getHTMLSource", parameters: getHTMLSourceParameters, sessionId: SessionId): Promise<getHTMLSourceResult>;
     /**
      * Mark a session which was created for an automated test.
      */

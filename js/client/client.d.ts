@@ -7,7 +7,8 @@ import { evaluateInFrameParameters, evaluateInGlobalParameters, getObjectPropert
 import { getDocumentParameters, getParentNodesParameters, querySelectorParameters, getEventListenersParameters, getBoxModelParameters, getBoundingClientRectParameters, getAllBoundingClientRectsParameters, performSearchParameters } from "../protocol/DOM";
 import { getComputedStyleParameters, getAppliedRulesParameters } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, addLocationParameters, addFunctionEntryPointsParameters, addRandomPointsParameters, addEventHandlerEntryPointsParameters, addExceptionPointsParameters, runAnalysisParameters, releaseAnalysisParameters, findAnalysisPointsParameters } from "../protocol/Analysis";
-import { createRecordingParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getHTMLSourceParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
+import { convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getStepOffsetsParameters, getHTMLSourceParameters, getFunctionsInRangeParameters, getScriptSourceMapURLParameters, getSheetSourceMapURLParameters, getCurrentMessageContentsParameters, countStackFramesParameters, currentGeneratorIdParameters, getObjectPreviewRequiredPropertiesParameters } from "../protocol/Host";
+import { createRecordingParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
 import { GenericProtocolClient } from "./generic";
 export declare class ProtocolClient {
     private readonly genericClient;
@@ -446,6 +447,65 @@ export declare class ProtocolClient {
         findAnalysisPoints: (parameters: findAnalysisPointsParameters, sessionId: SessionId) => Promise<import("../protocol/Analysis").findAnalysisPointsResult>;
     };
     /**
+     * The Host domain includes commands that are sent by the record/replay driver
+     * to its host VM. Protocol clients should not use this domain.
+     */
+    Host: {
+        /**
+         * Get the function ID / offset to use for a script location, if there is one.
+         */
+        convertLocationToFunctionOffset: (parameters: convertLocationToFunctionOffsetParameters, sessionId: SessionId) => Promise<import("../protocol/Host").convertLocationToFunctionOffsetResult>;
+        /**
+         * Get the location to use for a function ID / offset.
+         */
+        convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId) => Promise<import("../protocol/Host").convertFunctionOffsetToLocationResult>;
+        /**
+         * Get the offsets at which execution should pause when stepping around within
+         * a frame for a function.
+         */
+        getStepOffsets: (parameters: getStepOffsetsParameters, sessionId: SessionId) => Promise<import("../protocol/Host").getStepOffsetsResult>;
+        /**
+         * Get the most complete contents known for an HTML file.
+         */
+        getHTMLSource: (parameters: getHTMLSourceParameters, sessionId: SessionId) => Promise<import("../protocol/Host").getHTMLSourceResult>;
+        /**
+         * Get the IDs of all functions in a range within a script.
+         */
+        getFunctionsInRange: (parameters: getFunctionsInRangeParameters, sessionId: SessionId) => Promise<import("../protocol/Host").getFunctionsInRangeResult>;
+        /**
+         * Get any source map URL associated with a script.
+         */
+        getScriptSourceMapURL: (parameters: getScriptSourceMapURLParameters, sessionId: SessionId) => Promise<import("../protocol/Host").getScriptSourceMapURLResult>;
+        /**
+         * Get any source map URL associated with a style sheet.
+         */
+        getSheetSourceMapURL: (parameters: getSheetSourceMapURLParameters, sessionId: SessionId) => Promise<import("../protocol/Host").getSheetSourceMapURLResult>;
+        /**
+         * This command might be sent from within an OnConsoleMessage() call to get
+         * contents of the new message. Properties in the result have the same meaning
+         * as for <code>Console.Message</code>.
+         */
+        getCurrentMessageContents: (parameters: getCurrentMessageContentsParameters, sessionId: SessionId) => Promise<import("../protocol/Host").getCurrentMessageContentsResult>;
+        /**
+         * Count the number of stack frames on the stack. This is equivalent to using
+         * the size of the stack returned by <code>Pause.getAllFrames</code>, but can
+         * be implemented more efficiently.
+         */
+        countStackFrames: (parameters: countStackFramesParameters, sessionId: SessionId) => Promise<import("../protocol/Host").countStackFramesResult>;
+        /**
+         * If the topmost frame on the stack is a generator frame which can be popped
+         * and pushed on the stack repeatedly, return a unique ID for the frame which
+         * will be consistent across each of those pops and pushes.
+         */
+        currentGeneratorId: (parameters: currentGeneratorIdParameters, sessionId: SessionId) => Promise<import("../protocol/Host").currentGeneratorIdResult>;
+        /**
+         * When generating previews whose contents might overflow, this can be used to
+         * specify property and getter names which must be included in the resulting
+         * preview.
+         */
+        getObjectPreviewRequiredProperties: (parameters: getObjectPreviewRequiredPropertiesParameters, sessionId: SessionId) => Promise<import("../protocol/Host").getObjectPreviewRequiredPropertiesResult>;
+    };
+    /**
      * The Internal domain is for use in software that is used to create recordings
      * and for internal/diagnostic use cases. While use of this domain is not
      * restricted, it won't be very helpful for other users.
@@ -487,18 +547,6 @@ export declare class ProtocolClient {
          * For testing network issues.
          */
         echo: (parameters: echoParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").echoResult>;
-        /**
-         * Get the function ID / offset to use for a script location.
-         */
-        convertLocationToFunctionOffset: (parameters: convertLocationToFunctionOffsetParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").convertLocationToFunctionOffsetResult>;
-        /**
-         * Get the location to use for a function ID / offset.
-         */
-        convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").convertFunctionOffsetToLocationResult>;
-        /**
-         * Get the most complete contents known for an HTML file.
-         */
-        getHTMLSource: (parameters: getHTMLSourceParameters, sessionId: SessionId) => Promise<import("../protocol/Internal").getHTMLSourceResult>;
         /**
          * Mark a session which was created for an automated test.
          */
