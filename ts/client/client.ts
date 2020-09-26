@@ -61,7 +61,8 @@ import {
   getAllFramesParameters,
   getFrameArgumentsParameters,
   getFrameStepsParameters,
-  getExceptionValueParameters
+  getExceptionValueParameters,
+  PauseId
 } from "../protocol/Pause";
 import {
   getDocumentParameters,
@@ -158,34 +159,34 @@ export class ProtocolClient {
     /**
      * Get a description of a recording.
      */
-    getDescription: (parameters: getDescriptionParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Recording.getDescription", parameters, sessionId),
+    getDescription: (parameters: getDescriptionParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Recording.getDescription", parameters, sessionId, pauseId),
 
     /**
      * Get an entry in a recording's metadata key/value store.
      */
-    getMetadata: (parameters: getMetadataParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Recording.getMetadata", parameters, sessionId),
+    getMetadata: (parameters: getMetadataParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Recording.getMetadata", parameters, sessionId, pauseId),
 
     /**
      * Set an entry in a recording's metadata.
      */
-    setMetadata: (parameters: setMetadataParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Recording.setMetadata", parameters, sessionId),
+    setMetadata: (parameters: setMetadataParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Recording.setMetadata", parameters, sessionId, pauseId),
 
     /**
      * Listen for changes to an entry in a recording's metadata. When listening,
      * <code>metadataChange</code> events will be emitted whenever the entry's
      * value changes.
      */
-    metadataStartListening: (parameters: metadataStartListeningParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Recording.metadataStartListening", parameters, sessionId),
+    metadataStartListening: (parameters: metadataStartListeningParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Recording.metadataStartListening", parameters, sessionId, pauseId),
 
     /**
      * Stop listening for changes to an entry in a recording's metadata.
      */
-    metadataStopListening: (parameters: metadataStopListeningParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Recording.metadataStopListening", parameters, sessionId),
+    metadataStopListening: (parameters: metadataStopListeningParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Recording.metadataStopListening", parameters, sessionId, pauseId),
 
     /**
      * Create a session for inspecting a recording. This command does not return
@@ -194,14 +195,14 @@ export class ProtocolClient {
      * emitted before the command returns. After creating, a <code>sessionError</code>
      * events may be emitted later if the session dies unexpectedly.
      */
-    createSession: (parameters: createSessionParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Recording.createSession", parameters, sessionId),
+    createSession: (parameters: createSessionParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Recording.createSession", parameters, sessionId, pauseId),
 
     /**
      * Release a session and allow its resources to be reclaimed.
      */
-    releaseSession: (parameters: releaseSessionParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Recording.releaseSession", parameters, sessionId),
+    releaseSession: (parameters: releaseSessionParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Recording.releaseSession", parameters, sessionId, pauseId),
 
     /**
      * Begin processing a recording, even if no sessions have been created for it.
@@ -209,8 +210,8 @@ export class ProtocolClient {
      * or another) may start in a partially or fully processed state and start
      * being used immediately.
      */
-    processRecording: (parameters: processRecordingParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Recording.processRecording", parameters, sessionId),
+    processRecording: (parameters: processRecordingParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Recording.processRecording", parameters, sessionId, pauseId),
   }
 
   /**
@@ -259,8 +260,8 @@ export class ProtocolClient {
      * <code>missingRegions</code> and <code>unprocessedRegions</code> events will
      * be periodically emitted.
      */
-    ensureProcessed: (parameters: ensureProcessedParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Session.ensureProcessed", parameters, sessionId),
+    ensureProcessed: (parameters: ensureProcessedParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Session.ensureProcessed", parameters, sessionId, pauseId),
 
     /**
      * Find all points in the recording at which a mouse move or click occurred.
@@ -268,26 +269,26 @@ export class ProtocolClient {
      * <code>mouseEvents</code> events will be periodically emitted. The union
      * of all these events describes all mouse events in the recording.
      */
-    findMouseEvents: (parameters: findMouseEventsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Session.findMouseEvents", parameters, sessionId),
+    findMouseEvents: (parameters: findMouseEventsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Session.findMouseEvents", parameters, sessionId, pauseId),
 
     /**
      * Get the last execution point in the recording.
      */
-    getEndpoint: (parameters: getEndpointParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Session.getEndpoint", parameters, sessionId),
+    getEndpoint: (parameters: getEndpointParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Session.getEndpoint", parameters, sessionId, pauseId),
 
     /**
      * Create a pause describing the state at an execution point.
      */
-    createPause: (parameters: createPauseParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Session.createPause", parameters, sessionId),
+    createPause: (parameters: createPauseParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Session.createPause", parameters, sessionId, pauseId),
 
     /**
      * Release a pause and allow its resources to be reclaimed.
      */
-    releasePause: (parameters: releasePauseParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Session.releasePause", parameters, sessionId),
+    releasePause: (parameters: releasePauseParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Session.releasePause", parameters, sessionId, pauseId),
   }
 
   /**
@@ -313,22 +314,22 @@ export class ProtocolClient {
      * <code>paintPoints</code> events will be periodically emitted. The union
      * of all these events describes all paint points in the recording.
      */
-    findPaints: (parameters: findPaintsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Graphics.findPaints", parameters, sessionId),
+    findPaints: (parameters: findPaintsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Graphics.findPaints", parameters, sessionId, pauseId),
 
     /**
      * Get the graphics at a point where a paint occurred.
      */
-    getPaintContents: (parameters: getPaintContentsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Graphics.getPaintContents", parameters, sessionId),
+    getPaintContents: (parameters: getPaintContentsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Graphics.getPaintContents", parameters, sessionId, pauseId),
 
     /**
      * Get the value of <code>window.devicePixelRatio</code>. This is the ratio of
      * pixels in screen shots to pixels used by DOM/CSS data such as
      * <code>DOM.getBoundingClientRect</code>.
      */
-    getDevicePixelRatio: (parameters: getDevicePixelRatioParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Graphics.getDevicePixelRatio", parameters, sessionId),
+    getDevicePixelRatio: (parameters: getDevicePixelRatioParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Graphics.getDevicePixelRatio", parameters, sessionId, pauseId),
   }
 
   /**
@@ -353,90 +354,90 @@ export class ProtocolClient {
      * fully processed. Before returning, <code>scriptParsed</code> events will be
      * emitted for every script in the recording.
      */
-    findScripts: (parameters: findScriptsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.findScripts", parameters, sessionId),
+    findScripts: (parameters: findScriptsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.findScripts", parameters, sessionId, pauseId),
 
     /**
      * Get the source contents of a script.
      */
-    getScriptSource: (parameters: getScriptSourceParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.getScriptSource", parameters, sessionId),
+    getScriptSource: (parameters: getScriptSourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.getScriptSource", parameters, sessionId, pauseId),
 
     /**
      * Get a compact representation of the locations where breakpoints can be set
      * in a region of a script.
      */
-    getPossibleBreakpoints: (parameters: getPossibleBreakpointsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.getPossibleBreakpoints", parameters, sessionId),
+    getPossibleBreakpoints: (parameters: getPossibleBreakpointsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.getPossibleBreakpoints", parameters, sessionId, pauseId),
 
     /**
      * Get the mapped location for a script location.
      */
-    getMappedLocation: (parameters: getMappedLocationParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.getMappedLocation", parameters, sessionId),
+    getMappedLocation: (parameters: getMappedLocationParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.getMappedLocation", parameters, sessionId, pauseId),
 
     /**
      * Set a breakpoint at a location.
      */
-    setBreakpoint: (parameters: setBreakpointParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.setBreakpoint", parameters, sessionId),
+    setBreakpoint: (parameters: setBreakpointParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.setBreakpoint", parameters, sessionId, pauseId),
 
     /**
      * Remove a breakpoint.
      */
-    removeBreakpoint: (parameters: removeBreakpointParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.removeBreakpoint", parameters, sessionId),
+    removeBreakpoint: (parameters: removeBreakpointParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.removeBreakpoint", parameters, sessionId, pauseId),
 
     /**
      * Find where to pause when running forward from a point.
      */
-    findResumeTarget: (parameters: findResumeTargetParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.findResumeTarget", parameters, sessionId),
+    findResumeTarget: (parameters: findResumeTargetParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.findResumeTarget", parameters, sessionId, pauseId),
 
     /**
      * Find where to pause when rewinding from a point.
      */
-    findRewindTarget: (parameters: findRewindTargetParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.findRewindTarget", parameters, sessionId),
+    findRewindTarget: (parameters: findRewindTargetParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.findRewindTarget", parameters, sessionId, pauseId),
 
     /**
      * Find where to pause when reverse-stepping from a point.
      */
-    findReverseStepOverTarget: (parameters: findReverseStepOverTargetParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.findReverseStepOverTarget", parameters, sessionId),
+    findReverseStepOverTarget: (parameters: findReverseStepOverTargetParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.findReverseStepOverTarget", parameters, sessionId, pauseId),
 
     /**
      * Find where to pause when stepping from a point.
      */
-    findStepOverTarget: (parameters: findStepOverTargetParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.findStepOverTarget", parameters, sessionId),
+    findStepOverTarget: (parameters: findStepOverTargetParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.findStepOverTarget", parameters, sessionId, pauseId),
 
     /**
      * Find where to pause when stepping from a point and stopping at the entry of
      * any encountered call.
      */
-    findStepInTarget: (parameters: findStepInTargetParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.findStepInTarget", parameters, sessionId),
+    findStepInTarget: (parameters: findStepInTargetParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.findStepInTarget", parameters, sessionId, pauseId),
 
     /**
      * Find where to pause when stepping out from a frame to the caller.
      */
-    findStepOutTarget: (parameters: findStepOutTargetParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.findStepOutTarget", parameters, sessionId),
+    findStepOutTarget: (parameters: findStepOutTargetParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.findStepOutTarget", parameters, sessionId, pauseId),
 
     /**
      * Blackbox a script or a region in it. Resume commands like
      * <code>findResumeTarget</code> will not return execution points in
      * blackboxed regions of a script.
      */
-    blackboxScript: (parameters: blackboxScriptParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.blackboxScript", parameters, sessionId),
+    blackboxScript: (parameters: blackboxScriptParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.blackboxScript", parameters, sessionId, pauseId),
 
     /**
      * Unblackbox a script or a region in it.
      */
-    unblackboxScript: (parameters: unblackboxScriptParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Debugger.unblackboxScript", parameters, sessionId),
+    unblackboxScript: (parameters: unblackboxScriptParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.unblackboxScript", parameters, sessionId, pauseId),
   }
 
   /**
@@ -460,8 +461,8 @@ export class ProtocolClient {
      * fully processed. Before returning, <code>newMessage</code> events will be
      * emitted for every console message in the recording.
      */
-    findMessages: (parameters: findMessagesParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Console.findMessages", parameters, sessionId),
+    findMessages: (parameters: findMessagesParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Console.findMessages", parameters, sessionId, pauseId),
   }
 
   /**
@@ -477,74 +478,74 @@ export class ProtocolClient {
      * Evaluate an expression in the context of a call frame. This command is
      * effectful.
      */
-    evaluateInFrame: (parameters: evaluateInFrameParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.evaluateInFrame", parameters, sessionId),
+    evaluateInFrame: (parameters: evaluateInFrameParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.evaluateInFrame", parameters, sessionId, pauseId),
 
     /**
      * Evaluate an expression in a global context. This command is effectful.
      */
-    evaluateInGlobal: (parameters: evaluateInGlobalParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.evaluateInGlobal", parameters, sessionId),
+    evaluateInGlobal: (parameters: evaluateInGlobalParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.evaluateInGlobal", parameters, sessionId, pauseId),
 
     /**
      * Read a property from an object. This command is effectful.
      */
-    getObjectProperty: (parameters: getObjectPropertyParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.getObjectProperty", parameters, sessionId),
+    getObjectProperty: (parameters: getObjectPropertyParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.getObjectProperty", parameters, sessionId, pauseId),
 
     /**
      * Call a function object. This command is effectful.
      */
-    callFunction: (parameters: callFunctionParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.callFunction", parameters, sessionId),
+    callFunction: (parameters: callFunctionParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.callFunction", parameters, sessionId, pauseId),
 
     /**
      * Read a property from an object, then call the result. This command is effectful.
      */
-    callObjectProperty: (parameters: callObjectPropertyParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.callObjectProperty", parameters, sessionId),
+    callObjectProperty: (parameters: callObjectPropertyParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.callObjectProperty", parameters, sessionId, pauseId),
 
     /**
      * Load a complete preview for an object.
      */
-    getObjectPreview: (parameters: getObjectPreviewParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.getObjectPreview", parameters, sessionId),
+    getObjectPreview: (parameters: getObjectPreviewParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.getObjectPreview", parameters, sessionId, pauseId),
 
     /**
      * Load a scope's contents.
      */
-    getScope: (parameters: getScopeParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.getScope", parameters, sessionId),
+    getScope: (parameters: getScopeParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.getScope", parameters, sessionId, pauseId),
 
     /**
      * Get the topmost frame on the stack.
      */
-    getTopFrame: (parameters: getTopFrameParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.getTopFrame", parameters, sessionId),
+    getTopFrame: (parameters: getTopFrameParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.getTopFrame", parameters, sessionId, pauseId),
 
     /**
      * Get all frames on the stack.
      */
-    getAllFrames: (parameters: getAllFramesParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.getAllFrames", parameters, sessionId),
+    getAllFrames: (parameters: getAllFramesParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.getAllFrames", parameters, sessionId, pauseId),
 
     /**
      * Get the values of a frame's arguments.
      */
-    getFrameArguments: (parameters: getFrameArgumentsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.getFrameArguments", parameters, sessionId),
+    getFrameArguments: (parameters: getFrameArgumentsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.getFrameArguments", parameters, sessionId, pauseId),
 
     /**
      * Get the points of all steps that are executed by a frame.
      */
-    getFrameSteps: (parameters: getFrameStepsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.getFrameSteps", parameters, sessionId),
+    getFrameSteps: (parameters: getFrameStepsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.getFrameSteps", parameters, sessionId, pauseId),
 
     /**
      * Get any exception that is being thrown at this point.
      */
-    getExceptionValue: (parameters: getExceptionValueParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Pause.getExceptionValue", parameters, sessionId),
+    getExceptionValue: (parameters: getExceptionValueParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Pause.getExceptionValue", parameters, sessionId, pauseId),
   }
 
   /**
@@ -560,51 +561,51 @@ export class ProtocolClient {
     /**
      * Get the page's root document.
      */
-    getDocument: (parameters: getDocumentParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("DOM.getDocument", parameters, sessionId),
+    getDocument: (parameters: getDocumentParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("DOM.getDocument", parameters, sessionId, pauseId),
 
     /**
      * Load previews for an object and its transitive parents up to the
      * root document.
      */
-    getParentNodes: (parameters: getParentNodesParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("DOM.getParentNodes", parameters, sessionId),
+    getParentNodes: (parameters: getParentNodesParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("DOM.getParentNodes", parameters, sessionId, pauseId),
 
     /**
      * Call querySelector() on a node in the page.
      */
-    querySelector: (parameters: querySelectorParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("DOM.querySelector", parameters, sessionId),
+    querySelector: (parameters: querySelectorParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("DOM.querySelector", parameters, sessionId, pauseId),
 
     /**
      * Get the event listeners attached to a node in the page.
      */
-    getEventListeners: (parameters: getEventListenersParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("DOM.getEventListeners", parameters, sessionId),
+    getEventListeners: (parameters: getEventListenersParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("DOM.getEventListeners", parameters, sessionId, pauseId),
 
     /**
      * Get boxes for a node.
      */
-    getBoxModel: (parameters: getBoxModelParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("DOM.getBoxModel", parameters, sessionId),
+    getBoxModel: (parameters: getBoxModelParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("DOM.getBoxModel", parameters, sessionId, pauseId),
 
     /**
      * Get the bounding client rect for a node.
      */
-    getBoundingClientRect: (parameters: getBoundingClientRectParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("DOM.getBoundingClientRect", parameters, sessionId),
+    getBoundingClientRect: (parameters: getBoundingClientRectParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("DOM.getBoundingClientRect", parameters, sessionId, pauseId),
 
     /**
      * Get the bounding client rect for all elements on the page.
      */
-    getAllBoundingClientRects: (parameters: getAllBoundingClientRectsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("DOM.getAllBoundingClientRects", parameters, sessionId),
+    getAllBoundingClientRects: (parameters: getAllBoundingClientRectsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("DOM.getAllBoundingClientRects", parameters, sessionId, pauseId),
 
     /**
      * Search the DOM for nodes containing a string.
      */
-    performSearch: (parameters: performSearchParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("DOM.performSearch", parameters, sessionId),
+    performSearch: (parameters: performSearchParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("DOM.performSearch", parameters, sessionId, pauseId),
   }
 
   /**
@@ -618,14 +619,14 @@ export class ProtocolClient {
     /**
      * Get the styles computed for a node.
      */
-    getComputedStyle: (parameters: getComputedStyleParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("CSS.getComputedStyle", parameters, sessionId),
+    getComputedStyle: (parameters: getComputedStyleParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("CSS.getComputedStyle", parameters, sessionId, pauseId),
 
     /**
      * Get the style rules being applied to a node.
      */
-    getAppliedRules: (parameters: getAppliedRulesParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("CSS.getAppliedRules", parameters, sessionId),
+    getAppliedRules: (parameters: getAppliedRulesParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("CSS.getAppliedRules", parameters, sessionId, pauseId),
   }
 
   /**
@@ -677,38 +678,38 @@ export class ProtocolClient {
     /**
      * Start specifying a new analysis.
      */
-    createAnalysis: (parameters: createAnalysisParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Analysis.createAnalysis", parameters, sessionId),
+    createAnalysis: (parameters: createAnalysisParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Analysis.createAnalysis", parameters, sessionId, pauseId),
 
     /**
      * Apply the analysis to every point where a script location executes.
      */
-    addLocation: (parameters: addLocationParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Analysis.addLocation", parameters, sessionId),
+    addLocation: (parameters: addLocationParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Analysis.addLocation", parameters, sessionId, pauseId),
 
     /**
      * Apply the analysis to every function entry point in a region of a script.
      */
-    addFunctionEntryPoints: (parameters: addFunctionEntryPointsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Analysis.addFunctionEntryPoints", parameters, sessionId),
+    addFunctionEntryPoints: (parameters: addFunctionEntryPointsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Analysis.addFunctionEntryPoints", parameters, sessionId, pauseId),
 
     /**
      * Apply the analysis to a random selection of points.
      */
-    addRandomPoints: (parameters: addRandomPointsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Analysis.addRandomPoints", parameters, sessionId),
+    addRandomPoints: (parameters: addRandomPointsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Analysis.addRandomPoints", parameters, sessionId, pauseId),
 
     /**
      * Apply the analysis to the entry point of every handler for an event.
      */
-    addEventHandlerEntryPoints: (parameters: addEventHandlerEntryPointsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Analysis.addEventHandlerEntryPoints", parameters, sessionId),
+    addEventHandlerEntryPoints: (parameters: addEventHandlerEntryPointsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Analysis.addEventHandlerEntryPoints", parameters, sessionId, pauseId),
 
     /**
      * Apply the analysis to every point where an exception is thrown.
      */
-    addExceptionPoints: (parameters: addExceptionPointsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Analysis.addExceptionPoints", parameters, sessionId),
+    addExceptionPoints: (parameters: addExceptionPointsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Analysis.addExceptionPoints", parameters, sessionId, pauseId),
 
     /**
      * Run the analysis. After this is called, <code>analysisResult</code> and/or
@@ -716,16 +717,16 @@ export class ProtocolClient {
      * Does not return until the analysis has finished and all events have been
      * emitted.
      */
-    runAnalysis: (parameters: runAnalysisParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Analysis.runAnalysis", parameters, sessionId),
+    runAnalysis: (parameters: runAnalysisParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Analysis.runAnalysis", parameters, sessionId, pauseId),
 
     /**
      * Release an analysis and its server side resources. If the analysis is
      * running, it will be canceled, preventing further <code>analysisResult</code>
      * and <code>analysisError</code> events from being emitted.
      */
-    releaseAnalysis: (parameters: releaseAnalysisParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Analysis.releaseAnalysis", parameters, sessionId),
+    releaseAnalysis: (parameters: releaseAnalysisParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Analysis.releaseAnalysis", parameters, sessionId, pauseId),
 
     /**
      * Find the set of execution points at which an analysis will run. After this
@@ -733,8 +734,8 @@ export class ProtocolClient {
      * are found. Does not return until events for all points have been emitted.
      * Can only be used after the analysis has started running.
      */
-    findAnalysisPoints: (parameters: findAnalysisPointsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Analysis.findAnalysisPoints", parameters, sessionId),
+    findAnalysisPoints: (parameters: findAnalysisPointsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Analysis.findAnalysisPoints", parameters, sessionId, pauseId),
   }
 
   /**
@@ -746,77 +747,77 @@ export class ProtocolClient {
     /**
      * Get the function ID / offset to use for a script location, if there is one.
      */
-    convertLocationToFunctionOffset: (parameters: convertLocationToFunctionOffsetParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.convertLocationToFunctionOffset", parameters, sessionId),
+    convertLocationToFunctionOffset: (parameters: convertLocationToFunctionOffsetParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.convertLocationToFunctionOffset", parameters, sessionId, pauseId),
 
     /**
      * Get the location to use for a function ID / offset.
      */
-    convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.convertFunctionOffsetToLocation", parameters, sessionId),
+    convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.convertFunctionOffsetToLocation", parameters, sessionId, pauseId),
 
     /**
      * Get the offsets at which execution should pause when stepping around within
      * a frame for a function.
      */
-    getStepOffsets: (parameters: getStepOffsetsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.getStepOffsets", parameters, sessionId),
+    getStepOffsets: (parameters: getStepOffsetsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.getStepOffsets", parameters, sessionId, pauseId),
 
     /**
      * Get the most complete contents known for an HTML file.
      */
-    getHTMLSource: (parameters: getHTMLSourceParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.getHTMLSource", parameters, sessionId),
+    getHTMLSource: (parameters: getHTMLSourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.getHTMLSource", parameters, sessionId, pauseId),
 
     /**
      * Get the IDs of all functions in a range within a script.
      */
-    getFunctionsInRange: (parameters: getFunctionsInRangeParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.getFunctionsInRange", parameters, sessionId),
+    getFunctionsInRange: (parameters: getFunctionsInRangeParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.getFunctionsInRange", parameters, sessionId, pauseId),
 
     /**
      * Get any source map URL associated with a script.
      */
-    getScriptSourceMapURL: (parameters: getScriptSourceMapURLParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.getScriptSourceMapURL", parameters, sessionId),
+    getScriptSourceMapURL: (parameters: getScriptSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.getScriptSourceMapURL", parameters, sessionId, pauseId),
 
     /**
      * Get any source map URL associated with a style sheet.
      */
-    getSheetSourceMapURL: (parameters: getSheetSourceMapURLParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.getSheetSourceMapURL", parameters, sessionId),
+    getSheetSourceMapURL: (parameters: getSheetSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.getSheetSourceMapURL", parameters, sessionId, pauseId),
 
     /**
      * This command might be sent from within an OnConsoleMessage() call to get
      * contents of the new message. Properties in the result have the same meaning
      * as for <code>Console.Message</code>.
      */
-    getCurrentMessageContents: (parameters: getCurrentMessageContentsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.getCurrentMessageContents", parameters, sessionId),
+    getCurrentMessageContents: (parameters: getCurrentMessageContentsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.getCurrentMessageContents", parameters, sessionId, pauseId),
 
     /**
      * Count the number of stack frames on the stack. This is equivalent to using
      * the size of the stack returned by <code>Pause.getAllFrames</code>, but can
      * be implemented more efficiently.
      */
-    countStackFrames: (parameters: countStackFramesParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.countStackFrames", parameters, sessionId),
+    countStackFrames: (parameters: countStackFramesParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.countStackFrames", parameters, sessionId, pauseId),
 
     /**
      * If the topmost frame on the stack is a generator frame which can be popped
      * and pushed on the stack repeatedly, return a unique ID for the frame which
      * will be consistent across each of those pops and pushes.
      */
-    currentGeneratorId: (parameters: currentGeneratorIdParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.currentGeneratorId", parameters, sessionId),
+    currentGeneratorId: (parameters: currentGeneratorIdParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.currentGeneratorId", parameters, sessionId, pauseId),
 
     /**
      * When generating previews whose contents might overflow, this can be used to
      * specify property and getter names which must be included in the resulting
      * preview.
      */
-    getObjectPreviewRequiredProperties: (parameters: getObjectPreviewRequiredPropertiesParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Host.getObjectPreviewRequiredProperties", parameters, sessionId),
+    getObjectPreviewRequiredProperties: (parameters: getObjectPreviewRequiredPropertiesParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Host.getObjectPreviewRequiredProperties", parameters, sessionId, pauseId),
   }
 
   /**
@@ -829,8 +830,8 @@ export class ProtocolClient {
     /**
      * Create a new recording.
      */
-    createRecording: (parameters: createRecordingParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.createRecording", parameters, sessionId),
+    createRecording: (parameters: createRecordingParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.createRecording", parameters, sessionId, pauseId),
 
     /**
      * Add data to a recording. The next message sent after this must be a binary
@@ -838,57 +839,57 @@ export class ProtocolClient {
      * explicitly finished; replay sessions created for a recording will include
      * all data which was successfully uploaded.
      */
-    addRecordingData: (parameters: addRecordingDataParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.addRecordingData", parameters, sessionId),
+    addRecordingData: (parameters: addRecordingDataParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.addRecordingData", parameters, sessionId, pauseId),
 
     /**
      * Add metadata about a recording.
      */
-    addRecordingDescription: (parameters: addRecordingDescriptionParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.addRecordingDescription", parameters, sessionId),
+    addRecordingDescription: (parameters: addRecordingDescriptionParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.addRecordingDescription", parameters, sessionId, pauseId),
 
     /**
      * Determine whether a resource is known to the cloud service.
      */
-    hasResource: (parameters: hasResourceParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.hasResource", parameters, sessionId),
+    hasResource: (parameters: hasResourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.hasResource", parameters, sessionId, pauseId),
 
     /**
      * Upload a resource's contents to the cloud service.
      */
-    addResource: (parameters: addResourceParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.addResource", parameters, sessionId),
+    addResource: (parameters: addResourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.addResource", parameters, sessionId, pauseId),
 
     /**
      * Associate a resource with a recording.
      */
-    addRecordingResource: (parameters: addRecordingResourceParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.addRecordingResource", parameters, sessionId),
+    addRecordingResource: (parameters: addRecordingResourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.addRecordingResource", parameters, sessionId, pauseId),
 
     /**
      * Get filters for where to add more detailed assertions when recording that
      * behavior is consistent with the replay. These are used when analyzing crashes.
      */
-    getAssertionFilters: (parameters: getAssertionFiltersParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.getAssertionFilters", parameters, sessionId),
+    getAssertionFilters: (parameters: getAssertionFiltersParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.getAssertionFilters", parameters, sessionId, pauseId),
 
     /**
      * For testing network issues.
      */
-    echo: (parameters: echoParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.echo", parameters, sessionId),
+    echo: (parameters: echoParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.echo", parameters, sessionId, pauseId),
 
     /**
      * Mark a session which was created for an automated test.
      */
-    labelTestSession: (parameters: labelTestSessionParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.labelTestSession", parameters, sessionId),
+    labelTestSession: (parameters: labelTestSessionParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.labelTestSession", parameters, sessionId, pauseId),
 
     /**
      * Get the user's recordings
      */
-    getRecordings: (parameters: getRecordingsParameters, sessionId: SessionId) =>
-      this.genericClient.sendCommand("Internal.getRecordings", parameters, sessionId),
+    getRecordings: (parameters: getRecordingsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.getRecordings", parameters, sessionId, pauseId),
   }
 
 }

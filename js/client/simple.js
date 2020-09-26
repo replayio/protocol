@@ -64,7 +64,7 @@ exports.SimpleProtocolClient = /** @class */ (function () {
     class_1.prototype.removeEventListener = function (event) {
         this.eventListeners.delete(event);
     };
-    class_1.prototype.sendCommand = function (method, params, sessionId) {
+    class_1.prototype.sendCommand = function (method, params, sessionId, pauseId) {
         return __awaiter(this, void 0, void 0, function () {
             var id, waiter;
             return __generator(this, function (_a) {
@@ -73,7 +73,7 @@ exports.SimpleProtocolClient = /** @class */ (function () {
                     case 1:
                         _a.sent();
                         id = this.nextMessageId++;
-                        this.socket.send(JSON.stringify({ id: id, method: method, params: params, sessionId: sessionId }));
+                        this.socket.send(JSON.stringify({ id: id, method: method, params: params, sessionId: sessionId, pauseId: pauseId }));
                         waiter = defer();
                         this.pendingMessages.set(id, waiter);
                         return [2 /*return*/, waiter.promise];
