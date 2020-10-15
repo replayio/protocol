@@ -156,6 +156,9 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
     return [ ...imports.keys() ].map(importDomain => {
 
         const typeNames = [ ...imports.get(importDomain)! ];
+        if (typeNames.length === 0) {
+            return "";
+        }
         let ts = "import {\n";
         if (addNamespace) {
             ts += typeNames.map(name => `  ${name} as ${importDomain}_${name}`).join(",\n");
@@ -322,4 +325,51 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
     ts += "}\n";
 
     await fs.promises.writeFile(path.join(__dirname, "ts/client/client.ts"), ts);
+
+
+    // generate the sendEvent function interface for server implementations
+    imports.clear();
+    ts = "export interface sendEvent {\n";
+    for (const domain of protocol.domains) {
+
+        const domainImports = new Set<string>();
+        imports.set(domain.domain, domainImports);
+
+        for (const event of domain.events || []) {
+            domainImports.add(`${event.name}`);
+            const namespacedEvent = addNamespace ? `${domain.domain}_${event.name}` : event.name;
+            ts += "\n" + convertDescription(event, "  ");
+            ts += `  (event: "${domain.domain}.${event.name}", parameters: ${namespacedEvent}): void,\n`;
+        }
+    }
+
+    ts = convertImports(imports, "../protocol") + "\n" + ts;
+    ts += "}\n";
+
+    await fs.promises.writeFile(path.join(__dirname, "ts/server/event.ts"), ts);
+
+
+    // generate the ProtocolMessageHandlers interface for server implementations
+    imports.clear();
+    ts = "export interface ProtocolMessageHandlers {\n";
+    for (const domain of protocol.domains) {
+
+        const domainImports = new Set<string>();
+        imports.set(domain.domain, domainImports);
+
+        for (const command of domain.commands || []) {
+            domainImports.add(`${command.name}Parameters`);
+            domainImports.add(`${command.name}Result`);
+            const namespacedCommand = addNamespace ? `${domain.domain}_${command.name}` : command.name;
+            ts += "\n" + convertDescription(command, "  ");
+            ts += `  "${domain.domain}.${command.name}": (parameters: ${namespacedCommand}Parameters, sessionId?: ${namespacedSessionId}, pauseId?: ${namespacedPauseId}) => Promise<${namespacedCommand}Result | null> | ${namespacedCommand}Result | null,\n`;
+        }
+    }
+
+    imports.get("Session")!.add("SessionId");
+    imports.get("Pause")!.add("PauseId");
+    ts = convertImports(imports, "../protocol") + "\n" + ts;
+    ts += "}\n";
+
+    await fs.promises.writeFile(path.join(__dirname, "ts/server/message.ts"), ts);
 })();
