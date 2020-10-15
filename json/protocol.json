@@ -1733,18 +1733,24 @@
                 },
                 {
                     "name": "getObjectPreview",
-                    "description": "Load a complete preview for an object.",
+                    "description": "Load a preview for an object.",
                     "parameters": [
                         {
                             "name": "object",
                             "description": "Object to load the preview for.",
                             "$ref": "ObjectId"
+                        },
+                        {
+                            "name": "canOverflow",
+                            "description": "If set, the preview might not have complete properties and its\n<code>overflow</code> flag set.",
+                            "optional": true,
+                            "type": "boolean"
                         }
                     ],
                     "returns": [
                         {
                             "name": "data",
-                            "description": "Returned data. This includes a preview for the object which does not\nhave <code>overflow</code> set, and additional data for objects which\nit references.",
+                            "description": "Returned data. This includes a preview for the object, and additional\ndata for objects which it references.",
                             "$ref": "PauseData"
                         }
                     ]
@@ -2740,7 +2746,7 @@
         },
         {
             "domain": "Host",
-            "description": "The Host domain includes commands that are sent by the record/replay driver\nto its host VM. Protocol clients should not use this domain.",
+            "description": "The Host domain includes commands that are sent by the Record Replay Driver\nto its host VM. Protocol clients should not use this domain. See\nhttps://replay.io/driver for more information.",
             "commands": [
                 {
                     "name": "convertLocationToFunctionOffset",
@@ -2887,7 +2893,7 @@
                 },
                 {
                     "name": "getCurrentMessageContents",
-                    "description": "This command might be sent from within an OnConsoleMessage() call to get\ncontents of the new message. Properties in the result have the same meaning\nas for <code>Console.Message</code>.",
+                    "description": "This command might be sent from within a RecordReplayOnConsoleMessage() call\nto get  contents of the new message. Properties in the result have the same\nmeaning as for <code>Console.Message</code>.",
                     "returns": [
                         {
                             "name": "source",
@@ -2949,25 +2955,6 @@
                             "name": "id",
                             "optional": true,
                             "type": "integer"
-                        }
-                    ]
-                },
-                {
-                    "name": "getObjectPreviewRequiredProperties",
-                    "description": "When generating previews whose contents might overflow, this can be used to\nspecify property and getter names which must be included in the resulting\npreview.",
-                    "parameters": [
-                        {
-                            "name": "object",
-                            "$ref": "Pause.ObjectId"
-                        }
-                    ],
-                    "returns": [
-                        {
-                            "name": "properties",
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
                         }
                     ]
                 }
