@@ -7,7 +7,7 @@ import { evaluateInFrameParameters, evaluateInFrameResult, evaluateInGlobalParam
 import { getDocumentParameters, getDocumentResult, getParentNodesParameters, getParentNodesResult, querySelectorParameters, querySelectorResult, getEventListenersParameters, getEventListenersResult, getBoxModelParameters, getBoxModelResult, getBoundingClientRectParameters, getBoundingClientRectResult, getAllBoundingClientRectsParameters, getAllBoundingClientRectsResult, performSearchParameters, performSearchResult } from "../protocol/DOM";
 import { getComputedStyleParameters, getComputedStyleResult, getAppliedRulesParameters, getAppliedRulesResult } from "../protocol/CSS";
 import { createAnalysisParameters, createAnalysisResult, addLocationParameters, addLocationResult, addFunctionEntryPointsParameters, addFunctionEntryPointsResult, addRandomPointsParameters, addRandomPointsResult, addEventHandlerEntryPointsParameters, addEventHandlerEntryPointsResult, addExceptionPointsParameters, addExceptionPointsResult, runAnalysisParameters, runAnalysisResult, releaseAnalysisParameters, releaseAnalysisResult, findAnalysisPointsParameters, findAnalysisPointsResult } from "../protocol/Analysis";
-import { convertLocationToFunctionOffsetParameters, convertLocationToFunctionOffsetResult, convertFunctionOffsetToLocationParameters, convertFunctionOffsetToLocationResult, getStepOffsetsParameters, getStepOffsetsResult, getHTMLSourceParameters, getHTMLSourceResult, getFunctionsInRangeParameters, getFunctionsInRangeResult, getScriptSourceMapURLParameters, getScriptSourceMapURLResult, getSheetSourceMapURLParameters, getSheetSourceMapURLResult, getCurrentMessageContentsParameters, getCurrentMessageContentsResult, countStackFramesParameters, countStackFramesResult, currentGeneratorIdParameters, currentGeneratorIdResult, getObjectPreviewRequiredPropertiesParameters, getObjectPreviewRequiredPropertiesResult } from "../protocol/Host";
+import { convertLocationToFunctionOffsetParameters, convertLocationToFunctionOffsetResult, convertFunctionOffsetToLocationParameters, convertFunctionOffsetToLocationResult, getStepOffsetsParameters, getStepOffsetsResult, getHTMLSourceParameters, getHTMLSourceResult, getFunctionsInRangeParameters, getFunctionsInRangeResult, getScriptSourceMapURLParameters, getScriptSourceMapURLResult, getSheetSourceMapURLParameters, getSheetSourceMapURLResult, getCurrentMessageContentsParameters, getCurrentMessageContentsResult, countStackFramesParameters, countStackFramesResult, currentGeneratorIdParameters, currentGeneratorIdResult } from "../protocol/Host";
 import { createRecordingParameters, createRecordingResult, addRecordingDataParameters, addRecordingDataResult, addRecordingDescriptionParameters, addRecordingDescriptionResult, hasResourceParameters, hasResourceResult, addResourceParameters, addResourceResult, addRecordingResourceParameters, addRecordingResourceResult, getAssertionFiltersParameters, getAssertionFiltersResult, echoParameters, echoResult, labelTestSessionParameters, labelTestSessionResult, getRecordingsParameters, getRecordingsResult } from "../protocol/Internal";
 export interface ProtocolMessageHandlers {
     /**
@@ -183,7 +183,7 @@ export interface ProtocolMessageHandlers {
      */
     "Pause.callObjectProperty": (parameters: callObjectPropertyParameters, sessionId?: SessionId, pauseId?: PauseId) => Promise<callObjectPropertyResult | null> | callObjectPropertyResult | null;
     /**
-     * Load a complete preview for an object.
+     * Load a preview for an object.
      */
     "Pause.getObjectPreview": (parameters: getObjectPreviewParameters, sessionId?: SessionId, pauseId?: PauseId) => Promise<getObjectPreviewResult | null> | getObjectPreviewResult | null;
     /**
@@ -325,9 +325,9 @@ export interface ProtocolMessageHandlers {
      */
     "Host.getSheetSourceMapURL": (parameters: getSheetSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId) => Promise<getSheetSourceMapURLResult | null> | getSheetSourceMapURLResult | null;
     /**
-     * This command might be sent from within an OnConsoleMessage() call to get
-     * contents of the new message. Properties in the result have the same meaning
-     * as for <code>Console.Message</code>.
+     * This command might be sent from within a RecordReplayOnConsoleMessage() call
+     * to get  contents of the new message. Properties in the result have the same
+     * meaning as for <code>Console.Message</code>.
      */
     "Host.getCurrentMessageContents": (parameters: getCurrentMessageContentsParameters, sessionId?: SessionId, pauseId?: PauseId) => Promise<getCurrentMessageContentsResult | null> | getCurrentMessageContentsResult | null;
     /**
@@ -342,12 +342,6 @@ export interface ProtocolMessageHandlers {
      * will be consistent across each of those pops and pushes.
      */
     "Host.currentGeneratorId": (parameters: currentGeneratorIdParameters, sessionId?: SessionId, pauseId?: PauseId) => Promise<currentGeneratorIdResult | null> | currentGeneratorIdResult | null;
-    /**
-     * When generating previews whose contents might overflow, this can be used to
-     * specify property and getter names which must be included in the resulting
-     * preview.
-     */
-    "Host.getObjectPreviewRequiredProperties": (parameters: getObjectPreviewRequiredPropertiesParameters, sessionId?: SessionId, pauseId?: PauseId) => Promise<getObjectPreviewRequiredPropertiesResult | null> | getObjectPreviewRequiredPropertiesResult | null;
     /**
      * Create a new recording.
      */

@@ -512,14 +512,19 @@ export interface getObjectPreviewParameters {
    * Object to load the preview for.
    */
   object: ObjectId;
+
+  /**
+   * If set, the preview might not have complete properties and its
+   * <code>overflow</code> flag set.
+   */
+  canOverflow?: boolean;
 }
 
 export interface getObjectPreviewResult {
 
   /**
-   * Returned data. This includes a preview for the object which does not
-   * have <code>overflow</code> set, and additional data for objects which
-   * it references.
+   * Returned data. This includes a preview for the object, and additional
+   * data for objects which it references.
    */
   data: PauseData;
 }

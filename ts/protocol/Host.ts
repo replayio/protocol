@@ -135,13 +135,3 @@ export interface currentGeneratorIdResult {
 
   id?: number;
 }
-
-export interface getObjectPreviewRequiredPropertiesParameters {
-
-  object: ObjectId;
-}
-
-export interface getObjectPreviewRequiredPropertiesResult {
-
-  properties: string[];
-}

@@ -7,7 +7,7 @@ import { evaluateInFrameParameters, evaluateInGlobalParameters, getObjectPropert
 import { getDocumentParameters, getParentNodesParameters, querySelectorParameters, getEventListenersParameters, getBoxModelParameters, getBoundingClientRectParameters, getAllBoundingClientRectsParameters, performSearchParameters } from "../protocol/DOM";
 import { getComputedStyleParameters, getAppliedRulesParameters } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, addLocationParameters, addFunctionEntryPointsParameters, addRandomPointsParameters, addEventHandlerEntryPointsParameters, addExceptionPointsParameters, runAnalysisParameters, releaseAnalysisParameters, findAnalysisPointsParameters } from "../protocol/Analysis";
-import { convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getStepOffsetsParameters, getHTMLSourceParameters, getFunctionsInRangeParameters, getScriptSourceMapURLParameters, getSheetSourceMapURLParameters, getCurrentMessageContentsParameters, countStackFramesParameters, currentGeneratorIdParameters, getObjectPreviewRequiredPropertiesParameters } from "../protocol/Host";
+import { convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getStepOffsetsParameters, getHTMLSourceParameters, getFunctionsInRangeParameters, getScriptSourceMapURLParameters, getSheetSourceMapURLParameters, getCurrentMessageContentsParameters, countStackFramesParameters, currentGeneratorIdParameters } from "../protocol/Host";
 import { createRecordingParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
 import { GenericProtocolClient } from "./generic";
 export declare class ProtocolClient {
@@ -281,7 +281,7 @@ export declare class ProtocolClient {
          */
         callObjectProperty: (parameters: callObjectPropertyParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").callObjectPropertyResult>;
         /**
-         * Load a complete preview for an object.
+         * Load a preview for an object.
          */
         getObjectPreview: (parameters: getObjectPreviewParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Pause").getObjectPreviewResult>;
         /**
@@ -447,8 +447,9 @@ export declare class ProtocolClient {
         findAnalysisPoints: (parameters: findAnalysisPointsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Analysis").findAnalysisPointsResult>;
     };
     /**
-     * The Host domain includes commands that are sent by the record/replay driver
-     * to its host VM. Protocol clients should not use this domain.
+     * The Host domain includes commands that are sent by the Record Replay Driver
+     * to its host VM. Protocol clients should not use this domain. See
+     * https://replay.io/driver for more information.
      */
     Host: {
         /**
@@ -481,9 +482,9 @@ export declare class ProtocolClient {
          */
         getSheetSourceMapURL: (parameters: getSheetSourceMapURLParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getSheetSourceMapURLResult>;
         /**
-         * This command might be sent from within an OnConsoleMessage() call to get
-         * contents of the new message. Properties in the result have the same meaning
-         * as for <code>Console.Message</code>.
+         * This command might be sent from within a RecordReplayOnConsoleMessage() call
+         * to get  contents of the new message. Properties in the result have the same
+         * meaning as for <code>Console.Message</code>.
          */
         getCurrentMessageContents: (parameters: getCurrentMessageContentsParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getCurrentMessageContentsResult>;
         /**
@@ -498,12 +499,6 @@ export declare class ProtocolClient {
          * will be consistent across each of those pops and pushes.
          */
         currentGeneratorId: (parameters: currentGeneratorIdParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").currentGeneratorIdResult>;
-        /**
-         * When generating previews whose contents might overflow, this can be used to
-         * specify property and getter names which must be included in the resulting
-         * preview.
-         */
-        getObjectPreviewRequiredProperties: (parameters: getObjectPreviewRequiredPropertiesParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Host").getObjectPreviewRequiredPropertiesResult>;
     };
     /**
      * The Internal domain is for use in software that is used to create recordings

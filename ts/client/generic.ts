@@ -174,9 +174,7 @@ import {
   countStackFramesParameters,
   countStackFramesResult,
   currentGeneratorIdParameters,
-  currentGeneratorIdResult,
-  getObjectPreviewRequiredPropertiesParameters,
-  getObjectPreviewRequiredPropertiesResult
+  currentGeneratorIdResult
 } from "../protocol/Host";
 import {
   createRecordingParameters,
@@ -477,7 +475,7 @@ export interface GenericProtocolClient {
   sendCommand(command: "Pause.callObjectProperty", parameters: callObjectPropertyParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<callObjectPropertyResult>;
 
   /**
-   * Load a complete preview for an object.
+   * Load a preview for an object.
    */
   sendCommand(command: "Pause.getObjectPreview", parameters: getObjectPreviewParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getObjectPreviewResult>;
 
@@ -652,9 +650,9 @@ export interface GenericProtocolClient {
   sendCommand(command: "Host.getSheetSourceMapURL", parameters: getSheetSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getSheetSourceMapURLResult>;
 
   /**
-   * This command might be sent from within an OnConsoleMessage() call to get
-   * contents of the new message. Properties in the result have the same meaning
-   * as for <code>Console.Message</code>.
+   * This command might be sent from within a RecordReplayOnConsoleMessage() call
+   * to get  contents of the new message. Properties in the result have the same
+   * meaning as for <code>Console.Message</code>.
    */
   sendCommand(command: "Host.getCurrentMessageContents", parameters: getCurrentMessageContentsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getCurrentMessageContentsResult>;
 
@@ -671,13 +669,6 @@ export interface GenericProtocolClient {
    * will be consistent across each of those pops and pushes.
    */
   sendCommand(command: "Host.currentGeneratorId", parameters: currentGeneratorIdParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<currentGeneratorIdResult>;
-
-  /**
-   * When generating previews whose contents might overflow, this can be used to
-   * specify property and getter names which must be included in the resulting
-   * preview.
-   */
-  sendCommand(command: "Host.getObjectPreviewRequiredProperties", parameters: getObjectPreviewRequiredPropertiesParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getObjectPreviewRequiredPropertiesResult>;
 
   /**
    * Create a new recording.

@@ -381,7 +381,7 @@ var ProtocolClient = /** @class */ (function () {
                 return _this.genericClient.sendCommand("Pause.callObjectProperty", parameters, sessionId, pauseId);
             },
             /**
-             * Load a complete preview for an object.
+             * Load a preview for an object.
              */
             getObjectPreview: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Pause.getObjectPreview", parameters, sessionId, pauseId);
@@ -611,8 +611,9 @@ var ProtocolClient = /** @class */ (function () {
             },
         };
         /**
-         * The Host domain includes commands that are sent by the record/replay driver
-         * to its host VM. Protocol clients should not use this domain.
+         * The Host domain includes commands that are sent by the Record Replay Driver
+         * to its host VM. Protocol clients should not use this domain. See
+         * https://replay.io/driver for more information.
          */
         this.Host = {
             /**
@@ -659,9 +660,9 @@ var ProtocolClient = /** @class */ (function () {
                 return _this.genericClient.sendCommand("Host.getSheetSourceMapURL", parameters, sessionId, pauseId);
             },
             /**
-             * This command might be sent from within an OnConsoleMessage() call to get
-             * contents of the new message. Properties in the result have the same meaning
-             * as for <code>Console.Message</code>.
+             * This command might be sent from within a RecordReplayOnConsoleMessage() call
+             * to get  contents of the new message. Properties in the result have the same
+             * meaning as for <code>Console.Message</code>.
              */
             getCurrentMessageContents: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Host.getCurrentMessageContents", parameters, sessionId, pauseId);
@@ -681,14 +682,6 @@ var ProtocolClient = /** @class */ (function () {
              */
             currentGeneratorId: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Host.currentGeneratorId", parameters, sessionId, pauseId);
-            },
-            /**
-             * When generating previews whose contents might overflow, this can be used to
-             * specify property and getter names which must be included in the resulting
-             * preview.
-             */
-            getObjectPreviewRequiredProperties: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.getObjectPreviewRequiredProperties", parameters, sessionId, pauseId);
             },
         };
         /**
