@@ -1578,6 +1578,17 @@
                             "$ref": "PauseData"
                         }
                     ]
+                },
+                {
+                    "id": "ObjectPreviewLevel",
+                    "description": "Levels of detail for an object preview.\n<br>\n<br><code>none</code>: Don't actually generate a preview, but just an <code>Object</code>\n  with non-preview information.\n<br><code>noProperties</code>: Generate an overflowing preview with no properties.\n<br><code>canOverflow</code>: Generate a preview with some properties.\n  If there are too many properties, some may be omitted and the preview will overflow.\n<br><code>full</code>: Generate a non-overflowing preview with all properties.\n<br><br>",
+                    "type": "string",
+                    "enum": [
+                        "none",
+                        "noProperties",
+                        "canOverflow",
+                        "full"
+                    ]
                 }
             ],
             "commands": [
@@ -1741,10 +1752,10 @@
                             "$ref": "ObjectId"
                         },
                         {
-                            "name": "canOverflow",
-                            "description": "If set, the preview might not have complete properties and its\n<code>overflow</code> flag set.",
+                            "name": "level",
+                            "description": "Amount of data desired in the resulting preview. If omitted, the full\nnon-overflowing preview for the object will be returned.",
                             "optional": true,
-                            "type": "boolean"
+                            "$ref": "ObjectPreviewLevel"
                         }
                     ],
                     "returns": [

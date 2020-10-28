@@ -892,13 +892,29 @@ domain Pause
     parameters
       # Object to load the preview for.
       ObjectId object
-      # If set, the preview might not have complete properties and its
-      # <code>overflow</code> flag set.
-      optional boolean canOverflow
+      # Amount of data desired in the resulting preview. If omitted, the full
+      # non-overflowing preview for the object will be returned.
+      optional ObjectPreviewLevel level
     returns
       # Returned data. This includes a preview for the object, and additional
       # data for objects which it references.
       PauseData data
+
+  # Levels of detail for an object preview.
+  # <br>
+  # <br><code>none</code>: Don't actually generate a preview, but just an <code>Object</code>
+  #   with non-preview information.
+  # <br><code>noProperties</code>: Generate an overflowing preview with no properties.
+  # <br><code>canOverflow</code>: Generate a preview with some properties.
+  #   If there are too many properties, some may be omitted and the preview will overflow.
+  # <br><code>full</code>: Generate a non-overflowing preview with all properties.
+  # <br><br>
+  type ObjectPreviewLevel extends string
+    enum
+      none
+      noProperties
+      canOverflow
+      full
 
   # Load a scope's contents.
   command getScope
