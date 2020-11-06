@@ -1427,10 +1427,10 @@ domain Analysis
       AnalysisKey key
       AnalysisValue value
 
-# The Host domain includes commands that are sent by the Record Replay Driver
-# to its host VM. Protocol clients should not use this domain. See
-# https://replay.io/driver for more information.
-domain Host
+# The Target domain includes commands that are sent by the Record Replay Driver
+# to the target application which it is attached to. Protocol clients should
+# not use this domain. See https://replay.io/driver for more information.
+domain Target
 
   # Get the function ID / offset to use for a script location, if there is one.
   command convertLocationToFunctionOffset
