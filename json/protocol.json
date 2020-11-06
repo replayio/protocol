@@ -581,26 +581,26 @@
         },
         {
             "domain": "Debugger",
-            "description": "The Debugger domain defines methods for accessing JS scripts and navigating\naround the recording using breakpoints, stepping, and so forth.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
+            "description": "The Debugger domain defines methods for accessing sources in the recording\nand navigating around the recording using breakpoints, stepping, and so forth.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
             "commands": [
                 {
-                    "name": "findScripts",
-                    "description": "Find all scripts in the recording. Does not return until the recording is\nfully processed. Before returning, <code>scriptParsed</code> events will be\nemitted for every script in the recording."
+                    "name": "findSources",
+                    "description": "Find all sources in the recording. Does not return until the recording is\nfully processed. Before returning, <code>newSource</code> events will be\nemitted for every source in the recording."
                 },
                 {
-                    "name": "getScriptSource",
-                    "description": "Get the source contents of a script.",
+                    "name": "getSourceContents",
+                    "description": "Get the contents of a source.",
                     "parameters": [
                         {
-                            "name": "scriptId",
-                            "description": "Script to fetch the source for.",
-                            "$ref": "ScriptId"
+                            "name": "sourceId",
+                            "description": "Source to fetch the contents for.",
+                            "$ref": "SourceId"
                         }
                     ],
                     "returns": [
                         {
-                            "name": "scriptSource",
-                            "description": "Source contents of the script.",
+                            "name": "contents",
+                            "description": "Contents of the source.",
                             "type": "string"
                         },
                         {
@@ -612,40 +612,40 @@
                 },
                 {
                     "name": "getPossibleBreakpoints",
-                    "description": "Get a compact representation of the locations where breakpoints can be set\nin a region of a script.",
+                    "description": "Get a compact representation of the locations where breakpoints can be set\nin a region of a source.",
                     "parameters": [
                         {
-                            "name": "scriptId",
-                            "description": "Script to return breakpoint locations for.",
-                            "$ref": "ScriptId"
+                            "name": "sourceId",
+                            "description": "Source to return breakpoint locations for.",
+                            "$ref": "SourceId"
                         },
                         {
                             "name": "begin",
                             "description": "If specified, earlier breakpoint locations will be excluded.",
                             "optional": true,
-                            "$ref": "ScriptLocation"
+                            "$ref": "SourceLocation"
                         },
                         {
                             "name": "end",
                             "description": "If specified, later breakpoint locations will be excluded.",
                             "optional": true,
-                            "$ref": "ScriptLocation"
+                            "$ref": "SourceLocation"
                         }
                     ],
                     "returns": [
                         {
                             "name": "lineLocations",
-                            "description": "All breakpoint locations in the specified script and range.",
+                            "description": "All breakpoint locations in the specified source and range.",
                             "type": "array",
                             "items": {
-                                "$ref": "SameLineScriptLocations"
+                                "$ref": "SameLineSourceLocations"
                             }
                         }
                     ]
                 },
                 {
                     "name": "getMappedLocation",
-                    "description": "Get the mapped location for a script location.",
+                    "description": "Get the mapped location for a source location.",
                     "parameters": [
                         {
                             "name": "location",
@@ -802,80 +802,80 @@
                     ]
                 },
                 {
-                    "name": "blackboxScript",
-                    "description": "Blackbox a script or a region in it. Resume commands like\n<code>findResumeTarget</code> will not return execution points in\nblackboxed regions of a script.",
+                    "name": "blackboxSource",
+                    "description": "Blackbox a source or a region in it. Resume commands like\n<code>findResumeTarget</code> will not return execution points in\nblackboxed regions of a source.",
                     "parameters": [
                         {
-                            "name": "scriptId",
-                            "description": "Script to blackbox.",
-                            "$ref": "ScriptId"
+                            "name": "sourceId",
+                            "description": "Source to blackbox.",
+                            "$ref": "SourceId"
                         },
                         {
                             "name": "begin",
                             "description": "If specified, earlier locations will keep their blackbox state.",
                             "optional": true,
-                            "$ref": "ScriptLocation"
+                            "$ref": "SourceLocation"
                         },
                         {
                             "name": "end",
                             "description": "If specified, later locations will keep their blackbox state.",
                             "optional": true,
-                            "$ref": "ScriptLocation"
+                            "$ref": "SourceLocation"
                         }
                     ]
                 },
                 {
-                    "name": "unblackboxScript",
-                    "description": "Unblackbox a script or a region in it.",
+                    "name": "unblackboxSource",
+                    "description": "Unblackbox a source or a region in it.",
                     "parameters": [
                         {
-                            "name": "scriptId",
-                            "description": "Script to unblackbox.",
-                            "$ref": "ScriptId"
+                            "name": "sourceId",
+                            "description": "Source to unblackbox.",
+                            "$ref": "SourceId"
                         },
                         {
                             "name": "begin",
                             "description": "If specified, earlier locations will keep their blackbox state.",
                             "optional": true,
-                            "$ref": "ScriptLocation"
+                            "$ref": "SourceLocation"
                         },
                         {
                             "name": "end",
                             "description": "If specified, later locations will keep their blackbox state.",
                             "optional": true,
-                            "$ref": "ScriptLocation"
+                            "$ref": "SourceLocation"
                         }
                     ]
                 }
             ],
             "events": [
                 {
-                    "name": "scriptParsed",
-                    "description": "Describes a script that was successfully parsed.",
+                    "name": "newSource",
+                    "description": "Describes a source in the recording.",
                     "parameters": [
                         {
-                            "name": "scriptId",
-                            "description": "ID for the script.",
-                            "$ref": "ScriptId"
+                            "name": "sourceId",
+                            "description": "ID for the source.",
+                            "$ref": "SourceId"
                         },
                         {
                             "name": "kind",
-                            "description": "Kind of script.",
-                            "$ref": "ScriptKind"
+                            "description": "Kind of the source.",
+                            "$ref": "SourceKind"
                         },
                         {
                             "name": "url",
-                            "description": "URL of the script. Omitted for dynamically generated scripts (from eval etc.).",
+                            "description": "URL of the source. Omitted for dynamically generated sources (from eval etc.).",
                             "optional": true,
                             "type": "string"
                         },
                         {
-                            "name": "generatedScriptIds",
-                            "description": "If this is an original script, the IDs of the scripts which were generated from\nthis one.",
+                            "name": "generatedSourceIds",
+                            "description": "If this is an original source, the IDs of the sources which were generated from\nthis one.",
                             "optional": true,
                             "type": "array",
                             "items": {
-                                "$ref": "ScriptId"
+                                "$ref": "SourceId"
                             }
                         }
                     ]
@@ -883,13 +883,13 @@
             ],
             "types": [
                 {
-                    "id": "ScriptId",
-                    "description": "Unique ID for a script.",
+                    "id": "SourceId",
+                    "description": "Unique ID for a source.",
                     "type": "string"
                 },
                 {
-                    "id": "ScriptKind",
-                    "description": "Kind of a script.\n<br>\n<br><code>inlineScript</code>: Inline contents of a <code>script</code> element.\n<br><code>scriptSource</code>: Script loaded via the <code>src</code> attribute\n  of a <code>script</code> element.\n<br><code>other</code>: An unspecified kind of script. This does not include any\n  original scripts.\n<br><code>html</code>: An entire HTML page containing one or more inline scripts.\n  This is an original script whose generated scripts are the inline scripts.\n<br><code>sourceMapped</code>: A source script specified by a source map.\n  This is an original script whose generated script is associated with the source map.\n  Source mapped scripts are only available when the source map and its sources have been\n  associated with the recording via <code>Internal.addRecordingResource</code>.\n<br><code>prettyPrinted</code>: An original script which was produced by pretty\n  printing the associated generated script. Pretty printed scripts will\n  automatically be created for other scripts which appear to contain minified\n  code, including HTML page scripts. <code>scriptParsed</code> events will be\n  emitted for a pretty printed script before the generated script.\n<br><br>",
+                    "id": "SourceKind",
+                    "description": "Kind of a source.\n<br>\n<br><code>inlineScript</code>: Inline contents of a <code>script</code> element.\n<br><code>scriptSource</code>: Script loaded via the <code>src</code> attribute\n  of a <code>script</code> element.\n<br><code>other</code>: An unspecified kind of source. This does not include any\n  original sources.\n<br><code>html</code>: An entire HTML page containing one or more inline scripts.\n  This is an original source whose generated sources are the inline scripts.\n<br><code>sourceMapped</code>: An original source specified by a source map.\n  This will have a generated source associated with the source map.\n  The source map and its sources must have been\n  associated with the recording via <code>Internal.addRecordingResource</code>.\n<br><code>prettyPrinted</code>: An original source which was produced by pretty\n  printing the associated generated source. Pretty printed sources will\n  automatically be created for other sources which appear to contain minified\n  code, including HTML page sources. <code>newSource</code> events will be\n  emitted for a pretty printed source before the generated source.\n<br><br>",
                     "type": "string",
                     "enum": [
                         "inlineScript",
@@ -902,7 +902,7 @@
                 },
                 {
                     "id": "ContentType",
-                    "description": "Possible content types for script sources.",
+                    "description": "Possible content types for sources.",
                     "type": "string",
                     "enum": [
                         "text/javascript",
@@ -910,25 +910,25 @@
                     ]
                 },
                 {
-                    "id": "ScriptLocation",
-                    "description": "Location within a particular script.",
+                    "id": "SourceLocation",
+                    "description": "Location within a particular source.",
                     "type": "object",
                     "properties": [
                         {
                             "name": "line",
-                            "description": "1-indexed line in the script's source.",
+                            "description": "1-indexed line in the source.",
                             "type": "integer"
                         },
                         {
                             "name": "column",
-                            "description": "0-indexed column in the script's source.",
+                            "description": "0-indexed column in the source.",
                             "type": "integer"
                         }
                     ]
                 },
                 {
-                    "id": "SameLineScriptLocations",
-                    "description": "Set of locations which are all on the same line of the same script.",
+                    "id": "SameLineSourceLocations",
+                    "description": "Set of locations which are all on the same line of the same source.",
                     "type": "object",
                     "properties": [
                         {
@@ -948,18 +948,18 @@
                 },
                 {
                     "id": "Location",
-                    "description": "Location within a script.",
-                    "$ref": "ScriptLocation",
+                    "description": "Location within a source.",
+                    "$ref": "SourceLocation",
                     "properties": [
                         {
-                            "name": "scriptId",
-                            "$ref": "ScriptId"
+                            "name": "sourceId",
+                            "$ref": "SourceId"
                         }
                     ]
                 },
                 {
                     "id": "MappedLocation",
-                    "description": "A location in a generated scripts, along with corresponding locations in any\noriginal scripts which the generated script was source mapped from.\nThe generated script location is the first element of the array.",
+                    "description": "A location in a generated source, along with corresponding locations in any\noriginal sources which the generated source was source mapped from.\nThe generated location is the first element of the array.",
                     "type": "array",
                     "items": {
                         "$ref": "Location"
@@ -1058,10 +1058,10 @@
                             "type": "string"
                         },
                         {
-                            "name": "scriptId",
-                            "description": "Any script associated with the message.",
+                            "name": "sourceId",
+                            "description": "Any source associated with the message.",
                             "optional": true,
-                            "$ref": "Debugger.ScriptId"
+                            "$ref": "Debugger.SourceId"
                         },
                         {
                             "name": "line",
@@ -1258,7 +1258,7 @@
                         },
                         {
                             "name": "originalScopeChain",
-                            "description": "Alternate scope chain determined from any source map for the frame's\nscript. This can be structured differently and include different names\nthan the normal scope chain.",
+                            "description": "Alternate scope chain determined from any source map for the frame's\ngenerated source. This can be structured differently and include\ndifferent names than the normal scope chain.",
                             "optional": true,
                             "type": "array",
                             "items": {
@@ -1440,7 +1440,7 @@
                         },
                         {
                             "name": "functionLocation",
-                            "description": "For scripted Function objects, the location of the function.",
+                            "description": "For Function objects, any associated source location.",
                             "optional": true,
                             "$ref": "Debugger.MappedLocation"
                         },
@@ -2548,7 +2548,7 @@
                 },
                 {
                     "name": "addLocation",
-                    "description": "Apply the analysis to every point where a script location executes.",
+                    "description": "Apply the analysis to every point where a source location executes.",
                     "parameters": [
                         {
                             "name": "analysisId",
@@ -2557,7 +2557,7 @@
                         },
                         {
                             "name": "sessionId",
-                            "description": "Session containing the script.",
+                            "description": "Session containing the source.",
                             "$ref": "Session.SessionId"
                         },
                         {
@@ -2575,7 +2575,7 @@
                 },
                 {
                     "name": "addFunctionEntryPoints",
-                    "description": "Apply the analysis to every function entry point in a region of a script.",
+                    "description": "Apply the analysis to every function entry point in a region of a source.",
                     "parameters": [
                         {
                             "name": "analysisId",
@@ -2588,21 +2588,21 @@
                             "$ref": "Session.SessionId"
                         },
                         {
-                            "name": "scriptId",
-                            "description": "Script to look for function entry points in.",
-                            "$ref": "Debugger.ScriptId"
+                            "name": "sourceId",
+                            "description": "Source to look for function entry points in.",
+                            "$ref": "Debugger.SourceId"
                         },
                         {
                             "name": "begin",
                             "description": "If specified, earlier functions will be excluded.",
                             "optional": true,
-                            "$ref": "Debugger.ScriptLocation"
+                            "$ref": "Debugger.SourceLocation"
                         },
                         {
                             "name": "end",
                             "description": "If specified, later functions will be excluded.",
                             "optional": true,
-                            "$ref": "Debugger.ScriptLocation"
+                            "$ref": "Debugger.SourceLocation"
                         }
                     ]
                 },
@@ -2761,7 +2761,7 @@
             "commands": [
                 {
                     "name": "convertLocationToFunctionOffset",
-                    "description": "Get the function ID / offset to use for a script location, if there is one.",
+                    "description": "Get the function ID / offset to use for a source location, if there is one.",
                     "parameters": [
                         {
                             "name": "location",
@@ -2841,21 +2841,21 @@
                 },
                 {
                     "name": "getFunctionsInRange",
-                    "description": "Get the IDs of all functions in a range within a script.",
+                    "description": "Get the IDs of all functions in a range within a source.",
                     "parameters": [
                         {
-                            "name": "scriptId",
-                            "$ref": "Debugger.ScriptId"
+                            "name": "sourceId",
+                            "$ref": "Debugger.SourceId"
                         },
                         {
                             "name": "begin",
                             "optional": true,
-                            "$ref": "Debugger.ScriptLocation"
+                            "$ref": "Debugger.SourceLocation"
                         },
                         {
                             "name": "end",
                             "optional": true,
-                            "$ref": "Debugger.ScriptLocation"
+                            "$ref": "Debugger.SourceLocation"
                         }
                     ],
                     "returns": [
@@ -2869,12 +2869,12 @@
                     ]
                 },
                 {
-                    "name": "getScriptSourceMapURL",
-                    "description": "Get any source map URL associated with a script.",
+                    "name": "getSourceMapURL",
+                    "description": "Get any source map URL associated with a source.",
                     "parameters": [
                         {
-                            "name": "scriptId",
-                            "$ref": "Debugger.ScriptId"
+                            "name": "sourceId",
+                            "$ref": "Debugger.SourceId"
                         }
                     ],
                     "returns": [
@@ -2924,9 +2924,9 @@
                             "type": "string"
                         },
                         {
-                            "name": "scriptId",
+                            "name": "sourceId",
                             "optional": true,
-                            "$ref": "Debugger.ScriptId"
+                            "$ref": "Debugger.SourceId"
                         },
                         {
                             "name": "line",

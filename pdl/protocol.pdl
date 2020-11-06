@@ -311,53 +311,53 @@ domain Graphics
     returns
       number ratio
 
-# The Debugger domain defines methods for accessing JS scripts and navigating
-# around the recording using breakpoints, stepping, and so forth.
+# The Debugger domain defines methods for accessing sources in the recording
+# and navigating around the recording using breakpoints, stepping, and so forth.
 #
 # <br><br>All commands and events in this domain must include a <code>sessionId</code>.
 domain Debugger
 
-  # Find all scripts in the recording. Does not return until the recording is
-  # fully processed. Before returning, <code>scriptParsed</code> events will be
-  # emitted for every script in the recording.
-  command findScripts
+  # Find all sources in the recording. Does not return until the recording is
+  # fully processed. Before returning, <code>newSource</code> events will be
+  # emitted for every source in the recording.
+  command findSources
 
-  # Describes a script that was successfully parsed.
-  event scriptParsed
+  # Describes a source in the recording.
+  event newSource
     parameters
-      # ID for the script.
-      ScriptId scriptId
-      # Kind of script.
-      ScriptKind kind
-      # URL of the script. Omitted for dynamically generated scripts (from eval etc.).
+      # ID for the source.
+      SourceId sourceId
+      # Kind of the source.
+      SourceKind kind
+      # URL of the source. Omitted for dynamically generated sources (from eval etc.).
       optional string url
-      # If this is an original script, the IDs of the scripts which were generated from
+      # If this is an original source, the IDs of the sources which were generated from
       # this one.
-      optional array of ScriptId generatedScriptIds
+      optional array of SourceId generatedSourceIds
 
-  # Unique ID for a script.
-  type ScriptId extends string
+  # Unique ID for a source.
+  type SourceId extends string
 
-  # Kind of a script.
+  # Kind of a source.
   # <br>
   # <br><code>inlineScript</code>: Inline contents of a <code>script</code> element.
   # <br><code>scriptSource</code>: Script loaded via the <code>src</code> attribute
   #   of a <code>script</code> element.
-  # <br><code>other</code>: An unspecified kind of script. This does not include any
-  #   original scripts.
+  # <br><code>other</code>: An unspecified kind of source. This does not include any
+  #   original sources.
   # <br><code>html</code>: An entire HTML page containing one or more inline scripts.
-  #   This is an original script whose generated scripts are the inline scripts.
-  # <br><code>sourceMapped</code>: A source script specified by a source map.
-  #   This is an original script whose generated script is associated with the source map.
-  #   Source mapped scripts are only available when the source map and its sources have been
+  #   This is an original source whose generated sources are the inline scripts.
+  # <br><code>sourceMapped</code>: An original source specified by a source map.
+  #   This will have a generated source associated with the source map.
+  #   The source map and its sources must have been
   #   associated with the recording via <code>Internal.addRecordingResource</code>.
-  # <br><code>prettyPrinted</code>: An original script which was produced by pretty
-  #   printing the associated generated script. Pretty printed scripts will
-  #   automatically be created for other scripts which appear to contain minified
-  #   code, including HTML page scripts. <code>scriptParsed</code> events will be
-  #   emitted for a pretty printed script before the generated script.
+  # <br><code>prettyPrinted</code>: An original source which was produced by pretty
+  #   printing the associated generated source. Pretty printed sources will
+  #   automatically be created for other sources which appear to contain minified
+  #   code, including HTML page sources. <code>newSource</code> events will be
+  #   emitted for a pretty printed source before the generated source.
   # <br><br>
-  type ScriptKind extends string
+  type SourceKind extends string
     enum
       inlineScript
       scriptSource
@@ -366,64 +366,64 @@ domain Debugger
       sourceMapped
       prettyPrinted
 
-  # Get the source contents of a script.
-  command getScriptSource
+  # Get the contents of a source.
+  command getSourceContents
     parameters
-      # Script to fetch the source for.
-      ScriptId scriptId
+      # Source to fetch the contents for.
+      SourceId sourceId
     returns
-      # Source contents of the script.
-      string scriptSource
+      # Contents of the source.
+      string contents
       # Content type of the source contents.
       ContentType contentType
 
-  # Possible content types for script sources.
+  # Possible content types for sources.
   type ContentType extends string
     enum
       text/javascript
       text/html
 
   # Get a compact representation of the locations where breakpoints can be set
-  # in a region of a script.
+  # in a region of a source.
   command getPossibleBreakpoints
     parameters
-      # Script to return breakpoint locations for.
-      ScriptId scriptId
+      # Source to return breakpoint locations for.
+      SourceId sourceId
       # If specified, earlier breakpoint locations will be excluded.
-      optional ScriptLocation begin
+      optional SourceLocation begin
       # If specified, later breakpoint locations will be excluded.
-      optional ScriptLocation end
+      optional SourceLocation end
     returns
-      # All breakpoint locations in the specified script and range.
-      array of SameLineScriptLocations lineLocations
+      # All breakpoint locations in the specified source and range.
+      array of SameLineSourceLocations lineLocations
 
-  # Location within a particular script.
-  type ScriptLocation extends object
+  # Location within a particular source.
+  type SourceLocation extends object
     properties
-      # 1-indexed line in the script's source.
+      # 1-indexed line in the source.
       integer line
-      # 0-indexed column in the script's source.
+      # 0-indexed column in the source.
       integer column
 
-  # Set of locations which are all on the same line of the same script.
-  type SameLineScriptLocations extends object
+  # Set of locations which are all on the same line of the same source.
+  type SameLineSourceLocations extends object
     properties
       # Common line number for the locations.
       integer line
       # Different column numbers for the locations.
       array of integer columns
 
-  # Location within a script.
-  type Location extends ScriptLocation
+  # Location within a source.
+  type Location extends SourceLocation
     properties
-      ScriptId scriptId
+      SourceId sourceId
 
-  # A location in a generated scripts, along with corresponding locations in any
-  # original scripts which the generated script was source mapped from.
-  # The generated script location is the first element of the array.
+  # A location in a generated source, along with corresponding locations in any
+  # original sources which the generated source was source mapped from.
+  # The generated location is the first element of the array.
   type MappedLocation extends array of Location
 
-  # Get the mapped location for a script location.
+  # Get the mapped location for a source location.
   command getMappedLocation
     parameters
       Location location
@@ -533,27 +533,27 @@ domain Debugger
       # Point where execution should pause.
       PauseDescription target
 
-  # Blackbox a script or a region in it. Resume commands like
+  # Blackbox a source or a region in it. Resume commands like
   # <code>findResumeTarget</code> will not return execution points in
-  # blackboxed regions of a script.
-  command blackboxScript
+  # blackboxed regions of a source.
+  command blackboxSource
     parameters
-      # Script to blackbox.
-      ScriptId scriptId
+      # Source to blackbox.
+      SourceId sourceId
       # If specified, earlier locations will keep their blackbox state.
-      optional ScriptLocation begin
+      optional SourceLocation begin
       # If specified, later locations will keep their blackbox state.
-      optional ScriptLocation end
+      optional SourceLocation end
 
-  # Unblackbox a script or a region in it.
-  command unblackboxScript
+  # Unblackbox a source or a region in it.
+  command unblackboxSource
     parameters
-      # Script to unblackbox.
-      ScriptId scriptId
+      # Source to unblackbox.
+      SourceId sourceId
       # If specified, earlier locations will keep their blackbox state.
-      optional ScriptLocation begin
+      optional SourceLocation begin
       # If specified, later locations will keep their blackbox state.
-      optional ScriptLocation end
+      optional SourceLocation end
 
 # The Console domain defines methods for accessing messages reported to the console.
 #
@@ -582,8 +582,8 @@ domain Console
       string text
       # Any URL associated with the message.
       optional string url
-      # Any script associated with the message.
-      optional Debugger.ScriptId scriptId
+      # Any source associated with the message.
+      optional Debugger.SourceId sourceId
       # Any 1-indexed line number associated with the message.
       optional integer line
       # Any 0-indexed column number associated with the message.
@@ -686,8 +686,8 @@ domain Pause
       # Scope chain for the call frame, from innermost to outermost.
       array of ScopeId scopeChain
       # Alternate scope chain determined from any source map for the frame's
-      # script. This can be structured differently and include different names
-      # than the normal scope chain.
+      # generated source. This can be structured differently and include
+      # different names than the normal scope chain.
       optional array of ScopeId originalScopeChain
       # <code>this</code> value of the call frame.
       Value this
@@ -759,7 +759,7 @@ domain Pause
       optional string functionName
       # For Function objects, the names of the parameters.
       optional array of string functionParameterNames
-      # For scripted Function objects, the location of the function.
+      # For Function objects, any associated source location.
       optional Debugger.MappedLocation functionLocation
       # For DOM Node objects, information about the node.
       optional DOM.Node node
@@ -1305,12 +1305,12 @@ domain Analysis
       # Pause ID created for the current execution point.
       Pause.PauseId pauseId
 
-  # Apply the analysis to every point where a script location executes.
+  # Apply the analysis to every point where a source location executes.
   command addLocation
     parameters
       # Associated analysis.
       AnalysisId analysisId
-      # Session containing the script.
+      # Session containing the source.
       Session.SessionId sessionId
       # Location to apply the analysis to.
       Debugger.Location location
@@ -1318,19 +1318,19 @@ domain Analysis
       # execute while this point's frame is on the stack.
       optional Recording.ExecutionPoint onStackFrame
 
-  # Apply the analysis to every function entry point in a region of a script.
+  # Apply the analysis to every function entry point in a region of a source.
   command addFunctionEntryPoints
     parameters
       # Associated analysis.
       AnalysisId analysisId
       # Associated session.
       Session.SessionId sessionId
-      # Script to look for function entry points in.
-      Debugger.ScriptId scriptId
+      # Source to look for function entry points in.
+      Debugger.SourceId sourceId
       # If specified, earlier functions will be excluded.
-      optional Debugger.ScriptLocation begin
+      optional Debugger.SourceLocation begin
       # If specified, later functions will be excluded.
-      optional Debugger.ScriptLocation end
+      optional Debugger.SourceLocation end
 
   # Apply the analysis to a random selection of points.
   command addRandomPoints
@@ -1432,7 +1432,7 @@ domain Analysis
 # not use this domain. See https://replay.io/driver for more information.
 domain Target
 
-  # Get the function ID / offset to use for a script location, if there is one.
+  # Get the function ID / offset to use for a source location, if there is one.
   command convertLocationToFunctionOffset
     parameters
       Debugger.Location location
@@ -1466,19 +1466,19 @@ domain Target
     returns
       string contents
 
-  # Get the IDs of all functions in a range within a script.
+  # Get the IDs of all functions in a range within a source.
   command getFunctionsInRange
     parameters
-      Debugger.ScriptId scriptId
-      optional Debugger.ScriptLocation begin
-      optional Debugger.ScriptLocation end
+      Debugger.SourceId sourceId
+      optional Debugger.SourceLocation begin
+      optional Debugger.SourceLocation end
     returns
       array of string functions
 
-  # Get any source map URL associated with a script.
-  command getScriptSourceMapURL
+  # Get any source map URL associated with a source.
+  command getSourceMapURL
     parameters
-      Debugger.ScriptId scriptId
+      Debugger.SourceId sourceId
     returns
       optional string url
 
@@ -1498,7 +1498,7 @@ domain Target
       Console.MessageLevel level
       string text
       optional string url
-      optional Debugger.ScriptId scriptId
+      optional Debugger.SourceId sourceId
       optional integer line
       optional integer column
       optional array of Pause.Value argumentValues
