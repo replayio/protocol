@@ -1,51 +1,51 @@
 import { TimeStampedPoint, ExecutionPoint } from "./Recording";
 /**
- * Unique ID for a script.
+ * Unique ID for a source.
  */
-export declare type ScriptId = string;
+export declare type SourceId = string;
 /**
- * Kind of a script.
+ * Kind of a source.
  * <br>
  * <br><code>inlineScript</code>: Inline contents of a <code>script</code> element.
  * <br><code>scriptSource</code>: Script loaded via the <code>src</code> attribute
  *   of a <code>script</code> element.
- * <br><code>other</code>: An unspecified kind of script. This does not include any
- *   original scripts.
+ * <br><code>other</code>: An unspecified kind of source. This does not include any
+ *   original sources.
  * <br><code>html</code>: An entire HTML page containing one or more inline scripts.
- *   This is an original script whose generated scripts are the inline scripts.
- * <br><code>sourceMapped</code>: A source script specified by a source map.
- *   This is an original script whose generated script is associated with the source map.
- *   Source mapped scripts are only available when the source map and its sources have been
+ *   This is an original source whose generated sources are the inline scripts.
+ * <br><code>sourceMapped</code>: An original source specified by a source map.
+ *   This will have a generated source associated with the source map.
+ *   The source map and its sources must have been
  *   associated with the recording via <code>Internal.addRecordingResource</code>.
- * <br><code>prettyPrinted</code>: An original script which was produced by pretty
- *   printing the associated generated script. Pretty printed scripts will
- *   automatically be created for other scripts which appear to contain minified
- *   code, including HTML page scripts. <code>scriptParsed</code> events will be
- *   emitted for a pretty printed script before the generated script.
+ * <br><code>prettyPrinted</code>: An original source which was produced by pretty
+ *   printing the associated generated source. Pretty printed sources will
+ *   automatically be created for other sources which appear to contain minified
+ *   code, including HTML page sources. <code>newSource</code> events will be
+ *   emitted for a pretty printed source before the generated source.
  * <br><br>
  */
-export declare type ScriptKind = "inlineScript" | "scriptSource" | "other" | "html" | "sourceMapped" | "prettyPrinted";
+export declare type SourceKind = "inlineScript" | "scriptSource" | "other" | "html" | "sourceMapped" | "prettyPrinted";
 /**
- * Possible content types for script sources.
+ * Possible content types for sources.
  */
 export declare type ContentType = "text/javascript" | "text/html";
 /**
- * Location within a particular script.
+ * Location within a particular source.
  */
-export interface ScriptLocation {
+export interface SourceLocation {
     /**
-     * 1-indexed line in the script's source.
+     * 1-indexed line in the source.
      */
     line: number;
     /**
-     * 0-indexed column in the script's source.
+     * 0-indexed column in the source.
      */
     column: number;
 }
 /**
- * Set of locations which are all on the same line of the same script.
+ * Set of locations which are all on the same line of the same source.
  */
-export interface SameLineScriptLocations {
+export interface SameLineSourceLocations {
     /**
      * Common line number for the locations.
      */
@@ -56,15 +56,15 @@ export interface SameLineScriptLocations {
     columns: number[];
 }
 /**
- * Location within a script.
+ * Location within a source.
  */
-export interface Location extends ScriptLocation {
-    scriptId: ScriptId;
+export interface Location extends SourceLocation {
+    sourceId: SourceId;
 }
 /**
- * A location in a generated scripts, along with corresponding locations in any
- * original scripts which the generated script was source mapped from.
- * The generated script location is the first element of the array.
+ * A location in a generated source, along with corresponding locations in any
+ * original sources which the generated source was source mapped from.
+ * The generated location is the first element of the array.
  */
 export declare type MappedLocation = Location[];
 /**
@@ -101,21 +101,21 @@ export interface PauseDescription extends PointDescription {
      */
     reason: PauseReason;
 }
-export interface findScriptsParameters {
+export interface findSourcesParameters {
 }
-export interface findScriptsResult {
+export interface findSourcesResult {
 }
-export interface getScriptSourceParameters {
+export interface getSourceContentsParameters {
     /**
-     * Script to fetch the source for.
+     * Source to fetch the contents for.
      */
-    scriptId: ScriptId;
+    sourceId: SourceId;
 }
-export interface getScriptSourceResult {
+export interface getSourceContentsResult {
     /**
-     * Source contents of the script.
+     * Contents of the source.
      */
-    scriptSource: string;
+    contents: string;
     /**
      * Content type of the source contents.
      */
@@ -123,23 +123,23 @@ export interface getScriptSourceResult {
 }
 export interface getPossibleBreakpointsParameters {
     /**
-     * Script to return breakpoint locations for.
+     * Source to return breakpoint locations for.
      */
-    scriptId: ScriptId;
+    sourceId: SourceId;
     /**
      * If specified, earlier breakpoint locations will be excluded.
      */
-    begin?: ScriptLocation;
+    begin?: SourceLocation;
     /**
      * If specified, later breakpoint locations will be excluded.
      */
-    end?: ScriptLocation;
+    end?: SourceLocation;
 }
 export interface getPossibleBreakpointsResult {
     /**
-     * All breakpoint locations in the specified script and range.
+     * All breakpoint locations in the specified source and range.
      */
-    lineLocations: SameLineScriptLocations[];
+    lineLocations: SameLineSourceLocations[];
 }
 export interface getMappedLocationParameters {
     location: Location;
@@ -241,57 +241,57 @@ export interface findStepOutTargetResult {
      */
     target: PauseDescription;
 }
-export interface blackboxScriptParameters {
+export interface blackboxSourceParameters {
     /**
-     * Script to blackbox.
+     * Source to blackbox.
      */
-    scriptId: ScriptId;
-    /**
-     * If specified, earlier locations will keep their blackbox state.
-     */
-    begin?: ScriptLocation;
-    /**
-     * If specified, later locations will keep their blackbox state.
-     */
-    end?: ScriptLocation;
-}
-export interface blackboxScriptResult {
-}
-export interface unblackboxScriptParameters {
-    /**
-     * Script to unblackbox.
-     */
-    scriptId: ScriptId;
+    sourceId: SourceId;
     /**
      * If specified, earlier locations will keep their blackbox state.
      */
-    begin?: ScriptLocation;
+    begin?: SourceLocation;
     /**
      * If specified, later locations will keep their blackbox state.
      */
-    end?: ScriptLocation;
+    end?: SourceLocation;
 }
-export interface unblackboxScriptResult {
+export interface blackboxSourceResult {
+}
+export interface unblackboxSourceParameters {
+    /**
+     * Source to unblackbox.
+     */
+    sourceId: SourceId;
+    /**
+     * If specified, earlier locations will keep their blackbox state.
+     */
+    begin?: SourceLocation;
+    /**
+     * If specified, later locations will keep their blackbox state.
+     */
+    end?: SourceLocation;
+}
+export interface unblackboxSourceResult {
 }
 /**
- * Describes a script that was successfully parsed.
+ * Describes a source in the recording.
  */
-export interface scriptParsed {
+export interface newSource {
     /**
-     * ID for the script.
+     * ID for the source.
      */
-    scriptId: ScriptId;
+    sourceId: SourceId;
     /**
-     * Kind of script.
+     * Kind of the source.
      */
-    kind: ScriptKind;
+    kind: SourceKind;
     /**
-     * URL of the script. Omitted for dynamically generated scripts (from eval etc.).
+     * URL of the source. Omitted for dynamically generated sources (from eval etc.).
      */
     url?: string;
     /**
-     * If this is an original script, the IDs of the scripts which were generated from
+     * If this is an original source, the IDs of the sources which were generated from
      * this one.
      */
-    generatedScriptIds?: ScriptId[];
+    generatedSourceIds?: SourceId[];
 }

@@ -96,8 +96,8 @@ export interface Frame {
     scopeChain: ScopeId[];
     /**
      * Alternate scope chain determined from any source map for the frame's
-     * script. This can be structured differently and include different names
-     * than the normal scope chain.
+     * generated source. This can be structured differently and include
+     * different names than the normal scope chain.
      */
     originalScopeChain?: ScopeId[];
     /**
@@ -206,7 +206,7 @@ export interface ObjectPreview {
      */
     functionParameterNames?: string[];
     /**
-     * For scripted Function objects, the location of the function.
+     * For Function objects, any associated source location.
      */
     functionLocation?: MappedLocation;
     /**
@@ -301,6 +301,18 @@ export interface Result {
      */
     data: PauseData;
 }
+/**
+ * Levels of detail for an object preview.
+ * <br>
+ * <br><code>none</code>: Don't actually generate a preview, but just an <code>Object</code>
+ *   with non-preview information.
+ * <br><code>noProperties</code>: Generate an overflowing preview with no properties.
+ * <br><code>canOverflow</code>: Generate a preview with some properties.
+ *   If there are too many properties, some may be omitted and the preview will overflow.
+ * <br><code>full</code>: Generate a non-overflowing preview with all properties.
+ * <br><br>
+ */
+export declare type ObjectPreviewLevel = "none" | "noProperties" | "canOverflow" | "full";
 export interface evaluateInFrameParameters {
     /**
      * Frame to perform the evaluation in.
@@ -403,12 +415,16 @@ export interface getObjectPreviewParameters {
      * Object to load the preview for.
      */
     object: ObjectId;
+    /**
+     * Amount of data desired in the resulting preview. If omitted, the full
+     * non-overflowing preview for the object will be returned.
+     */
+    level?: ObjectPreviewLevel;
 }
 export interface getObjectPreviewResult {
     /**
-     * Returned data. This includes a preview for the object which does not
-     * have <code>overflow</code> set, and additional data for objects which
-     * it references.
+     * Returned data. This includes a preview for the object, and additional
+     * data for objects which it references.
      */
     data: PauseData;
 }

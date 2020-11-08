@@ -19,5 +19,5 @@ __exportStar(require("./Pause"), exports);
 __exportStar(require("./DOM"), exports);
 __exportStar(require("./CSS"), exports);
 __exportStar(require("./Analysis"), exports);
-__exportStar(require("./Host"), exports);
+__exportStar(require("./Target"), exports);
 __exportStar(require("./Internal"), exports);

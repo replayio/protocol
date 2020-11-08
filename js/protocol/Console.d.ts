@@ -1,4 +1,4 @@
-import { ScriptId, PointDescription } from "./Debugger";
+import { SourceId, PointDescription } from "./Debugger";
 import { PauseId, Value, CallStack, PauseData } from "./Pause";
 /**
  * Contents of a console message.
@@ -21,9 +21,9 @@ export interface Message {
      */
     url?: string;
     /**
-     * Any script associated with the message.
+     * Any source associated with the message.
      */
-    scriptId?: ScriptId;
+    sourceId?: SourceId;
     /**
      * Any 1-indexed line number associated with the message.
      */

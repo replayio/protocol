@@ -1,13 +1,13 @@
 import { metadataChange, uploadedData, sessionError, getDescriptionParameters, getDescriptionResult, getMetadataParameters, getMetadataResult, setMetadataParameters, setMetadataResult, metadataStartListeningParameters, metadataStartListeningResult, metadataStopListeningParameters, metadataStopListeningResult, createSessionParameters, createSessionResult, releaseSessionParameters, releaseSessionResult, processRecordingParameters, processRecordingResult } from "../protocol/Recording";
 import { missingRegions, unprocessedRegions, mouseEvents, ensureProcessedParameters, ensureProcessedResult, findMouseEventsParameters, findMouseEventsResult, getEndpointParameters, getEndpointResult, createPauseParameters, createPauseResult, releasePauseParameters, releasePauseResult, SessionId } from "../protocol/Session";
 import { paintPoints, findPaintsParameters, findPaintsResult, getPaintContentsParameters, getPaintContentsResult, getDevicePixelRatioParameters, getDevicePixelRatioResult } from "../protocol/Graphics";
-import { scriptParsed, findScriptsParameters, findScriptsResult, getScriptSourceParameters, getScriptSourceResult, getPossibleBreakpointsParameters, getPossibleBreakpointsResult, getMappedLocationParameters, getMappedLocationResult, setBreakpointParameters, setBreakpointResult, removeBreakpointParameters, removeBreakpointResult, findResumeTargetParameters, findResumeTargetResult, findRewindTargetParameters, findRewindTargetResult, findReverseStepOverTargetParameters, findReverseStepOverTargetResult, findStepOverTargetParameters, findStepOverTargetResult, findStepInTargetParameters, findStepInTargetResult, findStepOutTargetParameters, findStepOutTargetResult, blackboxScriptParameters, blackboxScriptResult, unblackboxScriptParameters, unblackboxScriptResult } from "../protocol/Debugger";
+import { newSource, findSourcesParameters, findSourcesResult, getSourceContentsParameters, getSourceContentsResult, getPossibleBreakpointsParameters, getPossibleBreakpointsResult, getMappedLocationParameters, getMappedLocationResult, setBreakpointParameters, setBreakpointResult, removeBreakpointParameters, removeBreakpointResult, findResumeTargetParameters, findResumeTargetResult, findRewindTargetParameters, findRewindTargetResult, findReverseStepOverTargetParameters, findReverseStepOverTargetResult, findStepOverTargetParameters, findStepOverTargetResult, findStepInTargetParameters, findStepInTargetResult, findStepOutTargetParameters, findStepOutTargetResult, blackboxSourceParameters, blackboxSourceResult, unblackboxSourceParameters, unblackboxSourceResult } from "../protocol/Debugger";
 import { newMessage, findMessagesParameters, findMessagesResult } from "../protocol/Console";
 import { evaluateInFrameParameters, evaluateInFrameResult, evaluateInGlobalParameters, evaluateInGlobalResult, getObjectPropertyParameters, getObjectPropertyResult, callFunctionParameters, callFunctionResult, callObjectPropertyParameters, callObjectPropertyResult, getObjectPreviewParameters, getObjectPreviewResult, getScopeParameters, getScopeResult, getTopFrameParameters, getTopFrameResult, getAllFramesParameters, getAllFramesResult, getFrameArgumentsParameters, getFrameArgumentsResult, getFrameStepsParameters, getFrameStepsResult, getExceptionValueParameters, getExceptionValueResult, PauseId } from "../protocol/Pause";
 import { getDocumentParameters, getDocumentResult, getParentNodesParameters, getParentNodesResult, querySelectorParameters, querySelectorResult, getEventListenersParameters, getEventListenersResult, getBoxModelParameters, getBoxModelResult, getBoundingClientRectParameters, getBoundingClientRectResult, getAllBoundingClientRectsParameters, getAllBoundingClientRectsResult, performSearchParameters, performSearchResult } from "../protocol/DOM";
 import { getComputedStyleParameters, getComputedStyleResult, getAppliedRulesParameters, getAppliedRulesResult } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, createAnalysisResult, addLocationParameters, addLocationResult, addFunctionEntryPointsParameters, addFunctionEntryPointsResult, addRandomPointsParameters, addRandomPointsResult, addEventHandlerEntryPointsParameters, addEventHandlerEntryPointsResult, addExceptionPointsParameters, addExceptionPointsResult, runAnalysisParameters, runAnalysisResult, releaseAnalysisParameters, releaseAnalysisResult, findAnalysisPointsParameters, findAnalysisPointsResult } from "../protocol/Analysis";
-import { convertLocationToFunctionOffsetParameters, convertLocationToFunctionOffsetResult, convertFunctionOffsetToLocationParameters, convertFunctionOffsetToLocationResult, getStepOffsetsParameters, getStepOffsetsResult, getHTMLSourceParameters, getHTMLSourceResult, getFunctionsInRangeParameters, getFunctionsInRangeResult, getScriptSourceMapURLParameters, getScriptSourceMapURLResult, getSheetSourceMapURLParameters, getSheetSourceMapURLResult, getCurrentMessageContentsParameters, getCurrentMessageContentsResult, countStackFramesParameters, countStackFramesResult, currentGeneratorIdParameters, currentGeneratorIdResult, getObjectPreviewRequiredPropertiesParameters, getObjectPreviewRequiredPropertiesResult } from "../protocol/Host";
+import { convertLocationToFunctionOffsetParameters, convertLocationToFunctionOffsetResult, convertFunctionOffsetToLocationParameters, convertFunctionOffsetToLocationResult, getStepOffsetsParameters, getStepOffsetsResult, getHTMLSourceParameters, getHTMLSourceResult, getFunctionsInRangeParameters, getFunctionsInRangeResult, getSourceMapURLParameters, getSourceMapURLResult, getSheetSourceMapURLParameters, getSheetSourceMapURLResult, getCurrentMessageContentsParameters, getCurrentMessageContentsResult, countStackFramesParameters, countStackFramesResult, currentGeneratorIdParameters, currentGeneratorIdResult } from "../protocol/Target";
 import { createRecordingParameters, createRecordingResult, addRecordingDataParameters, addRecordingDataResult, addRecordingDescriptionParameters, addRecordingDescriptionResult, hasResourceParameters, hasResourceResult, addResourceParameters, addResourceResult, addRecordingResourceParameters, addRecordingResourceResult, getAssertionFiltersParameters, getAssertionFiltersResult, echoParameters, echoResult, labelTestSessionParameters, labelTestSessionResult, getRecordingsParameters, getRecordingsResult } from "../protocol/Internal";
 export interface GenericProtocolClient {
     /**
@@ -40,9 +40,9 @@ export interface GenericProtocolClient {
      */
     addEventListener(event: "Graphics.paintPoints", listener: (parameters: paintPoints) => void): void;
     /**
-     * Describes a script that was successfully parsed.
+     * Describes a source in the recording.
      */
-    addEventListener(event: "Debugger.scriptParsed", listener: (parameters: scriptParsed) => void): void;
+    addEventListener(event: "Debugger.newSource", listener: (parameters: newSource) => void): void;
     /**
      * Describes a console message in the recording.
      */
@@ -146,22 +146,22 @@ export interface GenericProtocolClient {
      */
     sendCommand(command: "Graphics.getDevicePixelRatio", parameters: getDevicePixelRatioParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getDevicePixelRatioResult>;
     /**
-     * Find all scripts in the recording. Does not return until the recording is
-     * fully processed. Before returning, <code>scriptParsed</code> events will be
-     * emitted for every script in the recording.
+     * Find all sources in the recording. Does not return until the recording is
+     * fully processed. Before returning, <code>newSource</code> events will be
+     * emitted for every source in the recording.
      */
-    sendCommand(command: "Debugger.findScripts", parameters: findScriptsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<findScriptsResult>;
+    sendCommand(command: "Debugger.findSources", parameters: findSourcesParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<findSourcesResult>;
     /**
-     * Get the source contents of a script.
+     * Get the contents of a source.
      */
-    sendCommand(command: "Debugger.getScriptSource", parameters: getScriptSourceParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getScriptSourceResult>;
+    sendCommand(command: "Debugger.getSourceContents", parameters: getSourceContentsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getSourceContentsResult>;
     /**
      * Get a compact representation of the locations where breakpoints can be set
-     * in a region of a script.
+     * in a region of a source.
      */
     sendCommand(command: "Debugger.getPossibleBreakpoints", parameters: getPossibleBreakpointsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getPossibleBreakpointsResult>;
     /**
-     * Get the mapped location for a script location.
+     * Get the mapped location for a source location.
      */
     sendCommand(command: "Debugger.getMappedLocation", parameters: getMappedLocationParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getMappedLocationResult>;
     /**
@@ -198,15 +198,15 @@ export interface GenericProtocolClient {
      */
     sendCommand(command: "Debugger.findStepOutTarget", parameters: findStepOutTargetParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<findStepOutTargetResult>;
     /**
-     * Blackbox a script or a region in it. Resume commands like
+     * Blackbox a source or a region in it. Resume commands like
      * <code>findResumeTarget</code> will not return execution points in
-     * blackboxed regions of a script.
+     * blackboxed regions of a source.
      */
-    sendCommand(command: "Debugger.blackboxScript", parameters: blackboxScriptParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<blackboxScriptResult>;
+    sendCommand(command: "Debugger.blackboxSource", parameters: blackboxSourceParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<blackboxSourceResult>;
     /**
-     * Unblackbox a script or a region in it.
+     * Unblackbox a source or a region in it.
      */
-    sendCommand(command: "Debugger.unblackboxScript", parameters: unblackboxScriptParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<unblackboxScriptResult>;
+    sendCommand(command: "Debugger.unblackboxSource", parameters: unblackboxSourceParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<unblackboxSourceResult>;
     /**
      * Find all messages in the recording. Does not return until the recording is
      * fully processed. Before returning, <code>newMessage</code> events will be
@@ -235,7 +235,7 @@ export interface GenericProtocolClient {
      */
     sendCommand(command: "Pause.callObjectProperty", parameters: callObjectPropertyParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<callObjectPropertyResult>;
     /**
-     * Load a complete preview for an object.
+     * Load a preview for an object.
      */
     sendCommand(command: "Pause.getObjectPreview", parameters: getObjectPreviewParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getObjectPreviewResult>;
     /**
@@ -308,11 +308,11 @@ export interface GenericProtocolClient {
      */
     sendCommand(command: "Analysis.createAnalysis", parameters: createAnalysisParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<createAnalysisResult>;
     /**
-     * Apply the analysis to every point where a script location executes.
+     * Apply the analysis to every point where a source location executes.
      */
     sendCommand(command: "Analysis.addLocation", parameters: addLocationParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<addLocationResult>;
     /**
-     * Apply the analysis to every function entry point in a region of a script.
+     * Apply the analysis to every function entry point in a region of a source.
      */
     sendCommand(command: "Analysis.addFunctionEntryPoints", parameters: addFunctionEntryPointsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<addFunctionEntryPointsResult>;
     /**
@@ -348,58 +348,52 @@ export interface GenericProtocolClient {
      */
     sendCommand(command: "Analysis.findAnalysisPoints", parameters: findAnalysisPointsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<findAnalysisPointsResult>;
     /**
-     * Get the function ID / offset to use for a script location, if there is one.
+     * Get the function ID / offset to use for a source location, if there is one.
      */
-    sendCommand(command: "Host.convertLocationToFunctionOffset", parameters: convertLocationToFunctionOffsetParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<convertLocationToFunctionOffsetResult>;
+    sendCommand(command: "Target.convertLocationToFunctionOffset", parameters: convertLocationToFunctionOffsetParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<convertLocationToFunctionOffsetResult>;
     /**
      * Get the location to use for a function ID / offset.
      */
-    sendCommand(command: "Host.convertFunctionOffsetToLocation", parameters: convertFunctionOffsetToLocationParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<convertFunctionOffsetToLocationResult>;
+    sendCommand(command: "Target.convertFunctionOffsetToLocation", parameters: convertFunctionOffsetToLocationParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<convertFunctionOffsetToLocationResult>;
     /**
      * Get the offsets at which execution should pause when stepping around within
      * a frame for a function.
      */
-    sendCommand(command: "Host.getStepOffsets", parameters: getStepOffsetsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getStepOffsetsResult>;
+    sendCommand(command: "Target.getStepOffsets", parameters: getStepOffsetsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getStepOffsetsResult>;
     /**
      * Get the most complete contents known for an HTML file.
      */
-    sendCommand(command: "Host.getHTMLSource", parameters: getHTMLSourceParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getHTMLSourceResult>;
+    sendCommand(command: "Target.getHTMLSource", parameters: getHTMLSourceParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getHTMLSourceResult>;
     /**
-     * Get the IDs of all functions in a range within a script.
+     * Get the IDs of all functions in a range within a source.
      */
-    sendCommand(command: "Host.getFunctionsInRange", parameters: getFunctionsInRangeParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getFunctionsInRangeResult>;
+    sendCommand(command: "Target.getFunctionsInRange", parameters: getFunctionsInRangeParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getFunctionsInRangeResult>;
     /**
-     * Get any source map URL associated with a script.
+     * Get any source map URL associated with a source.
      */
-    sendCommand(command: "Host.getScriptSourceMapURL", parameters: getScriptSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getScriptSourceMapURLResult>;
+    sendCommand(command: "Target.getSourceMapURL", parameters: getSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getSourceMapURLResult>;
     /**
      * Get any source map URL associated with a style sheet.
      */
-    sendCommand(command: "Host.getSheetSourceMapURL", parameters: getSheetSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getSheetSourceMapURLResult>;
+    sendCommand(command: "Target.getSheetSourceMapURL", parameters: getSheetSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getSheetSourceMapURLResult>;
     /**
-     * This command might be sent from within an OnConsoleMessage() call to get
-     * contents of the new message. Properties in the result have the same meaning
-     * as for <code>Console.Message</code>.
+     * This command might be sent from within a RecordReplayOnConsoleMessage() call
+     * to get  contents of the new message. Properties in the result have the same
+     * meaning as for <code>Console.Message</code>.
      */
-    sendCommand(command: "Host.getCurrentMessageContents", parameters: getCurrentMessageContentsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getCurrentMessageContentsResult>;
+    sendCommand(command: "Target.getCurrentMessageContents", parameters: getCurrentMessageContentsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getCurrentMessageContentsResult>;
     /**
      * Count the number of stack frames on the stack. This is equivalent to using
      * the size of the stack returned by <code>Pause.getAllFrames</code>, but can
      * be implemented more efficiently.
      */
-    sendCommand(command: "Host.countStackFrames", parameters: countStackFramesParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<countStackFramesResult>;
+    sendCommand(command: "Target.countStackFrames", parameters: countStackFramesParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<countStackFramesResult>;
     /**
      * If the topmost frame on the stack is a generator frame which can be popped
      * and pushed on the stack repeatedly, return a unique ID for the frame which
      * will be consistent across each of those pops and pushes.
      */
-    sendCommand(command: "Host.currentGeneratorId", parameters: currentGeneratorIdParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<currentGeneratorIdResult>;
-    /**
-     * When generating previews whose contents might overflow, this can be used to
-     * specify property and getter names which must be included in the resulting
-     * preview.
-     */
-    sendCommand(command: "Host.getObjectPreviewRequiredProperties", parameters: getObjectPreviewRequiredPropertiesParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getObjectPreviewRequiredPropertiesResult>;
+    sendCommand(command: "Target.currentGeneratorId", parameters: currentGeneratorIdParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<currentGeneratorIdResult>;
     /**
      * Create a new recording.
      */

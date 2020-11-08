@@ -29,9 +29,9 @@ import {
   getDevicePixelRatioParameters
 } from "../protocol/Graphics";
 import {
-  scriptParsed,
-  findScriptsParameters,
-  getScriptSourceParameters,
+  newSource,
+  findSourcesParameters,
+  getSourceContentsParameters,
   getPossibleBreakpointsParameters,
   getMappedLocationParameters,
   setBreakpointParameters,
@@ -42,8 +42,8 @@ import {
   findStepOverTargetParameters,
   findStepInTargetParameters,
   findStepOutTargetParameters,
-  blackboxScriptParameters,
-  unblackboxScriptParameters
+  blackboxSourceParameters,
+  unblackboxSourceParameters
 } from "../protocol/Debugger";
 import {
   newMessage,
@@ -98,13 +98,12 @@ import {
   getStepOffsetsParameters,
   getHTMLSourceParameters,
   getFunctionsInRangeParameters,
-  getScriptSourceMapURLParameters,
+  getSourceMapURLParameters,
   getSheetSourceMapURLParameters,
   getCurrentMessageContentsParameters,
   countStackFramesParameters,
-  currentGeneratorIdParameters,
-  getObjectPreviewRequiredPropertiesParameters
-} from "../protocol/Host";
+  currentGeneratorIdParameters
+} from "../protocol/Target";
 import {
   createRecordingParameters,
   addRecordingDataParameters,
@@ -333,45 +332,45 @@ export class ProtocolClient {
   }
 
   /**
-   * The Debugger domain defines methods for accessing JS scripts and navigating
-   * around the recording using breakpoints, stepping, and so forth.
+   * The Debugger domain defines methods for accessing sources in the recording
+   * and navigating around the recording using breakpoints, stepping, and so forth.
    * 
    * <br><br>All commands and events in this domain must include a <code>sessionId</code>.
    */
   Debugger = {
 
     /**
-     * Describes a script that was successfully parsed.
+     * Describes a source in the recording.
      */
-    addScriptParsedListener: (listener: (parameters: scriptParsed) => void) =>
-      this.genericClient.addEventListener("Debugger.scriptParsed", listener),
+    addNewSourceListener: (listener: (parameters: newSource) => void) =>
+      this.genericClient.addEventListener("Debugger.newSource", listener),
 
-    removeScriptParsedListener: () =>
-      this.genericClient.removeEventListener("Debugger.scriptParsed"),
-
-    /**
-     * Find all scripts in the recording. Does not return until the recording is
-     * fully processed. Before returning, <code>scriptParsed</code> events will be
-     * emitted for every script in the recording.
-     */
-    findScripts: (parameters: findScriptsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Debugger.findScripts", parameters, sessionId, pauseId),
+    removeNewSourceListener: () =>
+      this.genericClient.removeEventListener("Debugger.newSource"),
 
     /**
-     * Get the source contents of a script.
+     * Find all sources in the recording. Does not return until the recording is
+     * fully processed. Before returning, <code>newSource</code> events will be
+     * emitted for every source in the recording.
      */
-    getScriptSource: (parameters: getScriptSourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Debugger.getScriptSource", parameters, sessionId, pauseId),
+    findSources: (parameters: findSourcesParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.findSources", parameters, sessionId, pauseId),
+
+    /**
+     * Get the contents of a source.
+     */
+    getSourceContents: (parameters: getSourceContentsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.getSourceContents", parameters, sessionId, pauseId),
 
     /**
      * Get a compact representation of the locations where breakpoints can be set
-     * in a region of a script.
+     * in a region of a source.
      */
     getPossibleBreakpoints: (parameters: getPossibleBreakpointsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
       this.genericClient.sendCommand("Debugger.getPossibleBreakpoints", parameters, sessionId, pauseId),
 
     /**
-     * Get the mapped location for a script location.
+     * Get the mapped location for a source location.
      */
     getMappedLocation: (parameters: getMappedLocationParameters, sessionId?: SessionId, pauseId?: PauseId) =>
       this.genericClient.sendCommand("Debugger.getMappedLocation", parameters, sessionId, pauseId),
@@ -426,18 +425,18 @@ export class ProtocolClient {
       this.genericClient.sendCommand("Debugger.findStepOutTarget", parameters, sessionId, pauseId),
 
     /**
-     * Blackbox a script or a region in it. Resume commands like
+     * Blackbox a source or a region in it. Resume commands like
      * <code>findResumeTarget</code> will not return execution points in
-     * blackboxed regions of a script.
+     * blackboxed regions of a source.
      */
-    blackboxScript: (parameters: blackboxScriptParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Debugger.blackboxScript", parameters, sessionId, pauseId),
+    blackboxSource: (parameters: blackboxSourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.blackboxSource", parameters, sessionId, pauseId),
 
     /**
-     * Unblackbox a script or a region in it.
+     * Unblackbox a source or a region in it.
      */
-    unblackboxScript: (parameters: unblackboxScriptParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Debugger.unblackboxScript", parameters, sessionId, pauseId),
+    unblackboxSource: (parameters: unblackboxSourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Debugger.unblackboxSource", parameters, sessionId, pauseId),
   }
 
   /**
@@ -506,7 +505,7 @@ export class ProtocolClient {
       this.genericClient.sendCommand("Pause.callObjectProperty", parameters, sessionId, pauseId),
 
     /**
-     * Load a complete preview for an object.
+     * Load a preview for an object.
      */
     getObjectPreview: (parameters: getObjectPreviewParameters, sessionId?: SessionId, pauseId?: PauseId) =>
       this.genericClient.sendCommand("Pause.getObjectPreview", parameters, sessionId, pauseId),
@@ -682,13 +681,13 @@ export class ProtocolClient {
       this.genericClient.sendCommand("Analysis.createAnalysis", parameters, sessionId, pauseId),
 
     /**
-     * Apply the analysis to every point where a script location executes.
+     * Apply the analysis to every point where a source location executes.
      */
     addLocation: (parameters: addLocationParameters, sessionId?: SessionId, pauseId?: PauseId) =>
       this.genericClient.sendCommand("Analysis.addLocation", parameters, sessionId, pauseId),
 
     /**
-     * Apply the analysis to every function entry point in a region of a script.
+     * Apply the analysis to every function entry point in a region of a source.
      */
     addFunctionEntryPoints: (parameters: addFunctionEntryPointsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
       this.genericClient.sendCommand("Analysis.addFunctionEntryPoints", parameters, sessionId, pauseId),
@@ -739,61 +738,62 @@ export class ProtocolClient {
   }
 
   /**
-   * The Host domain includes commands that are sent by the record/replay driver
-   * to its host VM. Protocol clients should not use this domain.
+   * The Target domain includes commands that are sent by the Record Replay Driver
+   * to the target application which it is attached to. Protocol clients should
+   * not use this domain. See https://replay.io/driver for more information.
    */
-  Host = {
+  Target = {
 
     /**
-     * Get the function ID / offset to use for a script location, if there is one.
+     * Get the function ID / offset to use for a source location, if there is one.
      */
     convertLocationToFunctionOffset: (parameters: convertLocationToFunctionOffsetParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.convertLocationToFunctionOffset", parameters, sessionId, pauseId),
+      this.genericClient.sendCommand("Target.convertLocationToFunctionOffset", parameters, sessionId, pauseId),
 
     /**
      * Get the location to use for a function ID / offset.
      */
     convertFunctionOffsetToLocation: (parameters: convertFunctionOffsetToLocationParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.convertFunctionOffsetToLocation", parameters, sessionId, pauseId),
+      this.genericClient.sendCommand("Target.convertFunctionOffsetToLocation", parameters, sessionId, pauseId),
 
     /**
      * Get the offsets at which execution should pause when stepping around within
      * a frame for a function.
      */
     getStepOffsets: (parameters: getStepOffsetsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.getStepOffsets", parameters, sessionId, pauseId),
+      this.genericClient.sendCommand("Target.getStepOffsets", parameters, sessionId, pauseId),
 
     /**
      * Get the most complete contents known for an HTML file.
      */
     getHTMLSource: (parameters: getHTMLSourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.getHTMLSource", parameters, sessionId, pauseId),
+      this.genericClient.sendCommand("Target.getHTMLSource", parameters, sessionId, pauseId),
 
     /**
-     * Get the IDs of all functions in a range within a script.
+     * Get the IDs of all functions in a range within a source.
      */
     getFunctionsInRange: (parameters: getFunctionsInRangeParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.getFunctionsInRange", parameters, sessionId, pauseId),
+      this.genericClient.sendCommand("Target.getFunctionsInRange", parameters, sessionId, pauseId),
 
     /**
-     * Get any source map URL associated with a script.
+     * Get any source map URL associated with a source.
      */
-    getScriptSourceMapURL: (parameters: getScriptSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.getScriptSourceMapURL", parameters, sessionId, pauseId),
+    getSourceMapURL: (parameters: getSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Target.getSourceMapURL", parameters, sessionId, pauseId),
 
     /**
      * Get any source map URL associated with a style sheet.
      */
     getSheetSourceMapURL: (parameters: getSheetSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.getSheetSourceMapURL", parameters, sessionId, pauseId),
+      this.genericClient.sendCommand("Target.getSheetSourceMapURL", parameters, sessionId, pauseId),
 
     /**
-     * This command might be sent from within an OnConsoleMessage() call to get
-     * contents of the new message. Properties in the result have the same meaning
-     * as for <code>Console.Message</code>.
+     * This command might be sent from within a RecordReplayOnConsoleMessage() call
+     * to get  contents of the new message. Properties in the result have the same
+     * meaning as for <code>Console.Message</code>.
      */
     getCurrentMessageContents: (parameters: getCurrentMessageContentsParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.getCurrentMessageContents", parameters, sessionId, pauseId),
+      this.genericClient.sendCommand("Target.getCurrentMessageContents", parameters, sessionId, pauseId),
 
     /**
      * Count the number of stack frames on the stack. This is equivalent to using
@@ -801,7 +801,7 @@ export class ProtocolClient {
      * be implemented more efficiently.
      */
     countStackFrames: (parameters: countStackFramesParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.countStackFrames", parameters, sessionId, pauseId),
+      this.genericClient.sendCommand("Target.countStackFrames", parameters, sessionId, pauseId),
 
     /**
      * If the topmost frame on the stack is a generator frame which can be popped
@@ -809,15 +809,7 @@ export class ProtocolClient {
      * will be consistent across each of those pops and pushes.
      */
     currentGeneratorId: (parameters: currentGeneratorIdParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.currentGeneratorId", parameters, sessionId, pauseId),
-
-    /**
-     * When generating previews whose contents might overflow, this can be used to
-     * specify property and getter names which must be included in the resulting
-     * preview.
-     */
-    getObjectPreviewRequiredProperties: (parameters: getObjectPreviewRequiredPropertiesParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Host.getObjectPreviewRequiredProperties", parameters, sessionId, pauseId),
+      this.genericClient.sendCommand("Target.currentGeneratorId", parameters, sessionId, pauseId),
   }
 
   /**

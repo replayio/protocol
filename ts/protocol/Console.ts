@@ -1,5 +1,5 @@
 import {
-  ScriptId,
+  SourceId,
   PointDescription
 } from "./Debugger";
 import {
@@ -35,9 +35,9 @@ export interface Message {
   url?: string;
 
   /**
-   * Any script associated with the message.
+   * Any source associated with the message.
    */
-  scriptId?: ScriptId;
+  sourceId?: SourceId;
 
   /**
    * Any 1-indexed line number associated with the message.

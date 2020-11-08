@@ -1,7 +1,7 @@
 import { TimeStampedPoint, ExecutionPoint } from "./Recording";
 import { SessionId } from "./Session";
 import { PauseId } from "./Pause";
-import { PointDescription, Location, ScriptId, ScriptLocation } from "./Debugger";
+import { PointDescription, Location, SourceId, SourceLocation } from "./Debugger";
 /**
  * Unique identifier for an analysis.
  */
@@ -79,7 +79,7 @@ export interface addLocationParameters {
      */
     analysisId: AnalysisId;
     /**
-     * Session containing the script.
+     * Session containing the source.
      */
     sessionId: SessionId;
     /**
@@ -104,17 +104,17 @@ export interface addFunctionEntryPointsParameters {
      */
     sessionId: SessionId;
     /**
-     * Script to look for function entry points in.
+     * Source to look for function entry points in.
      */
-    scriptId: ScriptId;
+    sourceId: SourceId;
     /**
      * If specified, earlier functions will be excluded.
      */
-    begin?: ScriptLocation;
+    begin?: SourceLocation;
     /**
      * If specified, later functions will be excluded.
      */
-    end?: ScriptLocation;
+    end?: SourceLocation;
 }
 export interface addFunctionEntryPointsResult {
 }

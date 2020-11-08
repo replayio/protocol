@@ -211,44 +211,44 @@ var ProtocolClient = /** @class */ (function () {
             },
         };
         /**
-         * The Debugger domain defines methods for accessing JS scripts and navigating
-         * around the recording using breakpoints, stepping, and so forth.
+         * The Debugger domain defines methods for accessing sources in the recording
+         * and navigating around the recording using breakpoints, stepping, and so forth.
          *
          * <br><br>All commands and events in this domain must include a <code>sessionId</code>.
          */
         this.Debugger = {
             /**
-             * Describes a script that was successfully parsed.
+             * Describes a source in the recording.
              */
-            addScriptParsedListener: function (listener) {
-                return _this.genericClient.addEventListener("Debugger.scriptParsed", listener);
+            addNewSourceListener: function (listener) {
+                return _this.genericClient.addEventListener("Debugger.newSource", listener);
             },
-            removeScriptParsedListener: function () {
-                return _this.genericClient.removeEventListener("Debugger.scriptParsed");
-            },
-            /**
-             * Find all scripts in the recording. Does not return until the recording is
-             * fully processed. Before returning, <code>scriptParsed</code> events will be
-             * emitted for every script in the recording.
-             */
-            findScripts: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Debugger.findScripts", parameters, sessionId, pauseId);
+            removeNewSourceListener: function () {
+                return _this.genericClient.removeEventListener("Debugger.newSource");
             },
             /**
-             * Get the source contents of a script.
+             * Find all sources in the recording. Does not return until the recording is
+             * fully processed. Before returning, <code>newSource</code> events will be
+             * emitted for every source in the recording.
              */
-            getScriptSource: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Debugger.getScriptSource", parameters, sessionId, pauseId);
+            findSources: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.findSources", parameters, sessionId, pauseId);
+            },
+            /**
+             * Get the contents of a source.
+             */
+            getSourceContents: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.getSourceContents", parameters, sessionId, pauseId);
             },
             /**
              * Get a compact representation of the locations where breakpoints can be set
-             * in a region of a script.
+             * in a region of a source.
              */
             getPossibleBreakpoints: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Debugger.getPossibleBreakpoints", parameters, sessionId, pauseId);
             },
             /**
-             * Get the mapped location for a script location.
+             * Get the mapped location for a source location.
              */
             getMappedLocation: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Debugger.getMappedLocation", parameters, sessionId, pauseId);
@@ -303,18 +303,18 @@ var ProtocolClient = /** @class */ (function () {
                 return _this.genericClient.sendCommand("Debugger.findStepOutTarget", parameters, sessionId, pauseId);
             },
             /**
-             * Blackbox a script or a region in it. Resume commands like
+             * Blackbox a source or a region in it. Resume commands like
              * <code>findResumeTarget</code> will not return execution points in
-             * blackboxed regions of a script.
+             * blackboxed regions of a source.
              */
-            blackboxScript: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Debugger.blackboxScript", parameters, sessionId, pauseId);
+            blackboxSource: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.blackboxSource", parameters, sessionId, pauseId);
             },
             /**
-             * Unblackbox a script or a region in it.
+             * Unblackbox a source or a region in it.
              */
-            unblackboxScript: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Debugger.unblackboxScript", parameters, sessionId, pauseId);
+            unblackboxSource: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Debugger.unblackboxSource", parameters, sessionId, pauseId);
             },
         };
         /**
@@ -381,7 +381,7 @@ var ProtocolClient = /** @class */ (function () {
                 return _this.genericClient.sendCommand("Pause.callObjectProperty", parameters, sessionId, pauseId);
             },
             /**
-             * Load a complete preview for an object.
+             * Load a preview for an object.
              */
             getObjectPreview: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Pause.getObjectPreview", parameters, sessionId, pauseId);
@@ -554,13 +554,13 @@ var ProtocolClient = /** @class */ (function () {
                 return _this.genericClient.sendCommand("Analysis.createAnalysis", parameters, sessionId, pauseId);
             },
             /**
-             * Apply the analysis to every point where a script location executes.
+             * Apply the analysis to every point where a source location executes.
              */
             addLocation: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Analysis.addLocation", parameters, sessionId, pauseId);
             },
             /**
-             * Apply the analysis to every function entry point in a region of a script.
+             * Apply the analysis to every function entry point in a region of a source.
              */
             addFunctionEntryPoints: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Analysis.addFunctionEntryPoints", parameters, sessionId, pauseId);
@@ -611,60 +611,61 @@ var ProtocolClient = /** @class */ (function () {
             },
         };
         /**
-         * The Host domain includes commands that are sent by the record/replay driver
-         * to its host VM. Protocol clients should not use this domain.
+         * The Target domain includes commands that are sent by the Record Replay Driver
+         * to the target application which it is attached to. Protocol clients should
+         * not use this domain. See https://replay.io/driver for more information.
          */
-        this.Host = {
+        this.Target = {
             /**
-             * Get the function ID / offset to use for a script location, if there is one.
+             * Get the function ID / offset to use for a source location, if there is one.
              */
             convertLocationToFunctionOffset: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.convertLocationToFunctionOffset", parameters, sessionId, pauseId);
+                return _this.genericClient.sendCommand("Target.convertLocationToFunctionOffset", parameters, sessionId, pauseId);
             },
             /**
              * Get the location to use for a function ID / offset.
              */
             convertFunctionOffsetToLocation: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.convertFunctionOffsetToLocation", parameters, sessionId, pauseId);
+                return _this.genericClient.sendCommand("Target.convertFunctionOffsetToLocation", parameters, sessionId, pauseId);
             },
             /**
              * Get the offsets at which execution should pause when stepping around within
              * a frame for a function.
              */
             getStepOffsets: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.getStepOffsets", parameters, sessionId, pauseId);
+                return _this.genericClient.sendCommand("Target.getStepOffsets", parameters, sessionId, pauseId);
             },
             /**
              * Get the most complete contents known for an HTML file.
              */
             getHTMLSource: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.getHTMLSource", parameters, sessionId, pauseId);
+                return _this.genericClient.sendCommand("Target.getHTMLSource", parameters, sessionId, pauseId);
             },
             /**
-             * Get the IDs of all functions in a range within a script.
+             * Get the IDs of all functions in a range within a source.
              */
             getFunctionsInRange: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.getFunctionsInRange", parameters, sessionId, pauseId);
+                return _this.genericClient.sendCommand("Target.getFunctionsInRange", parameters, sessionId, pauseId);
             },
             /**
-             * Get any source map URL associated with a script.
+             * Get any source map URL associated with a source.
              */
-            getScriptSourceMapURL: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.getScriptSourceMapURL", parameters, sessionId, pauseId);
+            getSourceMapURL: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Target.getSourceMapURL", parameters, sessionId, pauseId);
             },
             /**
              * Get any source map URL associated with a style sheet.
              */
             getSheetSourceMapURL: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.getSheetSourceMapURL", parameters, sessionId, pauseId);
+                return _this.genericClient.sendCommand("Target.getSheetSourceMapURL", parameters, sessionId, pauseId);
             },
             /**
-             * This command might be sent from within an OnConsoleMessage() call to get
-             * contents of the new message. Properties in the result have the same meaning
-             * as for <code>Console.Message</code>.
+             * This command might be sent from within a RecordReplayOnConsoleMessage() call
+             * to get  contents of the new message. Properties in the result have the same
+             * meaning as for <code>Console.Message</code>.
              */
             getCurrentMessageContents: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.getCurrentMessageContents", parameters, sessionId, pauseId);
+                return _this.genericClient.sendCommand("Target.getCurrentMessageContents", parameters, sessionId, pauseId);
             },
             /**
              * Count the number of stack frames on the stack. This is equivalent to using
@@ -672,7 +673,7 @@ var ProtocolClient = /** @class */ (function () {
              * be implemented more efficiently.
              */
             countStackFrames: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.countStackFrames", parameters, sessionId, pauseId);
+                return _this.genericClient.sendCommand("Target.countStackFrames", parameters, sessionId, pauseId);
             },
             /**
              * If the topmost frame on the stack is a generator frame which can be popped
@@ -680,15 +681,7 @@ var ProtocolClient = /** @class */ (function () {
              * will be consistent across each of those pops and pushes.
              */
             currentGeneratorId: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.currentGeneratorId", parameters, sessionId, pauseId);
-            },
-            /**
-             * When generating previews whose contents might overflow, this can be used to
-             * specify property and getter names which must be included in the resulting
-             * preview.
-             */
-            getObjectPreviewRequiredProperties: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Host.getObjectPreviewRequiredProperties", parameters, sessionId, pauseId);
+                return _this.genericClient.sendCommand("Target.currentGeneratorId", parameters, sessionId, pauseId);
             },
         };
         /**
