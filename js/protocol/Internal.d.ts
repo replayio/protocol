@@ -1,4 +1,4 @@
-import { BuildId, RecordingId, TimeStamp } from "./Recording";
+import { BuildId, RecordingId, RecordingData, TimeStamp } from "./Recording";
 import { MimeType } from "./Graphics";
 import { SessionId } from "./Session";
 /**
@@ -26,6 +26,12 @@ export interface createRecordingResult {
      * Identifier for the recording.
      */
     recordingId: RecordingId;
+}
+export interface setRecordingMetadataParameters {
+    recordingData: RecordingData;
+    authId: string;
+}
+export interface setRecordingMetadataResult {
 }
 export interface addRecordingDataParameters {
     /**

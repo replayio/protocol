@@ -179,6 +179,8 @@ import {
 import {
   createRecordingParameters,
   createRecordingResult,
+  setRecordingMetadataParameters,
+  setRecordingMetadataResult,
   addRecordingDataParameters,
   addRecordingDataResult,
   addRecordingDescriptionParameters,
@@ -674,6 +676,8 @@ export interface GenericProtocolClient {
    * Create a new recording.
    */
   sendCommand(command: "Internal.createRecording", parameters: createRecordingParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<createRecordingResult>;
+
+  sendCommand(command: "Internal.setRecordingMetadata", parameters: setRecordingMetadataParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<setRecordingMetadataResult>;
 
   /**
    * Add data to a recording. The next message sent after this must be a binary

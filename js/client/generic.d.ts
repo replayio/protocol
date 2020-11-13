@@ -8,7 +8,7 @@ import { getDocumentParameters, getDocumentResult, getParentNodesParameters, get
 import { getComputedStyleParameters, getComputedStyleResult, getAppliedRulesParameters, getAppliedRulesResult } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, createAnalysisResult, addLocationParameters, addLocationResult, addFunctionEntryPointsParameters, addFunctionEntryPointsResult, addRandomPointsParameters, addRandomPointsResult, addEventHandlerEntryPointsParameters, addEventHandlerEntryPointsResult, addExceptionPointsParameters, addExceptionPointsResult, runAnalysisParameters, runAnalysisResult, releaseAnalysisParameters, releaseAnalysisResult, findAnalysisPointsParameters, findAnalysisPointsResult } from "../protocol/Analysis";
 import { convertLocationToFunctionOffsetParameters, convertLocationToFunctionOffsetResult, convertFunctionOffsetToLocationParameters, convertFunctionOffsetToLocationResult, getStepOffsetsParameters, getStepOffsetsResult, getHTMLSourceParameters, getHTMLSourceResult, getFunctionsInRangeParameters, getFunctionsInRangeResult, getSourceMapURLParameters, getSourceMapURLResult, getSheetSourceMapURLParameters, getSheetSourceMapURLResult, getCurrentMessageContentsParameters, getCurrentMessageContentsResult, countStackFramesParameters, countStackFramesResult, currentGeneratorIdParameters, currentGeneratorIdResult } from "../protocol/Target";
-import { createRecordingParameters, createRecordingResult, addRecordingDataParameters, addRecordingDataResult, addRecordingDescriptionParameters, addRecordingDescriptionResult, hasResourceParameters, hasResourceResult, addResourceParameters, addResourceResult, addRecordingResourceParameters, addRecordingResourceResult, getAssertionFiltersParameters, getAssertionFiltersResult, echoParameters, echoResult, labelTestSessionParameters, labelTestSessionResult, getRecordingsParameters, getRecordingsResult } from "../protocol/Internal";
+import { createRecordingParameters, createRecordingResult, setRecordingMetadataParameters, setRecordingMetadataResult, addRecordingDataParameters, addRecordingDataResult, addRecordingDescriptionParameters, addRecordingDescriptionResult, hasResourceParameters, hasResourceResult, addResourceParameters, addResourceResult, addRecordingResourceParameters, addRecordingResourceResult, getAssertionFiltersParameters, getAssertionFiltersResult, echoParameters, echoResult, labelTestSessionParameters, labelTestSessionResult, getRecordingsParameters, getRecordingsResult } from "../protocol/Internal";
 export interface GenericProtocolClient {
     /**
      * Describes a change to an entry in a recording's metadata.
@@ -398,6 +398,7 @@ export interface GenericProtocolClient {
      * Create a new recording.
      */
     sendCommand(command: "Internal.createRecording", parameters: createRecordingParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<createRecordingResult>;
+    sendCommand(command: "Internal.setRecordingMetadata", parameters: setRecordingMetadataParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<setRecordingMetadataResult>;
     /**
      * Add data to a recording. The next message sent after this must be a binary
      * message with the data described by this message. Uploaded recordings are not

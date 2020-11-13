@@ -14,6 +14,36 @@
                     "type": "string"
                 },
                 {
+                    "id": "RecordingData",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "id",
+                            "$ref": "RecordingId"
+                        },
+                        {
+                            "name": "url",
+                            "type": "string"
+                        },
+                        {
+                            "name": "title",
+                            "type": "string"
+                        },
+                        {
+                            "name": "duration",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "lastScreenData",
+                            "type": "string"
+                        },
+                        {
+                            "name": "lastScreenMimeType",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
                     "id": "BuildId",
                     "description": "Unique identifier for the software used to produce a recording.",
                     "type": "string"
@@ -2990,6 +3020,19 @@
                             "name": "recordingId",
                             "description": "Identifier for the recording.",
                             "$ref": "Recording.RecordingId"
+                        }
+                    ]
+                },
+                {
+                    "name": "setRecordingMetadata",
+                    "parameters": [
+                        {
+                            "name": "recordingData",
+                            "$ref": "Recording.RecordingData"
+                        },
+                        {
+                            "name": "authId",
+                            "type": "string"
                         }
                     ]
                 },

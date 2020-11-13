@@ -696,6 +696,9 @@ var ProtocolClient = /** @class */ (function () {
             createRecording: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Internal.createRecording", parameters, sessionId, pauseId);
             },
+            setRecordingMetadata: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Internal.setRecordingMetadata", parameters, sessionId, pauseId);
+            },
             /**
              * Add data to a recording. The next message sent after this must be a binary
              * message with the data described by this message. Uploaded recordings are not

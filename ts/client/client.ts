@@ -106,6 +106,7 @@ import {
 } from "../protocol/Target";
 import {
   createRecordingParameters,
+  setRecordingMetadataParameters,
   addRecordingDataParameters,
   addRecordingDescriptionParameters,
   hasResourceParameters,
@@ -824,6 +825,9 @@ export class ProtocolClient {
      */
     createRecording: (parameters: createRecordingParameters, sessionId?: SessionId, pauseId?: PauseId) =>
       this.genericClient.sendCommand("Internal.createRecording", parameters, sessionId, pauseId),
+
+    setRecordingMetadata: (parameters: setRecordingMetadataParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Internal.setRecordingMetadata", parameters, sessionId, pauseId),
 
     /**
      * Add data to a recording. The next message sent after this must be a binary

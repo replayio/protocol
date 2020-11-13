@@ -8,6 +8,15 @@ domain Recording
   # Globally unique identifier for a recording.
   type RecordingId extends string
 
+  type RecordingData extends object
+    properties
+      RecordingId id
+      string url
+      string title
+      integer duration
+      string lastScreenData 
+      string lastScreenMimeType  
+
   # Unique identifier for the software used to produce a recording.
   type BuildId extends string
 
@@ -1530,6 +1539,11 @@ domain Internal
     returns
       # Identifier for the recording.
       Recording.RecordingId recordingId
+
+  command setRecordingMetadata
+    parameters
+      Recording.RecordingData recordingData
+      string authId 
 
   # Add data to a recording. The next message sent after this must be a binary
   # message with the data described by this message. Uploaded recordings are not

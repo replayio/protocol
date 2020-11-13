@@ -10,6 +10,21 @@ import {
  */
 export type RecordingId = string;
 
+export interface RecordingData {
+
+  id: RecordingId;
+
+  url: string;
+
+  title: string;
+
+  duration: number;
+
+  lastScreenData: string;
+
+  lastScreenMimeType: string;
+}
+
 /**
  * Unique identifier for the software used to produce a recording.
  */
