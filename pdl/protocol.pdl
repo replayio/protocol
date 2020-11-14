@@ -1613,7 +1613,10 @@ domain Internal
   # Mark a session which was created for an automated test.
   command labelTestSession
     parameters
+      # Session which is part of an automated test.
       Session.SessionId sessionId
+      # Any URL associated with the test.
+      optional string url
 
   # Get the user's recordings
   command getRecordings

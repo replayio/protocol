@@ -3143,7 +3143,14 @@
                     "parameters": [
                         {
                             "name": "sessionId",
+                            "description": "Session which is part of an automated test.",
                             "$ref": "Session.SessionId"
+                        },
+                        {
+                            "name": "url",
+                            "description": "Any URL associated with the test.",
+                            "optional": true,
+                            "type": "string"
                         }
                     ]
                 },
