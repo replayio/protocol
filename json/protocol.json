@@ -2995,6 +2995,7 @@
                 },
                 {
                     "name": "setRecordingMetadata",
+                    "description": "Adds metadata that is associated with the entire recording in question,\nas identified by the id field in the recordingData field. This includes things\nlike the URL being recorded as well as the token that is associated with the\nuser who started this recording.",
                     "parameters": [
                         {
                             "name": "recordingData",

@@ -1531,6 +1531,10 @@ domain Internal
       # Identifier for the recording.
       Recording.RecordingId recordingId
 
+  # Adds metadata that is associated with the entire recording in question,
+  # as identified by the id field in the recordingData field. This includes things
+  # like the URL being recorded as well as the token that is associated with the
+  # user who started this recording.
   command setRecordingMetadata
     parameters
       RecordingData recordingData

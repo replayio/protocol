@@ -398,6 +398,12 @@ export interface GenericProtocolClient {
      * Create a new recording.
      */
     sendCommand(command: "Internal.createRecording", parameters: createRecordingParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<createRecordingResult>;
+    /**
+     * Adds metadata that is associated with the entire recording in question,
+     * as identified by the id field in the recordingData field. This includes things
+     * like the URL being recorded as well as the token that is associated with the
+     * user who started this recording.
+     */
     sendCommand(command: "Internal.setRecordingMetadata", parameters: setRecordingMetadataParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<setRecordingMetadataResult>;
     /**
      * Add data to a recording. The next message sent after this must be a binary
