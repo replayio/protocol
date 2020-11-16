@@ -1,4 +1,4 @@
-import { BuildId, RecordingId, RecordingData, TimeStamp } from "./Recording";
+import { BuildId, RecordingId, TimeStamp } from "./Recording";
 import { MimeType } from "./Graphics";
 import { SessionId } from "./Session";
 /**
@@ -14,6 +14,14 @@ export interface Resource {
      * Checksum of the resource's contents.
      */
     checksum: string;
+}
+export interface RecordingData {
+    id: RecordingId;
+    url: string;
+    title: string;
+    duration: number;
+    lastScreenData: string;
+    lastScreenMimeType: string;
 }
 export interface createRecordingParameters {
     /**
