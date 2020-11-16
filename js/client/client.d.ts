@@ -8,7 +8,7 @@ import { getDocumentParameters, getParentNodesParameters, querySelectorParameter
 import { getComputedStyleParameters, getAppliedRulesParameters } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, addLocationParameters, addFunctionEntryPointsParameters, addRandomPointsParameters, addEventHandlerEntryPointsParameters, addExceptionPointsParameters, runAnalysisParameters, releaseAnalysisParameters, findAnalysisPointsParameters } from "../protocol/Analysis";
 import { convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getStepOffsetsParameters, getHTMLSourceParameters, getFunctionsInRangeParameters, getSourceMapURLParameters, getSheetSourceMapURLParameters, getCurrentMessageContentsParameters, countStackFramesParameters, currentGeneratorIdParameters } from "../protocol/Target";
-import { createRecordingParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
+import { createRecordingParameters, setRecordingMetadataParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
 import { GenericProtocolClient } from "./generic";
 export declare class ProtocolClient {
     private readonly genericClient;
@@ -510,6 +510,13 @@ export declare class ProtocolClient {
          * Create a new recording.
          */
         createRecording: (parameters: createRecordingParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").createRecordingResult>;
+        /**
+         * Adds metadata that is associated with the entire recording in question,
+         * as identified by the id field in the recordingData field. This includes things
+         * like the URL being recorded as well as the token that is associated with the
+         * user who started this recording.
+         */
+        setRecordingMetadata: (parameters: setRecordingMetadataParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").setRecordingMetadataResult>;
         /**
          * Add data to a recording. The next message sent after this must be a binary
          * message with the data described by this message. Uploaded recordings are not

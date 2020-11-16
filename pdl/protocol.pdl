@@ -1531,6 +1531,15 @@ domain Internal
       # Identifier for the recording.
       Recording.RecordingId recordingId
 
+  # Adds metadata that is associated with the entire recording in question,
+  # as identified by the id field in the recordingData field. This includes things
+  # like the URL being recorded as well as the token that is associated with the
+  # user who started this recording.
+  command setRecordingMetadata
+    parameters
+      RecordingData recordingData
+      string authId 
+
   # Add data to a recording. The next message sent after this must be a binary
   # message with the data described by this message. Uploaded recordings are not
   # explicitly finished; replay sessions created for a recording will include
@@ -1624,3 +1633,14 @@ domain Internal
       string authId
     returns
       array of object recordings
+
+  type RecordingData extends object
+    properties
+      RecordingId id
+      string url
+      string title
+      integer duration
+      string lastScreenData 
+      string lastScreenMimeType  
+
+

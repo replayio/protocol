@@ -2994,6 +2994,20 @@
                     ]
                 },
                 {
+                    "name": "setRecordingMetadata",
+                    "description": "Adds metadata that is associated with the entire recording in question,\nas identified by the id field in the recordingData field. This includes things\nlike the URL being recorded as well as the token that is associated with the\nuser who started this recording.",
+                    "parameters": [
+                        {
+                            "name": "recordingData",
+                            "$ref": "RecordingData"
+                        },
+                        {
+                            "name": "authId",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
                     "name": "addRecordingData",
                     "description": "Add data to a recording. The next message sent after this must be a binary\nmessage with the data described by this message. Uploaded recordings are not\nexplicitly finished; replay sessions created for a recording will include\nall data which was successfully uploaded.",
                     "parameters": [
@@ -3188,6 +3202,36 @@
                         {
                             "name": "checksum",
                             "description": "Checksum of the resource's contents.",
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "id": "RecordingData",
+                    "type": "object",
+                    "properties": [
+                        {
+                            "name": "id",
+                            "$ref": "RecordingId"
+                        },
+                        {
+                            "name": "url",
+                            "type": "string"
+                        },
+                        {
+                            "name": "title",
+                            "type": "string"
+                        },
+                        {
+                            "name": "duration",
+                            "type": "integer"
+                        },
+                        {
+                            "name": "lastScreenData",
+                            "type": "string"
+                        },
+                        {
+                            "name": "lastScreenMimeType",
                             "type": "string"
                         }
                     ]

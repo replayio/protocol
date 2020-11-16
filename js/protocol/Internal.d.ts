@@ -15,6 +15,14 @@ export interface Resource {
      */
     checksum: string;
 }
+export interface RecordingData {
+    id: RecordingId;
+    url: string;
+    title: string;
+    duration: number;
+    lastScreenData: string;
+    lastScreenMimeType: string;
+}
 export interface createRecordingParameters {
     /**
      * Build Id of the software which produced the recording.
@@ -26,6 +34,12 @@ export interface createRecordingResult {
      * Identifier for the recording.
      */
     recordingId: RecordingId;
+}
+export interface setRecordingMetadataParameters {
+    recordingData: RecordingData;
+    authId: string;
+}
+export interface setRecordingMetadataResult {
 }
 export interface addRecordingDataParameters {
     /**
