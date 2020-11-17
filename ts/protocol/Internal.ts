@@ -1,6 +1,6 @@
 import {
-  BuildId,
   RecordingId,
+  BuildId,
   TimeStamp
 } from "./Recording";
 import {
@@ -203,7 +203,15 @@ export interface echoResult {
 
 export interface labelTestSessionParameters {
 
+  /**
+   * Session which is part of an automated test.
+   */
   sessionId: SessionId;
+
+  /**
+   * Any URL associated with the test.
+   */
+  url?: string;
 }
 
 export interface labelTestSessionResult {

@@ -1636,7 +1636,7 @@ domain Internal
 
   type RecordingData extends object
     properties
-      RecordingId id
+      Recording.RecordingId id
       string url
       string title
       integer duration
