@@ -1,4 +1,4 @@
-import { BuildId, RecordingId, TimeStamp } from "./Recording";
+import { RecordingId, BuildId, TimeStamp } from "./Recording";
 import { MimeType } from "./Graphics";
 import { SessionId } from "./Session";
 /**
@@ -136,7 +136,14 @@ export interface echoResult {
     str: string;
 }
 export interface labelTestSessionParameters {
+    /**
+     * Session which is part of an automated test.
+     */
     sessionId: SessionId;
+    /**
+     * Any URL associated with the test.
+     */
+    url?: string;
 }
 export interface labelTestSessionResult {
 }

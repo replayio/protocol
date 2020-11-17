@@ -3212,7 +3212,7 @@
                     "properties": [
                         {
                             "name": "id",
-                            "$ref": "RecordingId"
+                            "$ref": "Recording.RecordingId"
                         },
                         {
                             "name": "url",
