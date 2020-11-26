@@ -1605,12 +1605,6 @@ domain Internal
       # Resource which the recording is associated with.
       Resource resource
 
-  # Get filters for where to add more detailed assertions when recording that
-  # behavior is consistent with the replay. These are used when analyzing crashes.
-  command getAssertionFilters
-    returns
-      optional object filters
-
   # For testing network issues.
   command echo
     parameters

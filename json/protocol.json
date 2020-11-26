@@ -3121,17 +3121,6 @@
                     ]
                 },
                 {
-                    "name": "getAssertionFilters",
-                    "description": "Get filters for where to add more detailed assertions when recording that\nbehavior is consistent with the replay. These are used when analyzing crashes.",
-                    "returns": [
-                        {
-                            "name": "filters",
-                            "optional": true,
-                            "type": "object"
-                        }
-                    ]
-                },
-                {
                     "name": "echo",
                     "description": "For testing network issues.",
                     "parameters": [
