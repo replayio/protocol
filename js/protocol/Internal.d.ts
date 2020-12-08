@@ -123,11 +123,6 @@ export interface addRecordingResourceParameters {
 }
 export interface addRecordingResourceResult {
 }
-export interface getAssertionFiltersParameters {
-}
-export interface getAssertionFiltersResult {
-    filters?: any;
-}
 export interface echoParameters {
     str: string;
     count: number;

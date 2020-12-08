@@ -739,13 +739,6 @@ var ProtocolClient = /** @class */ (function () {
                 return _this.genericClient.sendCommand("Internal.addRecordingResource", parameters, sessionId, pauseId);
             },
             /**
-             * Get filters for where to add more detailed assertions when recording that
-             * behavior is consistent with the replay. These are used when analyzing crashes.
-             */
-            getAssertionFilters: function (parameters, sessionId, pauseId) {
-                return _this.genericClient.sendCommand("Internal.getAssertionFilters", parameters, sessionId, pauseId);
-            },
-            /**
              * For testing network issues.
              */
             echo: function (parameters, sessionId, pauseId) {

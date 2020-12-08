@@ -8,7 +8,7 @@ import { getDocumentParameters, getParentNodesParameters, querySelectorParameter
 import { getComputedStyleParameters, getAppliedRulesParameters } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, addLocationParameters, addFunctionEntryPointsParameters, addRandomPointsParameters, addEventHandlerEntryPointsParameters, addExceptionPointsParameters, runAnalysisParameters, releaseAnalysisParameters, findAnalysisPointsParameters } from "../protocol/Analysis";
 import { convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getStepOffsetsParameters, getHTMLSourceParameters, getFunctionsInRangeParameters, getSourceMapURLParameters, getSheetSourceMapURLParameters, getCurrentMessageContentsParameters, countStackFramesParameters, currentGeneratorIdParameters } from "../protocol/Target";
-import { createRecordingParameters, setRecordingMetadataParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, getAssertionFiltersParameters, echoParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
+import { createRecordingParameters, setRecordingMetadataParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, echoParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
 import { GenericProtocolClient } from "./generic";
 export declare class ProtocolClient {
     private readonly genericClient;
@@ -540,11 +540,6 @@ export declare class ProtocolClient {
          * Associate a resource with a recording.
          */
         addRecordingResource: (parameters: addRecordingResourceParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").addRecordingResourceResult>;
-        /**
-         * Get filters for where to add more detailed assertions when recording that
-         * behavior is consistent with the replay. These are used when analyzing crashes.
-         */
-        getAssertionFilters: (parameters: getAssertionFiltersParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Internal").getAssertionFiltersResult>;
         /**
          * For testing network issues.
          */

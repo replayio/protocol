@@ -112,7 +112,6 @@ import {
   hasResourceParameters,
   addResourceParameters,
   addRecordingResourceParameters,
-  getAssertionFiltersParameters,
   echoParameters,
   labelTestSessionParameters,
   getRecordingsParameters
@@ -867,13 +866,6 @@ export class ProtocolClient {
      */
     addRecordingResource: (parameters: addRecordingResourceParameters, sessionId?: SessionId, pauseId?: PauseId) =>
       this.genericClient.sendCommand("Internal.addRecordingResource", parameters, sessionId, pauseId),
-
-    /**
-     * Get filters for where to add more detailed assertions when recording that
-     * behavior is consistent with the replay. These are used when analyzing crashes.
-     */
-    getAssertionFilters: (parameters: getAssertionFiltersParameters, sessionId?: SessionId, pauseId?: PauseId) =>
-      this.genericClient.sendCommand("Internal.getAssertionFilters", parameters, sessionId, pauseId),
 
     /**
      * For testing network issues.

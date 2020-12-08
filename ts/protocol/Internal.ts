@@ -180,15 +180,6 @@ export interface addRecordingResourceResult {
 
 }
 
-export interface getAssertionFiltersParameters {
-
-}
-
-export interface getAssertionFiltersResult {
-
-  filters?: any;
-}
-
 export interface echoParameters {
 
   str: string;

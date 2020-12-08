@@ -179,8 +179,6 @@ import {
   addResourceResult,
   addRecordingResourceParameters,
   addRecordingResourceResult,
-  getAssertionFiltersParameters,
-  getAssertionFiltersResult,
   echoParameters,
   echoResult,
   labelTestSessionParameters,
@@ -635,12 +633,6 @@ export interface ProtocolMessageHandlers {
    * Associate a resource with a recording.
    */
   "Internal.addRecordingResource": (parameters: addRecordingResourceParameters, sessionId?: SessionId, pauseId?: PauseId) => Promise<addRecordingResourceResult | null> | addRecordingResourceResult | null,
-
-  /**
-   * Get filters for where to add more detailed assertions when recording that
-   * behavior is consistent with the replay. These are used when analyzing crashes.
-   */
-  "Internal.getAssertionFilters": (parameters: getAssertionFiltersParameters, sessionId?: SessionId, pauseId?: PauseId) => Promise<getAssertionFiltersResult | null> | getAssertionFiltersResult | null,
 
   /**
    * For testing network issues.
