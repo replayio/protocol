@@ -257,7 +257,9 @@ export class ProtocolClient {
     /**
      * Does not return until the recording is fully processed. Before returning,
      * <code>missingRegions</code> and <code>unprocessedRegions</code> events will
-     * be periodically emitted.
+     * be periodically emitted. Commands which require inspecting the recording
+     * will not return until that part of the recording has been processed,
+     * see <code>ProcessingLevel</code> for details.
      */
     ensureProcessed: (parameters: ensureProcessedParameters, sessionId?: SessionId, pauseId?: PauseId) =>
       this.genericClient.sendCommand("Session.ensureProcessed", parameters, sessionId, pauseId),
@@ -789,7 +791,7 @@ export class ProtocolClient {
 
     /**
      * This command might be sent from within a RecordReplayOnConsoleMessage() call
-     * to get  contents of the new message. Properties in the result have the same
+     * to get contents of the new message. Properties in the result have the same
      * meaning as for <code>Console.Message</code>.
      */
     getCurrentMessageContents: (parameters: getCurrentMessageContentsParameters, sessionId?: SessionId, pauseId?: PauseId) =>

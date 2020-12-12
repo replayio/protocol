@@ -194,8 +194,25 @@ domain Session
 
   # Does not return until the recording is fully processed. Before returning,
   # <code>missingRegions</code> and <code>unprocessedRegions</code> events will
-  # be periodically emitted.
+  # be periodically emitted. Commands which require inspecting the recording
+  # will not return until that part of the recording has been processed,
+  # see <code>ProcessingLevel</code> for details.
   command ensureProcessed
+    parameters
+      # Level at which the recording should be processed before returning.
+      # Defaults to <code>basic</code> if omitted.
+      optional ProcessingLevel level
+
+  # Level at which a recording can be processed. After <code>basic</code>
+  # processing, all console messages, sources, paints, and mouse events will
+  # be available immediately. After <code>executionIndexed</code> processing,
+  # analyses will be able to run, resume/step targets can be found, and the
+  # state associated with different <code>Pause.PauseId</code> identifiers
+  # can be inspected.
+  type ProcessingLevel extends string
+    enum
+      basic
+      executionIndexed
 
   # Event describing regions of the recording that have not been uploaded.
   event missingRegions
@@ -206,7 +223,10 @@ domain Session
   # Event describing regions of the recording that have not been processed.
   event unprocessedRegions
     parameters
-      # Any missing regions are also unprocessed regions.
+      # Level at which the regions are unprocessed.
+      ProcessingLevel level
+      # Regions of the recording that haven't been processed at the associated
+      # level.
       array of Recording.TimeRange regions
 
   # Find all points in the recording at which a mouse move or click occurred.
@@ -929,8 +949,8 @@ domain Pause
   # Get the topmost frame on the stack.
   command getTopFrame
     returns
-      # ID of the topmost frame.
-      FrameId frame
+      # ID of the topmost frame, if there is one.
+      optional FrameId frame
       # Any data associated with the frame.
       PauseData data
 
@@ -1490,7 +1510,7 @@ domain Target
       optional string url
 
   # This command might be sent from within a RecordReplayOnConsoleMessage() call
-  # to get  contents of the new message. Properties in the result have the same
+  # to get contents of the new message. Properties in the result have the same
   # meaning as for <code>Console.Message</code>.
   command getCurrentMessageContents
     returns

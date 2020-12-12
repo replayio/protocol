@@ -445,9 +445,9 @@ export interface getTopFrameParameters {
 }
 export interface getTopFrameResult {
     /**
-     * ID of the topmost frame.
+     * ID of the topmost frame, if there is one.
      */
-    frame: FrameId;
+    frame?: FrameId;
     /**
      * Any data associated with the frame.
      */

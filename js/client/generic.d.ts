@@ -106,7 +106,9 @@ export interface GenericProtocolClient {
     /**
      * Does not return until the recording is fully processed. Before returning,
      * <code>missingRegions</code> and <code>unprocessedRegions</code> events will
-     * be periodically emitted.
+     * be periodically emitted. Commands which require inspecting the recording
+     * will not return until that part of the recording has been processed,
+     * see <code>ProcessingLevel</code> for details.
      */
     sendCommand(command: "Session.ensureProcessed", parameters: ensureProcessedParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<ensureProcessedResult>;
     /**
@@ -378,7 +380,7 @@ export interface GenericProtocolClient {
     sendCommand(command: "Target.getSheetSourceMapURL", parameters: getSheetSourceMapURLParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getSheetSourceMapURLResult>;
     /**
      * This command might be sent from within a RecordReplayOnConsoleMessage() call
-     * to get  contents of the new message. Properties in the result have the same
+     * to get contents of the new message. Properties in the result have the same
      * meaning as for <code>Console.Message</code>.
      */
     sendCommand(command: "Target.getCurrentMessageContents", parameters: getCurrentMessageContentsParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<getCurrentMessageContentsResult>;

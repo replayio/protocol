@@ -15,8 +15,23 @@ import {
  */
 export type SessionId = string;
 
+/**
+ * Level at which a recording can be processed. After <code>basic</code>
+ * processing, all console messages, sources, paints, and mouse events will
+ * be available immediately. After <code>executionIndexed</code> processing,
+ * analyses will be able to run, resume/step targets can be found, and the
+ * state associated with different <code>Pause.PauseId</code> identifiers
+ * can be inspected.
+ */
+export type ProcessingLevel = "basic" | "executionIndexed";
+
 export interface ensureProcessedParameters {
 
+  /**
+   * Level at which the recording should be processed before returning.
+   * Defaults to <code>basic</code> if omitted.
+   */
+  level?: ProcessingLevel;
 }
 
 export interface ensureProcessedResult {
@@ -93,7 +108,13 @@ export interface missingRegions {
 export interface unprocessedRegions {
 
   /**
-   * Any missing regions are also unprocessed regions.
+   * Level at which the regions are unprocessed.
+   */
+  level: ProcessingLevel;
+
+  /**
+   * Regions of the recording that haven't been processed at the associated
+   * level.
    */
   regions: TimeRange[];
 }

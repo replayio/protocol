@@ -350,12 +350,29 @@
                     "id": "SessionId",
                     "description": "Unique identifier for a session which a recording has been loaded into.",
                     "type": "string"
+                },
+                {
+                    "id": "ProcessingLevel",
+                    "description": "Level at which a recording can be processed. After <code>basic</code>\nprocessing, all console messages, sources, paints, and mouse events will\nbe available immediately. After <code>executionIndexed</code> processing,\nanalyses will be able to run, resume/step targets can be found, and the\nstate associated with different <code>Pause.PauseId</code> identifiers\ncan be inspected.",
+                    "type": "string",
+                    "enum": [
+                        "basic",
+                        "executionIndexed"
+                    ]
                 }
             ],
             "commands": [
                 {
                     "name": "ensureProcessed",
-                    "description": "Does not return until the recording is fully processed. Before returning,\n<code>missingRegions</code> and <code>unprocessedRegions</code> events will\nbe periodically emitted."
+                    "description": "Does not return until the recording is fully processed. Before returning,\n<code>missingRegions</code> and <code>unprocessedRegions</code> events will\nbe periodically emitted. Commands which require inspecting the recording\nwill not return until that part of the recording has been processed,\nsee <code>ProcessingLevel</code> for details.",
+                    "parameters": [
+                        {
+                            "name": "level",
+                            "description": "Level at which the recording should be processed before returning.\nDefaults to <code>basic</code> if omitted.",
+                            "optional": true,
+                            "$ref": "ProcessingLevel"
+                        }
+                    ]
                 },
                 {
                     "name": "findMouseEvents",
@@ -431,8 +448,13 @@
                     "description": "Event describing regions of the recording that have not been processed.",
                     "parameters": [
                         {
+                            "name": "level",
+                            "description": "Level at which the regions are unprocessed.",
+                            "$ref": "ProcessingLevel"
+                        },
+                        {
                             "name": "regions",
-                            "description": "Any missing regions are also unprocessed regions.",
+                            "description": "Regions of the recording that haven't been processed at the associated\nlevel.",
                             "type": "array",
                             "items": {
                                 "$ref": "Recording.TimeRange"
@@ -1790,7 +1812,8 @@
                     "returns": [
                         {
                             "name": "frame",
-                            "description": "ID of the topmost frame.",
+                            "description": "ID of the topmost frame, if there is one.",
+                            "optional": true,
                             "$ref": "FrameId"
                         },
                         {
@@ -2904,7 +2927,7 @@
                 },
                 {
                     "name": "getCurrentMessageContents",
-                    "description": "This command might be sent from within a RecordReplayOnConsoleMessage() call\nto get  contents of the new message. Properties in the result have the same\nmeaning as for <code>Console.Message</code>.",
+                    "description": "This command might be sent from within a RecordReplayOnConsoleMessage() call\nto get contents of the new message. Properties in the result have the same\nmeaning as for <code>Console.Message</code>.",
                     "returns": [
                         {
                             "name": "source",
