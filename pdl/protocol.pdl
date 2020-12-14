@@ -1537,6 +1537,11 @@ domain Target
     returns
       optional integer id
 
+  # Get the location of the top frame on the stack, if there is one.
+  command topFrameLocation
+    returns
+      optional Debugger.Location location
+
 # The Internal domain is for use in software that is used to create recordings
 # and for internal/diagnostic use cases. While use of this domain is not
 # restricted, it won't be very helpful for other users.

@@ -174,7 +174,9 @@ import {
   countStackFramesParameters,
   countStackFramesResult,
   currentGeneratorIdParameters,
-  currentGeneratorIdResult
+  currentGeneratorIdResult,
+  topFrameLocationParameters,
+  topFrameLocationResult
 } from "../protocol/Target";
 import {
   createRecordingParameters,
@@ -671,6 +673,11 @@ export interface GenericProtocolClient {
    * will be consistent across each of those pops and pushes.
    */
   sendCommand(command: "Target.currentGeneratorId", parameters: currentGeneratorIdParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<currentGeneratorIdResult>;
+
+  /**
+   * Get the location of the top frame on the stack, if there is one.
+   */
+  sendCommand(command: "Target.topFrameLocation", parameters: topFrameLocationParameters, sessionId?: SessionId, pauseId?: PauseId): Promise<topFrameLocationResult>;
 
   /**
    * Create a new recording.

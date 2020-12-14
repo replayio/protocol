@@ -685,6 +685,12 @@ var ProtocolClient = /** @class */ (function () {
             currentGeneratorId: function (parameters, sessionId, pauseId) {
                 return _this.genericClient.sendCommand("Target.currentGeneratorId", parameters, sessionId, pauseId);
             },
+            /**
+             * Get the location of the top frame on the stack, if there is one.
+             */
+            topFrameLocation: function (parameters, sessionId, pauseId) {
+                return _this.genericClient.sendCommand("Target.topFrameLocation", parameters, sessionId, pauseId);
+            },
         };
         /**
          * The Internal domain is for use in software that is used to create recordings

@@ -2991,6 +2991,17 @@
                             "type": "integer"
                         }
                     ]
+                },
+                {
+                    "name": "topFrameLocation",
+                    "description": "Get the location of the top frame on the stack, if there is one.",
+                    "returns": [
+                        {
+                            "name": "location",
+                            "optional": true,
+                            "$ref": "Debugger.Location"
+                        }
+                    ]
                 }
             ]
         },

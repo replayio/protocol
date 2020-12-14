@@ -7,7 +7,7 @@ import { evaluateInFrameParameters, evaluateInGlobalParameters, getObjectPropert
 import { getDocumentParameters, getParentNodesParameters, querySelectorParameters, getEventListenersParameters, getBoxModelParameters, getBoundingClientRectParameters, getAllBoundingClientRectsParameters, performSearchParameters } from "../protocol/DOM";
 import { getComputedStyleParameters, getAppliedRulesParameters } from "../protocol/CSS";
 import { analysisResult, analysisError, analysisPoints, createAnalysisParameters, addLocationParameters, addFunctionEntryPointsParameters, addRandomPointsParameters, addEventHandlerEntryPointsParameters, addExceptionPointsParameters, runAnalysisParameters, releaseAnalysisParameters, findAnalysisPointsParameters } from "../protocol/Analysis";
-import { convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getStepOffsetsParameters, getHTMLSourceParameters, getFunctionsInRangeParameters, getSourceMapURLParameters, getSheetSourceMapURLParameters, getCurrentMessageContentsParameters, countStackFramesParameters, currentGeneratorIdParameters } from "../protocol/Target";
+import { convertLocationToFunctionOffsetParameters, convertFunctionOffsetToLocationParameters, getStepOffsetsParameters, getHTMLSourceParameters, getFunctionsInRangeParameters, getSourceMapURLParameters, getSheetSourceMapURLParameters, getCurrentMessageContentsParameters, countStackFramesParameters, currentGeneratorIdParameters, topFrameLocationParameters } from "../protocol/Target";
 import { createRecordingParameters, setRecordingMetadataParameters, addRecordingDataParameters, addRecordingDescriptionParameters, hasResourceParameters, addResourceParameters, addRecordingResourceParameters, echoParameters, labelTestSessionParameters, getRecordingsParameters } from "../protocol/Internal";
 import { GenericProtocolClient } from "./generic";
 export declare class ProtocolClient {
@@ -501,6 +501,10 @@ export declare class ProtocolClient {
          * will be consistent across each of those pops and pushes.
          */
         currentGeneratorId: (parameters: currentGeneratorIdParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Target").currentGeneratorIdResult>;
+        /**
+         * Get the location of the top frame on the stack, if there is one.
+         */
+        topFrameLocation: (parameters: topFrameLocationParameters, sessionId?: string | undefined, pauseId?: string | undefined) => Promise<import("../protocol/Target").topFrameLocationResult>;
     };
     /**
      * The Internal domain is for use in software that is used to create recordings

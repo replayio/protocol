@@ -135,3 +135,12 @@ export interface currentGeneratorIdResult {
 
   id?: number;
 }
+
+export interface topFrameLocationParameters {
+
+}
+
+export interface topFrameLocationResult {
+
+  location?: Location;
+}

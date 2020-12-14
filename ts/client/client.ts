@@ -102,7 +102,8 @@ import {
   getSheetSourceMapURLParameters,
   getCurrentMessageContentsParameters,
   countStackFramesParameters,
-  currentGeneratorIdParameters
+  currentGeneratorIdParameters,
+  topFrameLocationParameters
 } from "../protocol/Target";
 import {
   createRecordingParameters,
@@ -812,6 +813,12 @@ export class ProtocolClient {
      */
     currentGeneratorId: (parameters: currentGeneratorIdParameters, sessionId?: SessionId, pauseId?: PauseId) =>
       this.genericClient.sendCommand("Target.currentGeneratorId", parameters, sessionId, pauseId),
+
+    /**
+     * Get the location of the top frame on the stack, if there is one.
+     */
+    topFrameLocation: (parameters: topFrameLocationParameters, sessionId?: SessionId, pauseId?: PauseId) =>
+      this.genericClient.sendCommand("Target.topFrameLocation", parameters, sessionId, pauseId),
   }
 
   /**
