@@ -1,5 +1,5 @@
 {
-  "name": "record-replay-protocol",
+  "name": "@recordreplay/protocol",
   "version": "1.0.0",
   "description": "Definition of the protocol used by the Record Replay web service",
   "author": "",
