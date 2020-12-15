@@ -12,13 +12,20 @@
   "bugs": {
     "url": "https://github.com/RecordReplay/protocol/issues"
   },
+  "files": [
+    "js",
+    "json",
+    "LICENSE",
+    "README.md"
+  ],
   "main": "js/index.js",
   "scripts": {
     "build-json": "./build.sh",
     "build-ts": "ts-node build",
     "build-js": "tsc",
     "build": "npm run build-json && npm run build-ts && npm run build-js",
-    "clean": "rimraf ts/protocol ts/client/client.ts ts/client/generic.ts ts/server/event.ts ts/server/message.ts js"
+    "clean": "rimraf ts/protocol ts/client/client.ts ts/client/generic.ts ts/server/event.ts ts/server/message.ts js",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^14.10.1",
