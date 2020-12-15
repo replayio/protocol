@@ -175,6 +175,14 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
 
     const protocol = protocolJson as Protocol;
 
+    try {
+        await fs.promises.mkdir("ts/protocol");
+    } catch (err) {
+        if (err.code !== "EEXIST") {
+            throw err;
+        }
+    }
+
     // generate the types for all domains and write them to one file per domain
     for (const domain of protocol.domains) {
 
