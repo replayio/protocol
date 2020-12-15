@@ -1,1 +1,7 @@
 node_modules
+js
+ts/protocol
+ts/client/client.ts
+ts/client/generic.ts
+ts/server/event.ts
+ts/server/message.ts
