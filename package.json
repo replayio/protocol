@@ -23,7 +23,7 @@
     "build-json": "./build.sh",
     "build-ts": "ts-node build",
     "build-js": "tsc",
-    "build": "npm run build-json && npm run build-ts && npm run build-js",
+    "build": "npm run clean && npm run build-json && npm run build-ts && npm run build-js",
     "clean": "rimraf ts/protocol ts/*/build js",
     "prepare": "npm run build"
   },
