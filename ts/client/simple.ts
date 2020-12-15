@@ -2,7 +2,7 @@
 
 // Simple protocol client for use in writing standalone applications.
 
-import { GenericProtocolClient } from "./generic";
+import { GenericProtocolClient } from "./build/generic";
 
 /**
  * This interface is designed to be compatible with both `WebSocket`

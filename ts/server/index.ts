@@ -1,2 +1,2 @@
-export * from "./event";
-export * from "./message";
+export * from "./build/event";
+export * from "./build/message";

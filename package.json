@@ -24,7 +24,7 @@
     "build-ts": "ts-node build",
     "build-js": "tsc",
     "build": "npm run build-json && npm run build-ts && npm run build-js",
-    "clean": "rimraf ts/protocol ts/client/client.ts ts/client/generic.ts ts/server/event.ts ts/server/message.ts js",
+    "clean": "rimraf ts/protocol ts/*/build js",
     "prepare": "npm run build"
   },
   "devDependencies": {
