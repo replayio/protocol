@@ -175,6 +175,16 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
 
     const protocol = protocolJson as Protocol;
 
+    for (const folder of ["ts/protocol", "ts/client/build", "ts/server/build"]) {
+        try {
+            await fs.promises.mkdir(folder);
+        } catch (err) {
+            if (err.code !== "EEXIST") {
+                throw err;
+            }
+        }
+    }
+
     // generate the types for all domains and write them to one file per domain
     for (const domain of protocol.domains) {
 
@@ -269,14 +279,14 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
 
     imports.get("Session")!.add("SessionId");
     imports.get("Pause")!.add("PauseId");
-    ts = convertImports(imports, "../protocol");
+    ts = convertImports(imports, "../../protocol");
     ts += "\nexport interface GenericProtocolClient {\n\n";
     ts += eventDeclarations;
     ts += "  removeEventListener(event: string): void;\n\n"
     ts += commandDeclarations;
     ts += "}\n";
 
-    await fs.promises.writeFile(path.join(__dirname, "ts/client/generic.ts"), ts);
+    await fs.promises.writeFile(path.join(__dirname, "ts/client/build/generic.ts"), ts);
 
 
     // generate the non-generic protocol client
@@ -321,10 +331,10 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
 
     imports.get("Session")!.add("SessionId");
     imports.get("Pause")!.add("PauseId");
-    ts = convertImports(imports, "../protocol") + ts;
+    ts = convertImports(imports, "../../protocol") + ts;
     ts += "}\n";
 
-    await fs.promises.writeFile(path.join(__dirname, "ts/client/client.ts"), ts);
+    await fs.promises.writeFile(path.join(__dirname, "ts/client/build/client.ts"), ts);
 
 
     // generate the sendEvent function interface for server implementations
@@ -343,10 +353,10 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
         }
     }
 
-    ts = convertImports(imports, "../protocol") + "\n" + ts;
+    ts = convertImports(imports, "../../protocol") + "\n" + ts;
     ts += "}\n";
 
-    await fs.promises.writeFile(path.join(__dirname, "ts/server/event.ts"), ts);
+    await fs.promises.writeFile(path.join(__dirname, "ts/server/build/event.ts"), ts);
 
 
     // generate the ProtocolMessageHandlers interface for server implementations
@@ -368,8 +378,8 @@ function convertImports(imports: Map<string, Set<string>>, protocolPath: string)
 
     imports.get("Session")!.add("SessionId");
     imports.get("Pause")!.add("PauseId");
-    ts = convertImports(imports, "../protocol") + "\n" + ts;
+    ts = convertImports(imports, "../../protocol") + "\n" + ts;
     ts += "}\n";
 
-    await fs.promises.writeFile(path.join(__dirname, "ts/server/message.ts"), ts);
+    await fs.promises.writeFile(path.join(__dirname, "ts/server/build/message.ts"), ts);
 })();

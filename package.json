@@ -1,6 +1,6 @@
 {
-  "name": "record-replay-protocol",
-  "version": "1.0.0",
+  "name": "@recordreplay/protocol",
+  "version": "0.1.0",
   "description": "Definition of the protocol used by the Record Replay web service",
   "author": "",
   "license": "BSD-3-Clause",
@@ -12,15 +12,24 @@
   "bugs": {
     "url": "https://github.com/RecordReplay/protocol/issues"
   },
+  "files": [
+    "js",
+    "json",
+    "LICENSE",
+    "README.md"
+  ],
   "main": "js/index.js",
   "scripts": {
     "build-json": "./build.sh",
     "build-ts": "ts-node build",
     "build-js": "tsc",
-    "build": "npm run build-json && npm run build-ts && npm run build-js"
+    "build": "npm run clean && npm run build-json && npm run build-ts && npm run build-js",
+    "clean": "rimraf ts/protocol ts/*/build js",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^14.10.1",
+    "rimraf": "^3.0.2",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.2"
   },
