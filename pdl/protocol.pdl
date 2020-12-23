@@ -1662,4 +1662,7 @@ domain Internal
       string lastScreenData 
       string lastScreenMimeType  
 
-
+  # Set the user's current access token
+  command setAccessToken
+    parameters
+      string accessToken

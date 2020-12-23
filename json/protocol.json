@@ -3209,6 +3209,16 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "setAccessToken",
+                    "description": "Set the user's current access token",
+                    "parameters": [
+                        {
+                            "name": "accessToken",
+                            "type": "string"
+                        }
+                    ]
                 }
             ],
             "types": [
