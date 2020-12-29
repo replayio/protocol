@@ -3209,6 +3209,16 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "reportCrash",
+                    "description": "Report information about a crash while recording.",
+                    "parameters": [
+                        {
+                            "name": "data",
+                            "type": "object"
+                        }
+                    ]
                 }
             ],
             "types": [
@@ -3231,6 +3241,7 @@
                 },
                 {
                     "id": "RecordingData",
+                    "description": "Metadata that can be associated with a recording.",
                     "type": "object",
                     "properties": [
                         {
