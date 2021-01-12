@@ -1660,6 +1660,7 @@ domain Internal
     returns
       array of object recordings
 
+  # Metadata that can be associated with a recording.
   type RecordingData extends object
     properties
       Recording.RecordingId id
@@ -1668,3 +1669,8 @@ domain Internal
       integer duration
       string lastScreenData 
       string lastScreenMimeType  
+
+  # Report information about a crash while recording.
+  command reportCrash
+    parameters
+      object data
