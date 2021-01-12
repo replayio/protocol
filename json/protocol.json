@@ -343,6 +343,22 @@
             ]
         },
         {
+            "domain": "Authentication",
+            "description": "The Authentication domain defines a command for authenticating the current user.",
+            "commands": [
+                {
+                    "name": "setAccessToken",
+                    "description": "Set the user's current access token",
+                    "parameters": [
+                        {
+                            "name": "accessToken",
+                            "type": "string"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "domain": "Session",
             "description": "The Session domain defines methods for using recording sessions. In order to\ninspect a recording, it must first be loaded into a session via\n<code>Recording.createSession</code>.\n\nAfter the session is created, it may be in an unprocessed or partially\nprocessed state. As documented, some commands do not return until the session\nhas fully processed the recording. Processing starts automatically after the\nsession is created.\n\n<br><br>All commands and events in this domain must include a <code>sessionId</code>.",
             "types": [
@@ -3207,16 +3223,6 @@
                             "items": {
                                 "type": "object"
                             }
-                        }
-                    ]
-                },
-                {
-                    "name": "setAccessToken",
-                    "description": "Set the user's current access token",
-                    "parameters": [
-                        {
-                            "name": "accessToken",
-                            "type": "string"
                         }
                     ]
                 }
