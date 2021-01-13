@@ -1,6 +1,6 @@
 {
   "name": "@recordreplay/protocol",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Definition of the protocol used by the Record Replay web service",
   "author": "",
   "license": "BSD-3-Clause",
