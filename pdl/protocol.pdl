@@ -177,6 +177,13 @@ domain Recording
     parameters
       RecordingId recordingId
 
+# The Authentication domain defines a command for authenticating the current user.
+domain Authentication
+  # Set the user's current access token
+  command setAccessToken
+    parameters
+      string accessToken
+
 # The Session domain defines methods for using recording sessions. In order to
 # inspect a recording, it must first be loaded into a session via
 # <code>Recording.createSession</code>.
